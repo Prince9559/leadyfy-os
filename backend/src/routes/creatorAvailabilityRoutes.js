@@ -1,56 +1,56 @@
 const express = require("express");
 
 const {
-  createOrder,
-  getOrders,
-  getOrderById,
-  updateOrder,
-  deleteOrder,
-} = require("../controllers/orderController");
+  createAvailability,
+  getAvailabilities,
+  getAvailabilityById,
+  updateAvailability,
+  deleteAvailability,
+} = require("../controllers/creatorAvailabilityController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Order
+// Create Availability
 router.post(
   "/",
   protect,
   authorizeRoles("owner", "admin"),
-  createOrder
+  createAvailability
 );
 
-// Get All Orders
+// Get All Availability
 router.get(
   "/",
   protect,
   authorizeRoles("owner", "admin", "employee"),
-  getOrders
+  getAvailabilities
 );
 
-// Get Single Order
+// Get Single Availability
 router.get(
   "/:id",
   protect,
   authorizeRoles("owner", "admin", "employee"),
-  getOrderById
+  getAvailabilityById
 );
 
-// Update Order
+// Update Availability
 router.put(
   "/:id",
   protect,
   authorizeRoles("owner", "admin"),
-  updateOrder
+  updateAvailability
 );
 
-// Delete Order
+// Delete Availability
 router.delete(
   "/:id",
   protect,
   authorizeRoles("owner", "admin"),
-  deleteOrder
+  deleteAvailability
 );
 
 module.exports = router;

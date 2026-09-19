@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
 
-const creatorSchema = new mongoose.Schema(
+const clientSchema = new mongoose.Schema(
   {
-    name: {
+    companyName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    contactPerson: {
       type: String,
       required: true,
       trim: true,
@@ -11,9 +17,8 @@ const creatorSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
-      lowercase: true,
       trim: true,
+      lowercase: true,
     },
 
     phone: {
@@ -21,28 +26,17 @@ const creatorSchema = new mongoose.Schema(
       trim: true,
     },
 
-    category: {
+    website: {
       type: String,
       trim: true,
     },
 
-    platform: {
+    industry: {
       type: String,
       trim: true,
     },
 
-    followers: {
-      type: Number,
-      default: 0,
-      min: 0,
-    },
-
-    location: {
-      type: String,
-      trim: true,
-    },
-
-    profileUrl: {
+    address: {
       type: String,
       trim: true,
     },
@@ -51,11 +45,6 @@ const creatorSchema = new mongoose.Schema(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
-    },
-
-    notes: {
-      type: String,
-      trim: true,
     },
 
     createdBy: {
@@ -69,6 +58,4 @@ const creatorSchema = new mongoose.Schema(
   }
 );
 
-const Creator = mongoose.model("Creator", creatorSchema);
-
-module.exports = Creator;
+module.exports = mongoose.model("Client", clientSchema);
