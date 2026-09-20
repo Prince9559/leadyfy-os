@@ -21,19 +21,21 @@ router.post(
   createClient
 );
 
-// Get All Clients
+// Get Clients
+// Client ko bhi access milega
 router.get(
   "/",
   protect,
-  authorizeRoles("owner", "admin", "employee"),
+  authorizeRoles("owner", "admin", "employee", "client"),
   getClients
 );
 
 // Get Single Client
+// Client ko bhi access milega
 router.get(
   "/:id",
   protect,
-  authorizeRoles("owner", "admin", "employee"),
+  authorizeRoles("owner", "admin", "employee", "client"),
   getClientById
 );
 

@@ -1,56 +1,43 @@
 const express = require("express");
 
 const {
-  createPayment,
-  getPayments,
-  getPaymentById,
-  updatePayment,
-  deletePayment,
-} = require("../controllers/paymentController");
+  createActivityLog,
+  getActivityLogs,
+  getActivityLogById,
+  deleteActivityLog,
+} = require("../controllers/activityLogController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Payment
 router.post(
   "/",
   protect,
   authorizeRoles("owner", "admin"),
-  createPayment
+  createActivityLog
 );
 
-// Get All Payments
 router.get(
   "/",
   protect,
-  authorizeRoles("owner", "admin", "employee"),
-  getPayments
+  authorizeRoles("owner", "admin"),
+  getActivityLogs
 );
 
-// Get Single Payment
 router.get(
   "/:id",
   protect,
-  authorizeRoles("owner", "admin", "employee"),
-  getPaymentById
-);
-
-// Update Payment
-router.put(
-  "/:id",
-  protect,
   authorizeRoles("owner", "admin"),
-  updatePayment
+  getActivityLogById
 );
 
-// Delete Payment
 router.delete(
   "/:id",
   protect,
   authorizeRoles("owner", "admin"),
-  deletePayment
+  deleteActivityLog
 );
 
 module.exports = router;

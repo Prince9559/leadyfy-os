@@ -1,56 +1,51 @@
 const express = require("express");
 
 const {
-  createPayment,
-  getPayments,
-  getPaymentById,
-  updatePayment,
-  deletePayment,
-} = require("../controllers/paymentController");
+  createEmployee,
+  getEmployees,
+  getEmployeeById,
+  updateEmployee,
+  deleteEmployee,
+} = require("../controllers/employeeController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Payment
 router.post(
   "/",
   protect,
   authorizeRoles("owner", "admin"),
-  createPayment
+  createEmployee
 );
 
-// Get All Payments
 router.get(
   "/",
   protect,
   authorizeRoles("owner", "admin", "employee"),
-  getPayments
+  getEmployees
 );
 
-// Get Single Payment
 router.get(
   "/:id",
   protect,
   authorizeRoles("owner", "admin", "employee"),
-  getPaymentById
+  getEmployeeById
 );
 
-// Update Payment
 router.put(
   "/:id",
   protect,
   authorizeRoles("owner", "admin"),
-  updatePayment
+  updateEmployee
 );
 
-// Delete Payment
 router.delete(
   "/:id",
   protect,
   authorizeRoles("owner", "admin"),
-  deletePayment
+  deleteEmployee
 );
 
 module.exports = router;

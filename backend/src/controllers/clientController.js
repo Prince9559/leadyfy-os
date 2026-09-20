@@ -1,11 +1,10 @@
 const Client = require("../models/Client");
 
 // Add Client
-const createClient = async (req, res) => {
+ const createClient = async (req, res) => {
   try {
-    console.log("BODY DATA:", req.body);
-
     const {
+      user,
       companyName,
       contactPerson,
       email,
@@ -33,6 +32,7 @@ const createClient = async (req, res) => {
     }
 
     const client = await Client.create({
+      user: user || null,
       companyName,
       contactPerson,
       email,
@@ -62,7 +62,14 @@ const createClient = async (req, res) => {
 // Get All Clients
 const getClients = async (req, res) => {
   try {
-    const clients = await Client.find()
+    let query = {};
+
+    // Client can only see their own client record
+    if (req.user.role === "client") {
+      query.email = req.user.email;
+    }
+
+    const clients = await Client.find(query)
       .populate("createdBy", "name email role")
       .sort({ createdAt: -1 });
 
@@ -96,6 +103,17 @@ const getClientById = async (req, res) => {
       });
     }
 
+    // Client can only access their own record
+    if (
+      req.user.role === "client" &&
+      client.email !== req.user.email
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
     res.status(200).json({
       success: true,
       client,
@@ -111,6 +129,7 @@ const getClientById = async (req, res) => {
 };
 
 // Update Client
+// Update Client
 const updateClient = async (req, res) => {
   try {
     const client = await Client.findById(req.params.id);
@@ -122,7 +141,19 @@ const updateClient = async (req, res) => {
       });
     }
 
+    // Client can only update their own record
+    if (
+      req.user.role === "client" &&
+      client.email !== req.user.email
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
     const allowedFields = [
+      "user",
       "companyName",
       "contactPerson",
       "email",

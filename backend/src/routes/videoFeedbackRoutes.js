@@ -1,51 +1,56 @@
 const express = require("express");
 
 const {
-  createSupportTicket,
-  getSupportTickets,
-  getSupportTicketById,
-  updateSupportTicket,
-  deleteSupportTicket,
-} = require("../controllers/supportController");
+  createFeedback,
+  getFeedbacks,
+  getFeedbackById,
+  updateFeedback,
+  deleteFeedback,
+} = require("../controllers/videoFeedbackController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
+// Create Feedback
 router.post(
   "/",
   protect,
   authorizeRoles("owner", "admin", "client"),
-  createSupportTicket
+  createFeedback
 );
 
+// Get All Feedback
 router.get(
   "/",
   protect,
   authorizeRoles("owner", "admin", "employee", "client"),
-  getSupportTickets
+  getFeedbacks
 );
 
+// Get Single Feedback
 router.get(
   "/:id",
   protect,
   authorizeRoles("owner", "admin", "employee", "client"),
-  getSupportTicketById
+  getFeedbackById
 );
 
+// Update Feedback
 router.put(
   "/:id",
   protect,
   authorizeRoles("owner", "admin", "client"),
-  updateSupportTicket
+  updateFeedback
 );
 
+// Delete Feedback
 router.delete(
   "/:id",
   protect,
   authorizeRoles("owner", "admin"),
-  deleteSupportTicket
+  deleteFeedback
 );
 
 module.exports = router;
