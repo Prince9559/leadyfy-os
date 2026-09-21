@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { createOrder } from "../../services/orderService";
+import {
+  getOrderById,
+  updateOrder,
+} from "../../services/orderService";
+
 import { getClients } from "../../services/clientService";
 
 import "./Orders.css";
 
-function AddOrder() {
+function OrderProfile() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [loadingClients, setLoadingClients] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -29,25 +35,60 @@ function AddOrder() {
   });
 
   useEffect(() => {
-    const loadClients = async () => {
+    const loadData = async () => {
       try {
-        const data = await getClients();
+        const [orderData, clientData] = await Promise.all([
+          getOrderById(id),
+          getClients(),
+        ]);
 
-        setClients(data.clients || data.data || []);
+        const order =
+          orderData.order || orderData.data;
+
+        setClients(
+          clientData.clients || clientData.data || []
+        );
+
+        setFormData({
+          client: order?.client?._id || order?.client || "",
+          packageName: order?.packageName || "",
+          packageType: order?.packageType || "",
+          description: order?.description || "",
+          amount:
+            order?.amount !== undefined
+              ? order.amount
+              : "",
+          status: order?.status || "pending",
+          startDate: order?.startDate
+            ? new Date(order.startDate)
+                .toISOString()
+                .split("T")[0]
+            : "",
+          endDate: order?.endDate
+            ? new Date(order.endDate)
+                .toISOString()
+                .split("T")[0]
+            : "",
+          assignedTo:
+            order?.assignedTo?._id ||
+            order?.assignedTo ||
+            "",
+        });
       } catch (error) {
-        console.error("Get clients error:", error);
+        console.error("Load order error:", error);
 
         toast.error(
           error.response?.data?.message ||
-            "Failed to load clients"
+            "Failed to load order"
         );
       } finally {
+        setLoading(false);
         setLoadingClients(false);
       }
     };
 
-    loadClients();
-  }, []);
+    loadData();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,43 +135,52 @@ function AddOrder() {
     try {
       setSaving(true);
 
-      await createOrder({
-        ...formData,
+      await updateOrder(id, {
+        client: formData.client,
+        packageName: formData.packageName,
+        packageType: formData.packageType,
+        description: formData.description,
         amount: Number(formData.amount),
-        assignedTo: formData.assignedTo || undefined,
+        status: formData.status,
+        startDate: formData.startDate || undefined,
+        endDate: formData.endDate || undefined,
+        assignedTo:
+          formData.assignedTo || undefined,
       });
 
-      toast.success("Order created successfully");
+      toast.success("Order updated successfully");
 
-      setFormData({
-        client: "",
-        packageName: "",
-        packageType: "",
-        description: "",
-        amount: "",
-        status: "pending",
-        startDate: "",
-        endDate: "",
-        assignedTo: "",
-      });
+      setTimeout(() => {
+        navigate("/orders");
+      }, 700);
     } catch (error) {
-      console.error("Create order error:", error);
+      console.error("Update order error:", error);
 
       toast.error(
         error.response?.data?.message ||
-          "Failed to create order"
+          "Failed to update order"
       );
     } finally {
       setSaving(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="orders-page">
+        <div className="orders-empty">
+          <p>Loading order...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="orders-page">
       <div className="orders-header">
         <div>
-          <h1>Add Order</h1>
-          <p>Create a new order</p>
+          <h1>Edit Order</h1>
+          <p>Update order information</p>
         </div>
 
         <button
@@ -145,8 +195,6 @@ function AddOrder() {
       <div className="order-form-card">
         <form onSubmit={handleSubmit}>
           <div className="order-form-grid">
-            {/* Client */}
-
             <div className="order-form-group">
               <label htmlFor="client">
                 Client
@@ -176,8 +224,6 @@ function AddOrder() {
               </select>
             </div>
 
-            {/* Package Name */}
-
             <div className="order-form-group">
               <label htmlFor="packageName">
                 Package Name
@@ -193,8 +239,6 @@ function AddOrder() {
               />
             </div>
 
-            {/* Package Type */}
-
             <div className="order-form-group">
               <label htmlFor="packageType">
                 Package Type
@@ -206,11 +250,9 @@ function AddOrder() {
                 type="text"
                 value={formData.packageType}
                 onChange={handleChange}
-                placeholder="e.g. Social Media"
+                placeholder="Enter package type"
               />
             </div>
-
-            {/* Amount */}
 
             <div className="order-form-group">
               <label htmlFor="amount">
@@ -227,8 +269,6 @@ function AddOrder() {
                 placeholder="Enter amount"
               />
             </div>
-
-            {/* Status */}
 
             <div className="order-form-group">
               <label htmlFor="status">
@@ -263,8 +303,6 @@ function AddOrder() {
               </select>
             </div>
 
-            {/* Start Date */}
-
             <div className="order-form-group">
               <label htmlFor="startDate">
                 Start Date
@@ -278,8 +316,6 @@ function AddOrder() {
                 onChange={handleChange}
               />
             </div>
-
-            {/* End Date */}
 
             <div className="order-form-group">
               <label htmlFor="endDate">
@@ -295,8 +331,6 @@ function AddOrder() {
               />
             </div>
 
-            {/* Assigned To */}
-
             <div className="order-form-group">
               <label htmlFor="assignedTo">
                 Assigned To
@@ -311,8 +345,6 @@ function AddOrder() {
                 placeholder="Enter user ID"
               />
             </div>
-
-            {/* Description */}
 
             <div className="order-form-group order-form-full">
               <label htmlFor="description">
@@ -335,7 +367,7 @@ function AddOrder() {
             className="add-order-button"
             disabled={saving}
           >
-            {saving ? "Saving..." : "Save Order"}
+            {saving ? "Updating..." : "Update Order"}
           </button>
         </form>
       </div>
@@ -352,4 +384,4 @@ function AddOrder() {
   );
 }
 
-export default AddOrder;
+export default OrderProfile;
