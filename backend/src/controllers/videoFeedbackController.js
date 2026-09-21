@@ -4,11 +4,11 @@ const Client = require("../models/Client");
 const User = require("../models/User");
 
 // Create Feedback
+// Create Feedback
 const createFeedback = async (req, res) => {
   try {
     const {
       video,
-      client,
       timestamp,
       comment,
       status,
@@ -16,14 +16,24 @@ const createFeedback = async (req, res) => {
 
     if (
       !video ||
-      !client ||
       timestamp === undefined ||
       !comment
     ) {
       return res.status(400).json({
         success: false,
-        message:
-          "Video, client, timestamp and comment are required",
+        message: "Video, timestamp and comment are required",
+      });
+    }
+
+    // Get logged-in client's profile
+    const clientExists = await Client.findOne({
+      user: req.user._id,
+    });
+
+    if (!clientExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Client profile not found",
       });
     }
 
@@ -36,19 +46,14 @@ const createFeedback = async (req, res) => {
       });
     }
 
-    const clientExists = await Client.findById(client);
-
-    if (!clientExists) {
-      return res.status(404).json({
+    // Make sure video belongs to logged-in client
+    if (
+      videoExists.client.toString() !==
+      clientExists._id.toString()
+    ) {
+      return res.status(403).json({
         success: false,
-        message: "Client not found",
-      });
-    }
-
-    if (videoExists.client.toString() !== client.toString()) {
-      return res.status(400).json({
-        success: false,
-        message: "Video does not belong to this client",
+        message: "Access denied",
       });
     }
 
@@ -61,7 +66,7 @@ const createFeedback = async (req, res) => {
 
     const feedback = await VideoFeedback.create({
       video,
-      client,
+      client: clientExists._id,
       user: req.user._id,
       timestamp,
       comment,
