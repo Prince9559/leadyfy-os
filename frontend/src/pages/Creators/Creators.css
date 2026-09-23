@@ -1,0 +1,828 @@
+/* =========================================
+   Creators Page
+========================================= */
+
+.creators-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.creators-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.creators-header h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.creators-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.add-creator-button {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+.add-creator-button:hover {
+  background: #1d4ed8;
+}
+
+.add-creator-button:active {
+  transform: translateY(1px);
+}
+
+/* =========================================
+   Search
+========================================= */
+
+.creator-search-box {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+
+.creator-search-box input {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 42px 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.creator-search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.creator-search-box input:hover {
+  border-color: #9ca3af;
+}
+
+.creator-search-box input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.creator-search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* =========================================
+   Empty State
+========================================= */
+
+.creators-empty {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 50px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.creators-empty svg {
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.creators-empty h2 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.creators-empty p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* =========================================
+   Creator Cards
+========================================= */
+
+.creators-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.creator-card {
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  box-sizing: border-box;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.creator-card:hover {
+  transform: translateY(-2px);
+  border-color: #d1d5db;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   Card Header
+========================================= */
+
+.creator-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.creator-avatar {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.creator-card-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.creator-card-title h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.creator-card-title p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.creator-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-inactive {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* =========================================
+   Creator Information
+========================================= */
+
+.creator-card-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 18px 0;
+}
+
+.creator-card-info div,
+.creator-contact {
+  min-width: 0;
+}
+
+.creator-card-info span,
+.creator-contact span {
+  display: block;
+  margin-bottom: 5px;
+  color: #9ca3af;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.creator-card-info strong,
+.creator-contact strong {
+  display: block;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.creator-contact {
+  padding: 14px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* =========================================
+   Card Actions
+========================================= */
+
+.creator-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.creator-card-actions button {
+  flex: 1;
+  min-height: 36px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.view-creator-button {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+}
+
+.view-creator-button:hover {
+  background: #f3f4f6;
+}
+
+.edit-creator-button {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.edit-creator-button:hover {
+  background: #1d4ed8;
+}
+
+.delete-creator-button {
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.delete-creator-button:hover {
+  background: #fecaca;
+}
+
+/* =========================================
+   Tablet
+========================================= */
+
+@media (max-width: 1000px) {
+  .creators-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 700px) {
+  .creators-header {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .creators-header h1 {
+    font-size: 24px;
+  }
+
+  .creators-header p {
+    font-size: 13px;
+  }
+
+  .add-creator-button {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .creator-search-box {
+    max-width: none;
+    margin-bottom: 16px;
+  }
+
+  .creators-list {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .creator-card {
+    padding: 18px;
+  }
+
+  .creator-card-header {
+    align-items: flex-start;
+  }
+
+  .creator-status-badge {
+    margin-left: auto;
+  }
+}
+
+/* =========================================
+   Small Mobile
+========================================= */
+
+@media (max-width: 400px) {
+  .creators-header {
+    flex-direction: column;
+  }
+
+  .add-creator-button {
+    align-self: flex-start;
+  }
+
+  .creator-card {
+    padding: 16px;
+  }
+
+  .creator-card-header {
+    flex-wrap: wrap;
+  }
+
+  .creator-status-badge {
+    margin-left: 0;
+  }
+
+  .creator-card-info {
+    grid-template-columns: 1fr;
+  }
+
+  .creator-card-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .creator-card-actions button {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   Add Creator Form
+========================================= */
+
+.back-creator-button {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.back-creator-button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.creator-form-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.creator-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.creator-form-group {
+  min-width: 0;
+}
+
+.creator-form-full {
+  grid-column: 1 / -1;
+}
+
+.creator-form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.creator-form-group input,
+.creator-form-group select,
+.creator-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.creator-form-group input,
+.creator-form-group select {
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.creator-form-group textarea {
+  min-height: 140px;
+  padding: 12px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.creator-form-group input::placeholder,
+.creator-form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.creator-form-group input:hover,
+.creator-form-group select:hover,
+.creator-form-group textarea:hover {
+  border-color: #9ca3af;
+}
+
+.creator-form-group input:focus,
+.creator-form-group select:focus,
+.creator-form-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.save-creator-button {
+  margin-top: 24px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+.save-creator-button:hover {
+  background: #1d4ed8;
+}
+
+.save-creator-button:active {
+  transform: translateY(1px);
+}
+
+.save-creator-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Tablet */
+@media (max-width: 800px) {
+  .creator-form-card {
+    padding: 20px;
+  }
+
+  .creator-form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .creator-form-full {
+    grid-column: auto;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .creators-header {
+    align-items: flex-start;
+  }
+
+  .creator-form-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .creator-form-group input,
+  .creator-form-group select {
+    min-height: 42px;
+  }
+
+  .creator-form-group textarea {
+    min-height: 120px;
+  }
+
+  .save-creator-button {
+    width: 100%;
+  }
+}
+
+/* ================================
+   CREATOR VIEW PAGE
+================================ */
+
+.creator-view-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.creator-view-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.creator-view-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4f46e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.creator-view-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.creator-view-title h2 {
+  margin: 0 0 5px;
+  color: #111827;
+  font-size: 22px;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.creator-view-title p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.creator-view-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding: 26px 0;
+}
+
+.creator-view-item {
+  background: #f9fafb;
+  border: 1px solid #eef0f2;
+  border-radius: 10px;
+  padding: 16px;
+  min-width: 0;
+}
+
+.creator-view-item span {
+  display: block;
+  margin-bottom: 7px;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.creator-view-item strong {
+  display: block;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.creator-profile-link {
+  display: inline-block;
+  color: #4f46e5;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.creator-profile-link:hover {
+  text-decoration: underline;
+}
+
+.creator-view-notes {
+  padding-top: 22px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.creator-view-notes > span {
+  display: block;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.creator-view-notes p {
+  margin: 0;
+  padding: 15px;
+  background: #f9fafb;
+  border: 1px solid #eef0f2;
+  border-radius: 10px;
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.creator-view-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ================================
+   CREATOR VIEW RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  .creator-view-card {
+    padding: 20px;
+  }
+
+  .creator-view-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .creator-view-title {
+    flex: 1 1 calc(100% - 90px);
+  }
+
+  .creator-view-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 20px 0;
+  }
+
+  .creator-view-actions {
+    justify-content: stretch;
+  }
+
+  .creator-view-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .creator-view-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .creator-view-header {
+    gap: 12px;
+  }
+
+  .creator-view-avatar {
+    width: 58px;
+    height: 58px;
+    font-size: 22px;
+  }
+
+  .creator-view-title h2 {
+    font-size: 18px;
+  }
+
+  .creator-view-title p {
+    font-size: 13px;
+  }
+
+  .creator-view-item {
+    padding: 13px;
+  }
+
+  .creator-view-item strong {
+    font-size: 14px;
+  }
+}
+
+/* Creator View - Edit Button */
+
+.creator-view-actions .edit-creator-button {
+  min-width: 150px;
+  height: 44px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.creator-view-actions .edit-creator-button:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+
+.creator-view-actions .edit-creator-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .creator-view-actions .edit-creator-button {
+    width: 100%;
+    height: 44px;
+  }
+}

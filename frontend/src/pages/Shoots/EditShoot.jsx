@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { createShoot } from "../../services/shootService";
+import {
+  getShootById,
+  updateShoot,
+} from "../../services/shootService";
+
 import { getClients } from "../../services/clientService";
 import { getOrders } from "../../services/orderService";
 import { getCreators } from "../../services/creatorService";
 
 import "./Shoots.css";
 
-function AddShoot() {
+function EditShoot() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [clients, setClients] = useState([]);
   const [orders, setOrders] = useState([]);
   const [creators, setCreators] = useState([]);
 
-  const [loadingData, setLoadingData] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -37,14 +42,25 @@ function AddShoot() {
     const loadData = async () => {
       try {
         const [
+          shootData,
           clientData,
           orderData,
           creatorData,
         ] = await Promise.all([
+          getShootById(id),
           getClients(),
           getOrders(),
           getCreators(),
         ]);
+
+        const shoot =
+          shootData.shoot ||
+          shootData.data;
+
+        if (!shoot) {
+          toast.error("Shoot not found");
+          return;
+        }
 
         setClients(
           clientData.clients ||
@@ -63,23 +79,53 @@ function AddShoot() {
             creatorData.data ||
             []
         );
+
+        setFormData({
+          client:
+            shoot.client?._id ||
+            shoot.client ||
+            "",
+          order:
+            shoot.order?._id ||
+            shoot.order ||
+            "",
+          creator:
+            shoot.creator?._id ||
+            shoot.creator ||
+            "",
+          shootDate: shoot.shootDate
+            ? new Date(shoot.shootDate)
+                .toISOString()
+                .split("T")[0]
+            : "",
+          startTime:
+            shoot.startTime || "",
+          endTime:
+            shoot.endTime || "",
+          location:
+            shoot.location || "",
+          status:
+            shoot.status || "scheduled",
+          notes:
+            shoot.notes || "",
+        });
       } catch (error) {
         console.error(
-          "Load shoot form data error:",
+          "Load edit shoot data error:",
           error
         );
 
         toast.error(
           error.response?.data?.message ||
-            "Failed to load clients, orders and creators"
+            "Failed to load shoot"
         );
       } finally {
-        setLoadingData(false);
+        setLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,7 +172,7 @@ function AddShoot() {
     try {
       setSaving(true);
 
-      await createShoot({
+      await updateShoot(id, {
         client: formData.client,
         order: formData.order,
         creator: formData.creator,
@@ -143,35 +189,47 @@ function AddShoot() {
       });
 
       toast.success(
-        "Shoot created successfully"
+        "Shoot updated successfully"
       );
 
       setTimeout(() => {
-        navigate("/shoots");
+        navigate(
+          `/shoots/view/${id}`
+        );
       }, 800);
     } catch (error) {
       console.error(
-        "Create shoot error:",
+        "Update shoot error:",
         error
       );
 
       toast.error(
         error.response?.data?.message ||
-          "Failed to create shoot"
+          "Failed to update shoot"
       );
     } finally {
       setSaving(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="shoots-page">
+        <div className="shoots-empty">
+          <p>Loading shoot...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="shoots-page">
       <div className="shoots-header">
         <div>
-          <h1>Add Shoot</h1>
+          <h1>Edit Shoot</h1>
 
           <p>
-            Schedule a new shoot
+            Update shoot information
           </p>
         </div>
 
@@ -179,7 +237,9 @@ function AddShoot() {
           type="button"
           className="back-shoot-button"
           onClick={() =>
-            navigate("/shoots")
+            navigate(
+              `/shoots/view/${id}`
+            )
           }
         >
           Back
@@ -199,12 +259,9 @@ function AddShoot() {
                 name="client"
                 value={formData.client}
                 onChange={handleChange}
-                disabled={loadingData}
               >
                 <option value="">
-                  {loadingData
-                    ? "Loading clients..."
-                    : "Select client"}
+                  Select client
                 </option>
 
                 {clients.map((client) => (
@@ -228,12 +285,9 @@ function AddShoot() {
                 name="order"
                 value={formData.order}
                 onChange={handleChange}
-                disabled={loadingData}
               >
                 <option value="">
-                  {loadingData
-                    ? "Loading orders..."
-                    : "Select order"}
+                  Select order
                 </option>
 
                 {orders.map((order) => (
@@ -259,12 +313,9 @@ function AddShoot() {
                 name="creator"
                 value={formData.creator}
                 onChange={handleChange}
-                disabled={loadingData}
               >
                 <option value="">
-                  {loadingData
-                    ? "Loading creators..."
-                    : "Select creator"}
+                  Select creator
                 </option>
 
                 {creators.map((creator) => (
@@ -390,8 +441,8 @@ function AddShoot() {
             disabled={saving}
           >
             {saving
-              ? "Saving..."
-              : "Save Shoot"}
+              ? "Updating..."
+              : "Update Shoot"}
           </button>
         </form>
       </div>
@@ -408,4 +459,4 @@ function AddShoot() {
   );
 }
 
-export default AddShoot;
+export default EditShoot;

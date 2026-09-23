@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import {
-  getCreatorById,
-  updateCreator,
-} from "../../services/creatorService";
+import { createCreator } from "../../services/creatorService";
 
 import "./Creators.css";
 
-function CreatorProfile() {
-  const { id } = useParams();
+function AddCreator() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -30,50 +25,6 @@ function CreatorProfile() {
     status: "active",
     notes: "",
   });
-
-  useEffect(() => {
-    const loadCreator = async () => {
-      try {
-        const data = await getCreatorById(id);
-
-        const creator =
-          data.creator ||
-          data.data;
-
-        if (!creator) {
-          toast.error("Creator not found");
-          return;
-        }
-
-        setFormData({
-          name: creator.name || "",
-          email: creator.email || "",
-          phone: creator.phone || "",
-          category: creator.category || "",
-          platform: creator.platform || "",
-          followers: creator.followers ?? "",
-          location: creator.location || "",
-          profileUrl: creator.profileUrl || "",
-          status: creator.status || "active",
-          notes: creator.notes || "",
-        });
-      } catch (error) {
-        console.error(
-          "Get creator error:",
-          error
-        );
-
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load creator"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadCreator();
-  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,58 +51,43 @@ function CreatorProfile() {
     try {
       setSaving(true);
 
-      await updateCreator(id, {
+      await createCreator({
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || undefined,
-        category:
-          formData.category.trim() || undefined,
-        platform:
-          formData.platform.trim() || undefined,
+        category: formData.category.trim() || undefined,
+        platform: formData.platform.trim() || undefined,
         followers: Number(formData.followers || 0),
-        location:
-          formData.location.trim() || undefined,
-        profileUrl:
-          formData.profileUrl.trim() || undefined,
+        location: formData.location.trim() || undefined,
+        profileUrl: formData.profileUrl.trim() || undefined,
         status: formData.status,
-        notes:
-          formData.notes.trim() || undefined,
+        notes: formData.notes.trim() || undefined,
       });
 
-      toast.success(
-        "Creator updated successfully"
-      );
+      toast.success("Creator created successfully");
+
+      setTimeout(() => {
+        navigate("/creators");
+      }, 800);
     } catch (error) {
-      console.error(
-        "Update creator error:",
-        error
-      );
+      console.error("Create creator error:", error);
 
       toast.error(
         error.response?.data?.message ||
-          "Failed to update creator"
+          "Failed to create creator"
       );
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="creators-page">
-        <div className="creators-empty">
-          <p>Loading creator...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="creators-page">
+      {/* Header */}
       <div className="creators-header">
         <div>
-          <h1>Edit Creator</h1>
-          <p>Update creator information</p>
+          <h1>Add Creator</h1>
+          <p>Add a new creator to your network</p>
         </div>
 
         <button
@@ -163,9 +99,11 @@ function CreatorProfile() {
         </button>
       </div>
 
+      {/* Form Card */}
       <div className="creator-form-card">
         <form onSubmit={handleSubmit}>
           <div className="creator-form-grid">
+            {/* Creator Name */}
             <div className="creator-form-group">
               <label htmlFor="name">
                 Creator Name
@@ -181,6 +119,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Email */}
             <div className="creator-form-group">
               <label htmlFor="email">
                 Email
@@ -196,6 +135,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Phone */}
             <div className="creator-form-group">
               <label htmlFor="phone">
                 Phone
@@ -211,6 +151,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Category */}
             <div className="creator-form-group">
               <label htmlFor="category">
                 Category
@@ -226,6 +167,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Platform */}
             <div className="creator-form-group">
               <label htmlFor="platform">
                 Platform
@@ -241,6 +183,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Followers */}
             <div className="creator-form-group">
               <label htmlFor="followers">
                 Followers
@@ -257,6 +200,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Location */}
             <div className="creator-form-group">
               <label htmlFor="location">
                 Location
@@ -272,6 +216,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Profile URL */}
             <div className="creator-form-group">
               <label htmlFor="profileUrl">
                 Profile URL
@@ -287,6 +232,7 @@ function CreatorProfile() {
               />
             </div>
 
+            {/* Status */}
             <div className="creator-form-group">
               <label htmlFor="status">
                 Status
@@ -308,6 +254,7 @@ function CreatorProfile() {
               </select>
             </div>
 
+            {/* Notes */}
             <div className="creator-form-group creator-form-full">
               <label htmlFor="notes">
                 Notes
@@ -324,18 +271,20 @@ function CreatorProfile() {
             </div>
           </div>
 
+          {/* Save Button */}
           <button
             type="submit"
             className="save-creator-button"
             disabled={saving}
           >
             {saving
-              ? "Updating..."
-              : "Update Creator"}
+              ? "Saving..."
+              : "Save Creator"}
           </button>
         </form>
       </div>
 
+      {/* Toast */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -348,4 +297,4 @@ function CreatorProfile() {
   );
 }
 
-export default CreatorProfile;
+export default AddCreator;

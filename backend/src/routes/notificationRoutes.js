@@ -6,8 +6,8 @@ const {
   getNotificationById,
   updateNotification,
   deleteNotification,
+  markNotificationAsRead,
 } = require("../controllers/notificationController");
-
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
@@ -32,6 +32,13 @@ router.get(
   protect,
   authorizeRoles("owner", "admin", "employee", "client"),
   getNotificationById
+);
+
+router.put(
+  "/:id/read",
+  protect,
+  authorizeRoles("owner", "admin", "employee", "client"),
+  markNotificationAsRead
 );
 
 router.put(
