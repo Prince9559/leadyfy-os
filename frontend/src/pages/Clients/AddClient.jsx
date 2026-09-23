@@ -49,10 +49,10 @@ const [formData, setFormData] = useState({
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      toast.error("Please enter a valid email");
-      return;
-    }
+    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(formData.email.trim())) {
+  toast.error("Please enter a valid Gmail address");
+  return;
+}
 
     if (
       formData.phone.trim() &&
@@ -68,14 +68,15 @@ const [formData, setFormData] = useState({
       toast.success("Client created successfully");
 
       setFormData({
-        companyName: "",
-        contactPerson: "",
-        email: "",
-        phone: "",
-        website: "",
-        industry: "",
-        address: "",
-      });
+  companyName: "",
+  contactPerson: "",
+  email: "",
+  phone: "",
+  website: "",
+  industry: "",
+  address: "",
+  status: "active",
+});
     } catch (error) {
       console.error("Create client error:", error);
 

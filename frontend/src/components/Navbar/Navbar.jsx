@@ -1,4 +1,4 @@
-import { Bell, UserCircle } from "lucide-react";
+import { Bell, UserCircle, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -7,7 +7,7 @@ import { getNotifications } from "../../services/notificationService";
 import "./Navbar.css";
 
 function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,25 +18,10 @@ function Navbar() {
       try {
         const data = await getNotifications();
 
-        const notifications =
-          data?.notifications || [];
-
-        const userId =
-          user?._id || user?.id || "guest";
-
-        const storageKey =
-          `leadyfy_viewed_notifications_${userId}`;
-
-        const viewedNotifications = JSON.parse(
-          localStorage.getItem(storageKey) || "[]"
-        );
+        const notifications = data?.notifications || [];
 
         const unread = notifications.filter(
-          (notification) =>
-            notification.isRead === false &&
-            !viewedNotifications.includes(
-              notification._id
-            )
+          (notification) => notification.isRead === false
         );
 
         setUnreadCount(unread.length);
@@ -49,18 +34,21 @@ function Navbar() {
     };
 
     loadUnreadNotifications();
-  }, [location.pathname, user]);
+  }, [location.pathname]);
 
   const handleNotifications = () => {
     navigate("/notifications");
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <header className="navbar">
       <div className="navbar-left">
-        <h2 className="navbar-title">
-          Leadyfy OS
-        </h2>
+        <h2 className="navbar-title">Leadyfy OS</h2>
       </div>
 
       <div className="navbar-right">
@@ -74,9 +62,7 @@ function Navbar() {
 
           {unreadCount > 0 && (
             <span className="notification-count-badge">
-              {unreadCount > 99
-                ? "99+"
-                : unreadCount}
+              {unreadCount > 99 ? "99+" : unreadCount}
             </span>
           )}
         </button>
@@ -94,6 +80,16 @@ function Navbar() {
             </span>
           </div>
         </div>
+
+        <button
+          type="button"
+          className="navbar-logout-button"
+          onClick={handleLogout}
+          aria-label="Logout"
+        >
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
       </div>
     </header>
   );
