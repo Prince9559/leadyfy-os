@@ -5,6 +5,7 @@ const {
   getUsers,
   getUserById,
   updateUser,
+  deleteUser,
 } = require("../controllers/userController");
 
 const protect = require("../middleware/authMiddleware");
@@ -42,6 +43,15 @@ router.put(
   protect,
   authorizeRoles("owner", "admin"),
   updateUser
+);
+
+// Delete user
+
+router.delete(
+  "/:id",
+  protect,
+  authorizeRoles("owner", "admin"),
+  deleteUser
 );
 
 module.exports = router;
