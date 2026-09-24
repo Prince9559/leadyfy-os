@@ -104,7 +104,7 @@ const updateUser = async (req, res) => {
       });
     }
 
-    const { name, email, role, isActive } = req.body;
+    const { name, email, password, role, isActive } = req.body;
 
     if (role === "owner" && req.user.role !== "owner") {
       return res.status(403).json({
@@ -113,7 +113,7 @@ const updateUser = async (req, res) => {
       });
     }
 
-    if (email && email !== user.email) {
+    if (email && email.toLowerCase() !== user.email) {
       const existingUser = await User.findOne({
         email: email.toLowerCase(),
         _id: { $ne: user._id },
@@ -129,9 +129,28 @@ const updateUser = async (req, res) => {
       user.email = email.toLowerCase();
     }
 
-    if (name !== undefined) user.name = name;
-    if (role !== undefined) user.role = role;
-    if (isActive !== undefined) user.isActive = isActive;
+    if (name !== undefined) {
+      user.name = name;
+    }
+
+    if (role !== undefined) {
+      user.role = role;
+    }
+
+    if (isActive !== undefined) {
+      user.isActive = isActive;
+    }
+
+    if (password !== undefined && password !== "") {
+      if (password.length < 6) {
+        return res.status(400).json({
+          success: false,
+          message: "Password must be at least 6 characters",
+        });
+      }
+
+      user.password = password;
+    }
 
     await user.save();
 

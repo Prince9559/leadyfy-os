@@ -156,6 +156,7 @@ function EditUser() {
 
           <div className="edit-user-field">
             <label htmlFor="role">Role</label>
+
             <select
               id="role"
               name="role"
@@ -165,7 +166,6 @@ function EditUser() {
               <option value="employee">Employee</option>
               <option value="admin">Admin</option>
               <option value="client">Client</option>
-              <option value="owner">Owner</option>
             </select>
           </div>
 

@@ -2,11 +2,13 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import "./AddUser.css";
 
 function AddUser() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -131,6 +133,7 @@ function AddUser() {
 
           <div className="add-user-field">
             <label htmlFor="role">Role</label>
+
             <select
               id="role"
               name="role"
@@ -140,7 +143,10 @@ function AddUser() {
               <option value="employee">Employee</option>
               <option value="admin">Admin</option>
               <option value="client">Client</option>
-              <option value="owner">Owner</option>
+
+              {user?.role === "owner" && (
+                <option value="owner">Owner</option>
+              )}
             </select>
           </div>
         </div>
