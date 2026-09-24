@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { useAuth } from "../../context/AuthContext";
+
 import {
   LayoutDashboard,
   Users,
@@ -21,6 +23,7 @@ import "./Sidebar.css";
 
 function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user } = useAuth();
 
   const menuItems = [
     {
@@ -73,6 +76,15 @@ function Sidebar() {
       path: "/tasks",
       icon: CheckSquare,
     },
+    ...(user?.role === "owner" || user?.role === "admin"
+      ? [
+          {
+            label: "Users",
+            path: "/users",
+            icon: Users,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -124,9 +136,7 @@ function Sidebar() {
                 to={item.path}
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
-                  `sidebar-link ${
-                    isActive ? "active" : ""
-                  }`
+                  `sidebar-link ${isActive ? "active" : ""}`
                 }
               >
                 <Icon size={19} />

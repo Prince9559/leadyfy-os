@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {
+  createUser,
   getUsers,
   getUserById,
   updateUser,
@@ -11,6 +12,15 @@ const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
+// Create new user
+router.post(
+  "/",
+  protect,
+  authorizeRoles("owner", "admin"),
+  createUser
+);
+
+// Get all users
 router.get(
   "/",
   protect,
@@ -18,6 +28,7 @@ router.get(
   getUsers
 );
 
+// Get single user
 router.get(
   "/:id",
   protect,
@@ -25,6 +36,7 @@ router.get(
   getUserById
 );
 
+// Update user
 router.put(
   "/:id",
   protect,

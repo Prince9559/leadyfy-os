@@ -1,0 +1,193 @@
+.user-list-page {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.user-list-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.user-list-header h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+  color: #111827;
+}
+
+.user-list-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.user-add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.user-add-button:hover {
+  background: #1d4ed8;
+}
+
+.user-list-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.user-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.user-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.user-table th {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+}
+
+.user-table td {
+  color: #4b5563;
+}
+
+.user-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.user-role,
+.user-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.user-role-owner {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.user-role-admin {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.user-role-employee {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.user-role-client {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.user-status-active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.user-status-inactive {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.user-edit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-edit-button:hover {
+  background: #f3f4f6;
+}
+
+.user-list-loading,
+.user-list-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .user-list-header h1 {
+    font-size: 24px;
+  }
+
+  .user-list-header {
+    margin-bottom: 20px;
+  }
+
+  .user-table th,
+  .user-table td {
+    padding: 12px 14px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .user-list-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-add-button {
+    width: 100%;
+  }
+
+  .user-list-header h1 {
+    font-size: 22px;
+  }
+
+  .user-list-card {
+    border-radius: 10px;
+  }
+}

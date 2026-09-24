@@ -43,6 +43,8 @@ import NotificationList from "../pages/Notifications/NotificationList";
 import AddNotification from "../pages/Notifications/AddNotification";
 import NotificationView from "../pages/Notifications/NotificationView";
 import EditNotification from "../pages/Notifications/EditNotification";
+import UserList from "../pages/Users/UserList";
+import AddUser from "../pages/Users/AddUser";
 
 function AppRoutes() {
   return (
@@ -485,6 +487,28 @@ function AppRoutes() {
     <ProtectedRoute>
       <AdminLayout>
         <NotificationView />
+      </AdminLayout>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/users"
+  element={
+    <ProtectedRoute>
+      <AdminLayout>
+        <UserList />
+      </AdminLayout>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/users/add"
+  element={
+    <ProtectedRoute>
+      <AdminLayout>
+        <AddUser />
       </AdminLayout>
     </ProtectedRoute>
   }

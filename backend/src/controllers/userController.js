@@ -1,5 +1,49 @@
 const User = require("../models/User");
 
+const createUser = async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, email and password are required",
+      });
+    }
+
+    const existingUser = await User.findOne({
+      email: email.toLowerCase(),
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    const user = await User.create({
+      name,
+      email: email.toLowerCase(),
+      password,
+      role: role || "employee",
+    });
+
+    const createdUser = await User.findById(user._id).select("-password");
+
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: createdUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
@@ -90,7 +134,9 @@ const updateUser = async (req, res) => {
   }
 };
 
+
 module.exports = {
+  createUser,
   getUsers,
   getUserById,
   updateUser,
