@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserPlus, Pencil } from "lucide-react";
+import { UserPlus, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import { toast } from "react-toastify";
@@ -33,6 +33,67 @@ function UserList() {
     loadUsers();
   }, []);
 
+  const handleDelete = (user) => {
+    const toastId = `delete-user-${user._id}`;
+
+    toast(
+      ({ closeToast }) => (
+        <div className="delete-confirm-toast">
+          <div className="delete-confirm-content">
+            <strong>Delete User?</strong>
+            <p>
+              Are you sure you want to delete{" "}
+              <strong>{user.name}</strong>?
+            </p>
+          </div>
+
+          <div className="delete-confirm-actions">
+            <button
+              type="button"
+              className="delete-cancel-button"
+              onClick={() => {
+                closeToast();
+              }}
+            >
+              Cancel
+            </button>
+
+            <button
+              type="button"
+              className="delete-confirm-button"
+              onClick={async () => {
+                try {
+                  closeToast();
+
+                  await api.delete(`/users/${user._id}`);
+
+                  toast.success("User deleted successfully");
+
+                  loadUsers();
+                } catch (error) {
+                  console.error("Failed to delete user:", error);
+
+                  toast.error(
+                    error.response?.data?.message ||
+                      "Failed to delete user"
+                  );
+                }
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        toastId,
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      }
+    );
+  };
+
   return (
     <div className="user-list-page">
       <div className="user-list-header">
@@ -53,9 +114,13 @@ function UserList() {
 
       <div className="user-list-card">
         {loading ? (
-          <div className="user-list-loading">Loading users...</div>
+          <div className="user-list-loading">
+            Loading users...
+          </div>
         ) : users.length === 0 ? (
-          <div className="user-list-empty">No users found.</div>
+          <div className="user-list-empty">
+            No users found.
+          </div>
         ) : (
           <div className="user-table-wrapper">
             <table className="user-table">
@@ -73,12 +138,17 @@ function UserList() {
                 {users.map((user) => (
                   <tr key={user._id}>
                     <td>{user.name}</td>
+
                     <td>{user.email}</td>
+
                     <td>
-                      <span className={`user-role user-role-${user.role}`}>
+                      <span
+                        className={`user-role user-role-${user.role}`}
+                      >
                         {user.role}
                       </span>
                     </td>
+
                     <td>
                       <span
                         className={`user-status ${
@@ -87,18 +157,38 @@ function UserList() {
                             : "user-status-inactive"
                         }`}
                       >
-                        {user.isActive ? "Active" : "Inactive"}
+                        {user.isActive
+                          ? "Active"
+                          : "Inactive"}
                       </span>
                     </td>
+
                     <td>
-                      <button
-                        type="button"
-                        className="user-edit-button"
-                        onClick={() => navigate(`/users/${user._id}`)}
-                      >
-                        <Pencil size={16} />
-                        Edit
-                      </button>
+                      <div className="user-action-buttons">
+                        <button
+                          type="button"
+                          className="user-edit-button"
+                          onClick={() =>
+                            navigate(`/users/${user._id}`)
+                          }
+                        >
+                          <Pencil size={16} />
+                          Edit
+                        </button>
+
+                        {user.role !== "owner" && (
+                          <button
+                            type="button"
+                            className="user-delete-button"
+                            onClick={() =>
+                              handleDelete(user)
+                            }
+                          >
+                            <Trash2 size={16} />
+                            Delete
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
