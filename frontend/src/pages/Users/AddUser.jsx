@@ -61,9 +61,14 @@ function AddUser() {
         role: formData.role,
       });
 
+       
+ 
+
       toast.success("User created successfully");
 
-      navigate("/users");
+setTimeout(() => {
+  navigate("/users");
+}, 1500);
     } catch (error) {
       console.error("Failed to create user:", error);
 

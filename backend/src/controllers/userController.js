@@ -169,9 +169,51 @@ const updateUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Owner cannot be deleted
+    if (user.role === "owner") {
+      return res.status(403).json({
+        success: false,
+        message: "Owner cannot be deleted",
+      });
+    }
+
+    // Only owner can delete admin
+    if (user.role === "admin" && req.user.role !== "owner") {
+      return res.status(403).json({
+        success: false,
+        message: "Only owner can delete an admin",
+      });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
   getUserById,
   updateUser,
+  deleteUser,
 };

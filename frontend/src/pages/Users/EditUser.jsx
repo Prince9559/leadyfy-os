@@ -63,42 +63,44 @@ function EditUser() {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+const handleSubmit = async (event) => {
+  event.preventDefault();
 
-    if (!formData.name.trim()) {
-      toast.error("Please enter name");
-      return;
-    }
+  if (!formData.name.trim()) {
+    toast.error("Please enter name");
+    return;
+  }
 
-    if (!formData.email.trim()) {
-      toast.error("Please enter email");
-      return;
-    }
+  if (!formData.email.trim()) {
+    toast.error("Please enter email");
+    return;
+  }
 
-    try {
-      setSaving(true);
+  try {
+    setSaving(true);
 
-      await api.put(`/users/${id}`, {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        role: formData.role,
-        isActive: formData.isActive,
-      });
+    await api.put(`/users/${id}`, {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      role: formData.role,
+      isActive: formData.isActive,
+    });
 
-      toast.success("User updated successfully");
+    toast.success("User updated successfully");
 
+    setTimeout(() => {
       navigate("/users");
-    } catch (error) {
-      console.error("Failed to update user:", error);
+    }, 2000);
+  } catch (error) {
+    console.error("Failed to update user:", error);
 
-      toast.error(
-        error.response?.data?.message || "Failed to update user"
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
+    toast.error(
+      error.response?.data?.message || "Failed to update user"
+    );
+  } finally {
+    setSaving(false);
+  }
+};
 
   if (loading) {
     return (
