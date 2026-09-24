@@ -45,6 +45,8 @@ import NotificationView from "../pages/Notifications/NotificationView";
 import EditNotification from "../pages/Notifications/EditNotification";
 import UserList from "../pages/Users/UserList";
 import AddUser from "../pages/Users/AddUser";
+import EditUser from "../pages/Users/EditUser";
+import RoleProtectedRoute from "./RoleProtectedRoute";
 
 function AppRoutes() {
   return (
@@ -495,22 +497,32 @@ function AppRoutes() {
 <Route
   path="/users"
   element={
-    <ProtectedRoute>
+    <RoleProtectedRoute allowedRoles={["owner", "admin"]}>
       <AdminLayout>
         <UserList />
       </AdminLayout>
-    </ProtectedRoute>
+    </RoleProtectedRoute>
   }
 />
 
 <Route
   path="/users/add"
   element={
-    <ProtectedRoute>
+    <RoleProtectedRoute allowedRoles={["owner", "admin"]}>
       <AdminLayout>
         <AddUser />
       </AdminLayout>
-    </ProtectedRoute>
+    </RoleProtectedRoute>
+  }
+/>
+<Route
+  path="/users/:id"
+  element={
+    <RoleProtectedRoute allowedRoles={["owner", "admin"]}>
+      <AdminLayout>
+        <EditUser />
+      </AdminLayout>
+    </RoleProtectedRoute>
   }
 />
 

@@ -4,6 +4,13 @@ const createUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
+    if (role === "owner" && req.user.role !== "owner") {
+      return res.status(403).json({
+        success: false,
+        message: "Only owner can create an owner",
+      });
+    }
+
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -46,7 +53,9 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password").sort({ createdAt: -1 });
+    const users = await User.find()
+      .select("-password")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -97,6 +106,13 @@ const updateUser = async (req, res) => {
 
     const { name, email, role, isActive } = req.body;
 
+    if (role === "owner" && req.user.role !== "owner") {
+      return res.status(403).json({
+        success: false,
+        message: "Only owner can assign owner role",
+      });
+    }
+
     if (email && email !== user.email) {
       const existingUser = await User.findOne({
         email: email.toLowerCase(),
@@ -133,7 +149,6 @@ const updateUser = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   createUser,
