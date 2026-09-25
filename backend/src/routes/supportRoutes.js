@@ -1,18 +1,9 @@
 const express = require("express");
-
-const {
-  createSupportTicket,
-  getSupportTickets,
-  getSupportTicketById,
-  updateSupportTicket,
-  deleteSupportTicket,
-} = require("../controllers/supportController");
-
+const {createSupportTicket,getSupportTickets,getSupportTicketById,updateSupportTicket,deleteSupportTicket,} = require("../controllers/supportController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
-
 router.post(
   "/",
   protect,

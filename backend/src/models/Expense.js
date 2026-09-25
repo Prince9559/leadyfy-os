@@ -15,15 +15,7 @@ const expenseSchema = new mongoose.Schema(
 
     category: {
       type: String,
-      enum: [
-        "creator",
-        "production",
-        "software",
-        "marketing",
-        "office",
-        "travel",
-        "other",
-      ],
+      enum: ["creator","production","software","marketing","office","travel","other",],
       default: "other",
     },
 
@@ -65,5 +57,4 @@ const expenseSchema = new mongoose.Schema(
 );
 
 const Expense = mongoose.model("Expense", expenseSchema);
-
 module.exports = Expense;

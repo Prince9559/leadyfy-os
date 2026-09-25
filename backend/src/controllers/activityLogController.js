@@ -3,19 +3,12 @@ const User = require("../models/User");
 
 const createActivityLog = async (req, res) => {
   try {
-    const {
-      user,
-      action,
-      entityType,
-      entityId,
-      description,
-      metadata,
-    } = req.body;
+    const {user, action, entityType, entityId,description,metadata,}=req.body;
 
-    if (!user || !action || !entityType) {
+    if (!user||!action||!entityType) {
       return res.status(400).json({
-        success: false,
-        message: "User, action and entityType are required",
+      success: false,
+      message: "User, action and entityType are required",
       });
     }
 
@@ -28,17 +21,9 @@ const createActivityLog = async (req, res) => {
       });
     }
 
-    const activityLog = await ActivityLog.create({
-      user,
-      action,
-      entityType,
-      entityId,
-      description,
-      metadata,
-    });
+    const activityLog = await ActivityLog.create({user,action,entityType,entityId,description,metadata,});
 
-    const populatedLog = await ActivityLog.findById(activityLog._id)
-      .populate("user", "name email role");
+    const populatedLog = await ActivityLog.findById(activityLog._id).populate("user", "name email role");
 
     res.status(201).json({
       success: true,
@@ -55,10 +40,7 @@ const createActivityLog = async (req, res) => {
 
 const getActivityLogs = async (req, res) => {
   try {
-    const logs = await ActivityLog.find()
-      .populate("user", "name email role")
-      .sort({ createdAt: -1 });
-
+    const logs = await ActivityLog.find().populate("user", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: logs.length,
@@ -74,9 +56,7 @@ const getActivityLogs = async (req, res) => {
 
 const getActivityLogById = async (req, res) => {
   try {
-    const log = await ActivityLog.findById(req.params.id)
-      .populate("user", "name email role");
-
+    const log = await ActivityLog.findById(req.params.id).populate("user", "name email role");
     if (!log) {
       return res.status(404).json({
         success: false,
@@ -84,10 +64,7 @@ const getActivityLogById = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      activityLog: log,
-    });
+    res.status(200).json({success: true,activityLog: log,});
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -99,7 +76,6 @@ const getActivityLogById = async (req, res) => {
 const deleteActivityLog = async (req, res) => {
   try {
     const log = await ActivityLog.findById(req.params.id);
-
     if (!log) {
       return res.status(404).json({
         success: false,
@@ -109,10 +85,7 @@ const deleteActivityLog = async (req, res) => {
 
     await log.deleteOne();
 
-    res.status(200).json({
-      success: true,
-      message: "Activity log deleted successfully",
-    });
+    res.status(200).json({success: true,message: "Activity log deleted successfully",});
   } catch (error) {
     res.status(500).json({
       success: false,

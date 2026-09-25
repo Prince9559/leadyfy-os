@@ -4,15 +4,7 @@ const Order = require("../models/Order");
 
 const createAsset = async (req, res) => {
   try {
-    const {
-      name,
-      type,
-      url,
-      client,
-      order,
-      description,
-      status,
-    } = req.body;
+    const {name,type,url,client,order,description,status,} = req.body;
 
     if (!name || !url) {
       return res.status(400).json({
@@ -21,9 +13,9 @@ const createAsset = async (req, res) => {
       });
     }
 
-    if (client) {
+    if (client) 
+      {
       const clientExists = await Client.findById(client);
-
       if (!clientExists) {
         return res.status(404).json({
           success: false,
@@ -34,7 +26,6 @@ const createAsset = async (req, res) => {
 
     if (order) {
       const orderExists = await Order.findById(order);
-
       if (!orderExists) {
         return res.status(404).json({
           success: false,
@@ -43,21 +34,9 @@ const createAsset = async (req, res) => {
       }
     }
 
-    const asset = await Asset.create({
-      name,
-      type,
-      url,
-      client,
-      order,
-      uploadedBy: req.user._id,
-      description,
-      status,
-    });
+    const asset = await Asset.create({name,type,url,client,order,uploadedBy: req.user._id,description,status,});
 
-    const populatedAsset = await Asset.findById(asset._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType status")
-      .populate("uploadedBy", "name email role");
+    const populatedAsset = await Asset.findById(asset._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType status").populate("uploadedBy", "name email role");
 
     res.status(201).json({
       success: true,
@@ -74,11 +53,7 @@ const createAsset = async (req, res) => {
 
 const getAssets = async (req, res) => {
   try {
-    const assets = await Asset.find()
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType status")
-      .populate("uploadedBy", "name email role")
-      .sort({ createdAt: -1 });
+    const assets = await Asset.find().populate("client", "companyName contactPerson email").populate("order", "packageName packageType status").populate("uploadedBy", "name email role").sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -95,10 +70,7 @@ const getAssets = async (req, res) => {
 
 const getAssetById = async (req, res) => {
   try {
-    const asset = await Asset.findById(req.params.id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType status")
-      .populate("uploadedBy", "name email role");
+    const asset = await Asset.findById(req.params.id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType status").populate("uploadedBy", "name email role");
 
     if (!asset) {
       return res.status(404).json({
@@ -130,17 +102,10 @@ const updateAsset = async (req, res) => {
       });
     }
 
-    const {
-      name,
-      type,
-      url,
-      client,
-      order,
-      description,
-      status,
-    } = req.body;
+    const {name,type,url,client,order,description,status,} = req.body;
 
-    if (client) {
+    if (client) 
+      {
       const clientExists = await Client.findById(client);
 
       if (!clientExists) {
@@ -172,11 +137,7 @@ const updateAsset = async (req, res) => {
 
     await asset.save();
 
-    const updatedAsset = await Asset.findById(asset._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType status")
-      .populate("uploadedBy", "name email role");
-
+    const updatedAsset = await Asset.findById(asset._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType status").populate("uploadedBy", "name email role");
     res.status(200).json({
       success: true,
       message: "Asset updated successfully",

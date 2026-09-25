@@ -5,7 +5,8 @@ const createNotification = async (req, res) => {
   try {
     const { user, title, message, type, link } = req.body;
 
-    if (!user || !title || !message) {
+    if (!user || !title || !message) 
+    {
       return res.status(400).json({
         success: false,
         message: "User, title and message are required",
@@ -14,27 +15,16 @@ const createNotification = async (req, res) => {
 
     const userExists = await User.findById(user);
 
-    if (!userExists) {
+    if (!userExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "User not found",
       });
     }
 
-    const notification = await Notification.create({
-      user,
-      title,
-      message,
-      type,
-      link,
-      createdBy: req.user._id,
-    });
-
-    const populatedNotification = await Notification.findById(
-      notification._id
-    )
-      .populate("user", "name email role")
-      .populate("createdBy", "name email role");
+    const notification = await Notification.create({ user,title,message,type,link,createdBy: req.user._id,});
+    const populatedNotification = await Notification.findById(notification._id).populate("user", "name email role").populate("createdBy", "name email role");
 
     res.status(201).json({
       success: true,
@@ -51,11 +41,7 @@ const createNotification = async (req, res) => {
 
 const getNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find()
-      .populate("user", "name email role")
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const notifications = await Notification.find().populate("user", "name email role").populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: notifications.length,
@@ -71,11 +57,9 @@ const getNotifications = async (req, res) => {
 
 const getNotificationById = async (req, res) => {
   try {
-    const notification = await Notification.findById(req.params.id)
-      .populate("user", "name email role")
-      .populate("createdBy", "name email role");
-
-    if (!notification) {
+    const notification = await Notification.findById(req.params.id).populate("user", "name email role").populate("createdBy", "name email role");
+    if (!notification) 
+    {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
@@ -97,33 +81,27 @@ const getNotificationById = async (req, res) => {
 const updateNotification = async (req, res) => {
   try {
     const notification = await Notification.findById(req.params.id);
-
-    if (!notification) {
+    if (!notification) 
+    {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
       });
     }
 
-    const allowedFields = [
-      "user",
-      "title",
-      "message",
-      "type",
-      "isRead",
-      "link",
-    ];
-
-    for (const field of allowedFields) {
-      if (req.body[field] !== undefined) {
+    const allowedFields = ["user","title","message","type","isRead","link",];
+    for (const field of allowedFields) 
+    {
+      if (req.body[field] !== undefined) 
+      {
         notification[field] = req.body[field];
       }
     }
 
     if (req.body.user) {
       const userExists = await User.findById(req.body.user);
-
-      if (!userExists) {
+      if (!userExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "User not found",
@@ -132,13 +110,7 @@ const updateNotification = async (req, res) => {
     }
 
     await notification.save();
-
-    const updatedNotification = await Notification.findById(
-      notification._id
-    )
-      .populate("user", "name email role")
-      .populate("createdBy", "name email role");
-
+    const updatedNotification = await Notification.findById(notification._id).populate("user", "name email role").populate("createdBy", "name email role");
     res.status(200).json({
       success: true,
       message: "Notification updated successfully",
@@ -155,8 +127,8 @@ const updateNotification = async (req, res) => {
 const deleteNotification = async (req, res) => {
   try {
     const notification = await Notification.findById(req.params.id);
-
-    if (!notification) {
+    if (!notification) 
+    {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
@@ -164,7 +136,6 @@ const deleteNotification = async (req, res) => {
     }
 
     await notification.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Notification deleted successfully",
@@ -180,8 +151,8 @@ const deleteNotification = async (req, res) => {
 const markNotificationAsRead = async (req, res) => {
   try {
     const notification = await Notification.findById(req.params.id);
-
-    if (!notification) {
+    if (!notification) 
+    {
       return res.status(404).json({
         success: false,
         message: "Notification not found",
@@ -189,9 +160,7 @@ const markNotificationAsRead = async (req, res) => {
     }
 
     notification.isRead = true;
-
     await notification.save();
-
     res.status(200).json({
       success: true,
       message: "Notification marked as read",

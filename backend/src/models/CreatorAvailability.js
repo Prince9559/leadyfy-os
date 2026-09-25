@@ -47,9 +47,6 @@ const creatorAvailabilitySchema = new mongoose.Schema(
   }
 );
 
-const CreatorAvailability = mongoose.model(
-  "CreatorAvailability",
-  creatorAvailabilitySchema
-);
+const CreatorAvailability = mongoose.model("CreatorAvailability",creatorAvailabilitySchema);
 
 module.exports = CreatorAvailability;

@@ -2,24 +2,10 @@ const Shoot = require("../models/Shoot");
 const Client = require("../models/Client");
 const Order = require("../models/Order");
 const Creator = require("../models/Creator");
-
-// Create Shoot
 const createShoot = async (req, res) => {
   try {
     console.log("SHOOT BODY:", req.body);
-
-    const {
-      client,
-      order,
-      creator,
-      shootDate,
-      startTime,
-      endTime,
-      location,
-      status,
-      notes,
-    } = req.body || {};
-
+    const {  client,order, creator,shootDate,startTime,endTime,location,status,notes,}=req.body || {};
     console.log("CLIENT:", client);
     console.log("ORDER:", order);
     console.log("CREATOR:", creator);
@@ -27,24 +13,17 @@ const createShoot = async (req, res) => {
     console.log("START TIME:", startTime);
     console.log("END TIME:", endTime);
 
-    if (
-      !client ||
-      !order ||
-      !creator ||
-      !shootDate ||
-      !startTime ||
-      !endTime
-    ) {
+    if (!client ||!order ||!creator ||!shootDate ||!startTime ||!endTime) 
+      {
       return res.status(400).json({
         success: false,
-        message:
-          "Client, order, creator, shoot date, start time and end time are required",
+        message:"Client, order, creator, shoot date, start time and end time are required",
       });
     }
 
     const clientExists = await Client.findById(client);
-
-    if (!clientExists) {
+    if (!clientExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Client not found",
@@ -52,15 +31,16 @@ const createShoot = async (req, res) => {
     }
 
     const orderExists = await Order.findById(order);
-
-    if (!orderExists) {
+    if (!orderExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Order not found",
       });
     }
 
-    if (orderExists.client.toString() !== client.toString()) {
+    if (orderExists.client.toString() !== client.toString()) 
+    {
       return res.status(400).json({
         success: false,
         message: "Order does not belong to this client",
@@ -68,41 +48,24 @@ const createShoot = async (req, res) => {
     }
 
     const creatorExists = await Creator.findById(creator);
-
-    if (!creatorExists) {
+    if (!creatorExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Creator not found",
       });
     }
 
-    const shoot = await Shoot.create({
-      client,
-      order,
-      creator,
-      shootDate,
-      startTime,
-      endTime,
-      location,
-      status: status || "scheduled",
-      notes,
-      createdBy: req.user._id,
-    });
-
-    const populatedShoot = await Shoot.findById(shoot._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("creator", "name email phone category platform")
-      .populate("createdBy", "name email role");
-
+    const shoot = await Shoot.create({client,order,creator,shootDate,startTime,endTime,location,status: status || "scheduled",notes,createdBy: req.user._id,});
+    const populatedShoot = await Shoot.findById(shoot._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("creator", "name email phone category platform").populate("createdBy", "name email role");
     res.status(201).json({
       success: true,
       message: "Shoot scheduled successfully",
       shoot: populatedShoot,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Create Shoot Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -110,24 +73,17 @@ const createShoot = async (req, res) => {
   }
 };
 
-// Get All Shoots
 const getShoots = async (req, res) => {
   try {
-    const shoots = await Shoot.find()
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("creator", "name email phone category platform")
-      .populate("createdBy", "name email role")
-      .sort({ shootDate: 1, startTime: 1 });
-
+    const shoots = await Shoot.find().populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("creator", "name email phone category platform").populate("createdBy", "name email role").sort({ shootDate: 1, startTime: 1 });
     res.status(200).json({
       success: true,
       count: shoots.length,
       shoots,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Get Shoots Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -135,16 +91,11 @@ const getShoots = async (req, res) => {
   }
 };
 
-// Get Single Shoot
 const getShootById = async (req, res) => {
   try {
-    const shoot = await Shoot.findById(req.params.id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("creator", "name email phone category platform")
-      .populate("createdBy", "name email role");
-
-    if (!shoot) {
+    const shoot = await Shoot.findById(req.params.id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("creator", "name email phone category platform").populate("createdBy", "name email role");
+    if (!shoot) 
+    {
       return res.status(404).json({
         success: false,
         message: "Shoot not found",
@@ -157,7 +108,6 @@ const getShootById = async (req, res) => {
     });
   } catch (error) {
     console.error("Get Shoot Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -165,39 +115,28 @@ const getShootById = async (req, res) => {
   }
 };
 
-// Update Shoot
 const updateShoot = async (req, res) => {
   try {
     const shoot = await Shoot.findById(req.params.id);
-
-    if (!shoot) {
+    if (!shoot) 
+    {
       return res.status(404).json({
         success: false,
         message: "Shoot not found",
       });
     }
 
-    const allowedFields = [
-      "client",
-      "order",
-      "creator",
-      "shootDate",
-      "startTime",
-      "endTime",
-      "location",
-      "status",
-      "notes",
-    ];
-
+    const allowedFields = ["client","order","creator","shootDate","startTime","endTime","location","status","notes",];
     const body = req.body || {};
 
     const clientId = body.client || shoot.client;
     const orderId = body.order || shoot.order;
 
-    if (body.client !== undefined) {
+    if (body.client !== undefined) 
+    {
       const clientExists = await Client.findById(body.client);
-
-      if (!clientExists) {
+      if (!clientExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Client not found",
@@ -205,9 +144,9 @@ const updateShoot = async (req, res) => {
       }
     }
 
-    if (body.order !== undefined || body.client !== undefined) {
+    if (body.order !== undefined || body.client !== undefined) 
+    {
       const orderExists = await Order.findById(orderId);
-
       if (!orderExists) {
         return res.status(404).json({
           success: false,
@@ -215,7 +154,8 @@ const updateShoot = async (req, res) => {
         });
       }
 
-      if (orderExists.client.toString() !== clientId.toString()) {
+      if (orderExists.client.toString() !== clientId.toString()) 
+      {
         return res.status(400).json({
           success: false,
           message: "Order does not belong to this client",
@@ -223,9 +163,9 @@ const updateShoot = async (req, res) => {
       }
     }
 
-    if (body.creator !== undefined) {
+    if (body.creator !== undefined) 
+    {
       const creatorExists = await Creator.findById(body.creator);
-
       if (!creatorExists) {
         return res.status(404).json({
           success: false,
@@ -235,19 +175,15 @@ const updateShoot = async (req, res) => {
     }
 
     allowedFields.forEach((field) => {
-      if (body[field] !== undefined) {
+      if (body[field] !== undefined) 
+      {
         shoot[field] = body[field];
       }
     });
 
     await shoot.save();
 
-    const updatedShoot = await Shoot.findById(shoot._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("creator", "name email phone category platform")
-      .populate("createdBy", "name email role");
-
+    const updatedShoot = await Shoot.findById(shoot._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("creator", "name email phone category platform").populate("createdBy", "name email role");
     res.status(200).json({
       success: true,
       message: "Shoot updated successfully",
@@ -263,12 +199,11 @@ const updateShoot = async (req, res) => {
   }
 };
 
-// Delete Shoot
 const deleteShoot = async (req, res) => {
   try {
     const shoot = await Shoot.findById(req.params.id);
-
-    if (!shoot) {
+    if (!shoot) 
+    {
       return res.status(404).json({
         success: false,
         message: "Shoot not found",
@@ -276,14 +211,13 @@ const deleteShoot = async (req, res) => {
     }
 
     await shoot.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Shoot deleted successfully",
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Delete Shoot Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,

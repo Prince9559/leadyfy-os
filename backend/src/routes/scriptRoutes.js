@@ -1,19 +1,10 @@
 const express = require("express");
-
-const {
-  createScript,
-  getScripts,
-  getScriptById,
-  updateScript,
-  deleteScript,
-} = require("../controllers/scriptController");
-
+const {createScript,getScripts,getScriptById,updateScript,deleteScript,} = require("../controllers/scriptController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Script
 router.post(
   "/",
   protect,
@@ -21,15 +12,12 @@ router.post(
   createScript
 );
 
-// Get All Scripts
 router.get(
   "/",
   protect,
   authorizeRoles("owner", "admin", "employee"),
   getScripts
 );
-
-// Get Single Script
 router.get(
   "/:id",
   protect,
@@ -37,7 +25,6 @@ router.get(
   getScriptById
 );
 
-// Update Script
 router.put(
   "/:id",
   protect,
@@ -45,7 +32,6 @@ router.put(
   updateScript
 );
 
-// Delete Script
 router.delete(
   "/:id",
   protect,

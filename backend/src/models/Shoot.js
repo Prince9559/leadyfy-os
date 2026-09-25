@@ -44,13 +44,7 @@ const shootSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: [
-        "scheduled",
-        "confirmed",
-        "in_progress",
-        "completed",
-        "cancelled",
-      ],
+      enum: ["scheduled","confirmed","in_progress","completed","cancelled",],
       default: "scheduled",
     },
 

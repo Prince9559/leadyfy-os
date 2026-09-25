@@ -3,24 +3,12 @@ const Client = require("../models/Client");
 const Order = require("../models/Order");
 const Script = require("../models/Script");
 const User = require("../models/User");
-
-// Create Video
 const createVideo = async (req, res) => {
   try {
-    const {
-      client,
-      order,
-      script,
-      title,
-      videoUrl,
-      thumbnailUrl,
-      status,
-      assignedEditor,
-      duration,
-      notes,
-    } = req.body || {};
+    const {client,order,script,title,videoUrl,thumbnailUrl,status,assignedEditor,duration,notes,}=req.body || {};
 
-    if (!client || !order || !title) {
+    if (!client || !order || !title) 
+    {
       return res.status(400).json({
         success: false,
         message: "Client, order and title are required",
@@ -28,8 +16,8 @@ const createVideo = async (req, res) => {
     }
 
     const clientExists = await Client.findById(client);
-
-    if (!clientExists) {
+    if (!clientExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Client not found",
@@ -38,38 +26,43 @@ const createVideo = async (req, res) => {
 
     const orderExists = await Order.findById(order);
 
-    if (!orderExists) {
+    if (!orderExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Order not found",
       });
     }
 
-    if (orderExists.client.toString() !== client.toString()) {
+    if (orderExists.client.toString() !== client.toString()) 
+    {
       return res.status(400).json({
         success: false,
         message: "Order does not belong to this client",
       });
     }
 
-    if (script) {
+    if (script) 
+    {
       const scriptExists = await Script.findById(script);
-
-      if (!scriptExists) {
+      if (!scriptExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Script not found",
         });
       }
 
-      if (scriptExists.client.toString() !== client.toString()) {
+      if (scriptExists.client.toString() !== client.toString()) 
+      {
         return res.status(400).json({
           success: false,
           message: "Script does not belong to this client",
         });
       }
 
-      if (scriptExists.order.toString() !== order.toString()) {
+      if (scriptExists.order.toString() !== order.toString())
+       {
         return res.status(400).json({
           success: false,
           message: "Script does not belong to this order",
@@ -77,10 +70,11 @@ const createVideo = async (req, res) => {
       }
     }
 
-    if (assignedEditor) {
+    if (assignedEditor) 
+    {
       const editorExists = await User.findById(assignedEditor);
-
-      if (!editorExists) {
+      if (!editorExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Assigned editor not found",
@@ -88,35 +82,18 @@ const createVideo = async (req, res) => {
       }
     }
 
-    const video = await Video.create({
-      client,
-      order,
-      script,
-      title,
-      videoUrl,
-      thumbnailUrl,
-      status: status || "script_approved",
-      assignedEditor,
-      duration,
-      notes,
-      createdBy: req.user._id,
-    });
+    const video = await Video.create({client,order,script,title,videoUrl,thumbnailUrl,status: status || "script_approved",assignedEditor,duration,notes,createdBy: req.user._id,});
 
-    const populatedVideo = await Video.findById(video._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("script", "title status")
-      .populate("assignedEditor", "name email role")
-      .populate("createdBy", "name email role");
+    const populatedVideo = await Video.findById(video._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("script", "title status").populate("assignedEditor", "name email role").populate("createdBy", "name email role");
 
     res.status(201).json({
       success: true,
       message: "Video created successfully",
       video: populatedVideo,
     });
-  } catch (error) {
+  } catch (error) 
+   {
     console.error("Create Video Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -124,25 +101,17 @@ const createVideo = async (req, res) => {
   }
 };
 
-// Get All Videos
 const getVideos = async (req, res) => {
   try {
-    const videos = await Video.find()
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("script", "title status")
-      .populate("assignedEditor", "name email role")
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const videos = await Video.find().populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("script", "title status").populate("assignedEditor", "name email role").populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: videos.length,
       videos,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Get Videos Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -150,17 +119,12 @@ const getVideos = async (req, res) => {
   }
 };
 
-// Get Single Video
+
 const getVideoById = async (req, res) => {
   try {
-    const video = await Video.findById(req.params.id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("script", "title status")
-      .populate("assignedEditor", "name email role")
-      .populate("createdBy", "name email role");
-
-    if (!video) {
+    const video = await Video.findById(req.params.id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("script", "title status").populate("assignedEditor", "name email role").populate("createdBy", "name email role");
+    if (!video) 
+    {
       return res.status(404).json({
         success: false,
         message: "Video not found",
@@ -181,12 +145,11 @@ const getVideoById = async (req, res) => {
   }
 };
 
-// Update Video
 const updateVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
-
-    if (!video) {
+    if (!video) 
+    {
       return res.status(404).json({
         success: false,
         message: "Video not found",
@@ -194,14 +157,14 @@ const updateVideo = async (req, res) => {
     }
 
     const body = req.body || {};
-
     const clientId = body.client || video.client;
     const orderId = body.order || video.order;
 
-    if (body.client !== undefined) {
+    if (body.client !== undefined) 
+    {
       const clientExists = await Client.findById(body.client);
-
-      if (!clientExists) {
+      if (!clientExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Client not found",
@@ -209,17 +172,19 @@ const updateVideo = async (req, res) => {
       }
     }
 
-    if (body.order !== undefined || body.client !== undefined) {
+    if (body.order !== undefined || body.client !== undefined) 
+    {
       const orderExists = await Order.findById(orderId);
-
-      if (!orderExists) {
+      if (!orderExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Order not found",
         });
       }
 
-      if (orderExists.client.toString() !== clientId.toString()) {
+      if (orderExists.client.toString() !== clientId.toString()) 
+      {
         return res.status(400).json({
           success: false,
           message: "Order does not belong to this client",
@@ -227,24 +192,27 @@ const updateVideo = async (req, res) => {
       }
     }
 
-    if (body.script !== undefined && body.script) {
+    if (body.script !== undefined && body.script) 
+    {
       const scriptExists = await Script.findById(body.script);
-
-      if (!scriptExists) {
+      if (!scriptExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Script not found",
         });
       }
 
-      if (scriptExists.client.toString() !== clientId.toString()) {
+      if (scriptExists.client.toString() !== clientId.toString()) 
+      {
         return res.status(400).json({
           success: false,
           message: "Script does not belong to this client",
         });
       }
 
-      if (scriptExists.order.toString() !== orderId.toString()) {
+      if (scriptExists.order.toString() !== orderId.toString()) 
+      {
         return res.status(400).json({
           success: false,
           message: "Script does not belong to this order",
@@ -252,10 +220,11 @@ const updateVideo = async (req, res) => {
       }
     }
 
-    if (body.assignedEditor !== undefined && body.assignedEditor) {
+    if (body.assignedEditor !== undefined && body.assignedEditor) 
+    {
       const editorExists = await User.findById(body.assignedEditor);
-
-      if (!editorExists) {
+      if (!editorExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Assigned editor not found",
@@ -263,34 +232,17 @@ const updateVideo = async (req, res) => {
       }
     }
 
-    const allowedFields = [
-      "client",
-      "order",
-      "script",
-      "title",
-      "videoUrl",
-      "thumbnailUrl",
-      "status",
-      "assignedEditor",
-      "duration",
-      "notes",
-    ];
+    const allowedFields = ["client","order","script","title","videoUrl","thumbnailUrl","status","assignedEditor","duration","notes",];
 
     allowedFields.forEach((field) => {
-      if (body[field] !== undefined) {
+      if (body[field] !== undefined) 
+      {
         video[field] = body[field];
       }
     });
 
     await video.save();
-
-    const updatedVideo = await Video.findById(video._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("script", "title status")
-      .populate("assignedEditor", "name email role")
-      .populate("createdBy", "name email role");
-
+    const updatedVideo = await Video.findById(video._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("script", "title status").populate("assignedEditor", "name email role").populate("createdBy", "name email role");
     res.status(200).json({
       success: true,
       message: "Video updated successfully",
@@ -306,12 +258,11 @@ const updateVideo = async (req, res) => {
   }
 };
 
-// Delete Video
 const deleteVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
-
-    if (!video) {
+    if (!video) 
+    {
       return res.status(404).json({
         success: false,
         message: "Video not found",
@@ -319,7 +270,6 @@ const deleteVideo = async (req, res) => {
     }
 
     await video.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Video deleted successfully",
@@ -334,12 +284,11 @@ const deleteVideo = async (req, res) => {
   }
 };
 
-// Client Approve / Revision
 const clientReviewVideo = async (req, res) => {
   try {
     const { action } = req.body || {};
-
-    if (!["approve", "revision"].includes(action)) {
+    if (!["approve", "revision"].includes(action)) 
+    {
       return res.status(400).json({
         success: false,
         message: "Action must be approve or revision",
@@ -347,67 +296,59 @@ const clientReviewVideo = async (req, res) => {
     }
 
     const video = await Video.findById(req.params.id);
-
-    if (!video) {
+    if (!video) 
+    {
       return res.status(404).json({
         success: false,
         message: "Video not found",
       });
     }
 
-    const client = await Client.findOne({
-      user: req.user._id,
-    });
-
-    if (!client) {
+    const client = await Client.findOne({user: req.user._id,});
+    if (!client) 
+    {
       return res.status(404).json({
         success: false,
         message: "Client profile not found",
       });
     }
 
-    if (video.client.toString() !== client._id.toString()) {
+    if (video.client.toString() !== client._id.toString()) 
+    {
       return res.status(403).json({
         success: false,
         message: "Access denied",
       });
     }
 
-    if (video.status !== "client_review") {
+    if (video.status !== "client_review") 
+    {
       return res.status(400).json({
         success: false,
         message: "Video is not available for client review",
       });
     }
 
-    if (action === "approve") {
+    if (action === "approve") 
+    {
       video.status = "final_approved";
     }
 
-    if (action === "revision") {
+    if (action === "revision") 
+    {
       video.status = "revision";
     }
 
     await video.save();
-
-    const updatedVideo = await Video.findById(video._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("script", "title status")
-      .populate("assignedEditor", "name email role")
-      .populate("createdBy", "name email role");
+    const updatedVideo = await Video.findById(video._id).populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("script", "title status").populate("assignedEditor", "name email role").populate("createdBy", "name email role");
 
     res.status(200).json({
       success: true,
-      message:
-        action === "approve"
-          ? "Video approved successfully"
-          : "Revision requested successfully",
+      message:action === "approve" ? "Video approved successfully" : "Revision requested successfully",
       video: updatedVideo,
     });
   } catch (error) {
     console.error("Client Review Video Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,

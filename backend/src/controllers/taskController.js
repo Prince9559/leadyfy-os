@@ -2,22 +2,12 @@ const Task = require("../models/Task");
 const User = require("../models/User");
 const Client = require("../models/Client");
 const Order = require("../models/Order");
-
-// Create Task
 const createTask = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      assignedTo,
-      client,
-      order,
-      priority,
-      status,
-      dueDate,
-    } = req.body || {};
+    const {title,description,assignedTo,client,order,priority,status,dueDate,} = req.body || {};
 
-    if (!title || !assignedTo) {
+    if (!title || !assignedTo) 
+    {
       return res.status(400).json({
         success: false,
         message: "Title and assignedTo are required",
@@ -25,18 +15,19 @@ const createTask = async (req, res) => {
     }
 
     const userExists = await User.findById(assignedTo);
-
-    if (!userExists) {
+    if (!userExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Assigned user not found",
       });
     }
 
-    if (client) {
+    if (client) 
+    {
       const clientExists = await Client.findById(client);
-
-      if (!clientExists) {
+      if (!clientExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Client not found",
@@ -44,10 +35,11 @@ const createTask = async (req, res) => {
       }
     }
 
-    if (order) {
+    if (order) 
+    {
       const orderExists = await Order.findById(order);
-
-      if (!orderExists) {
+      if (!orderExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Order not found",
@@ -55,23 +47,8 @@ const createTask = async (req, res) => {
       }
     }
 
-    const task = await Task.create({
-      title,
-      description,
-      assignedTo,
-      client,
-      order,
-      priority: priority || "medium",
-      status: status || "todo",
-      dueDate,
-      createdBy: req.user._id,
-    });
-
-    const populatedTask = await Task.findById(task._id)
-      .populate("assignedTo", "name email role")
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("createdBy", "name email role");
+    const task = await Task.create({title,description,assignedTo,client,order,priority: priority || "medium",status: status || "todo",dueDate,createdBy: req.user._id,});
+    const populatedTask = await Task.findById(task._id).populate("assignedTo", "name email role").populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("createdBy", "name email role");
 
     res.status(201).json({
       success: true,
@@ -80,7 +57,6 @@ const createTask = async (req, res) => {
     });
   } catch (error) {
     console.error("Create Task Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -88,24 +64,17 @@ const createTask = async (req, res) => {
   }
 };
 
-// Get All Tasks
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find()
-      .populate("assignedTo", "name email role")
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const tasks = await Task.find().populate("assignedTo", "name email role").populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: tasks.length,
       tasks,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Get Tasks Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -113,16 +82,11 @@ const getTasks = async (req, res) => {
   }
 };
 
-// Get Single Task
 const getTaskById = async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id)
-      .populate("assignedTo", "name email role")
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("createdBy", "name email role");
-
-    if (!task) {
+    const task = await Task.findById(req.params.id).populate("assignedTo", "name email role").populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("createdBy", "name email role");
+    if (!task) 
+    {
       return res.status(404).json({
         success: false,
         message: "Task not found",
@@ -133,9 +97,9 @@ const getTaskById = async (req, res) => {
       success: true,
       task,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Get Task Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -143,12 +107,11 @@ const getTaskById = async (req, res) => {
   }
 };
 
-// Update Task
 const updateTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
-
-    if (!task) {
+    if (!task) 
+    {
       return res.status(404).json({
         success: false,
         message: "Task not found",
@@ -156,11 +119,11 @@ const updateTask = async (req, res) => {
     }
 
     const body = req.body || {};
-
-    if (body.assignedTo !== undefined) {
+    if (body.assignedTo !== undefined) 
+    {
       const userExists = await User.findById(body.assignedTo);
-
-      if (!userExists) {
+      if (!userExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Assigned user not found",
@@ -168,10 +131,11 @@ const updateTask = async (req, res) => {
       }
     }
 
-    if (body.client !== undefined && body.client) {
+    if (body.client !== undefined && body.client) 
+    {
       const clientExists = await Client.findById(body.client);
-
-      if (!clientExists) {
+      if (!clientExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Client not found",
@@ -179,10 +143,11 @@ const updateTask = async (req, res) => {
       }
     }
 
-    if (body.order !== undefined && body.order) {
+    if (body.order !== undefined && body.order) 
+    {
       const orderExists = await Order.findById(body.order);
-
-      if (!orderExists) {
+      if (!orderExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Order not found",
@@ -190,39 +155,24 @@ const updateTask = async (req, res) => {
       }
     }
 
-    const allowedFields = [
-      "title",
-      "description",
-      "assignedTo",
-      "client",
-      "order",
-      "priority",
-      "status",
-      "dueDate",
-    ];
-
+    const allowedFields = ["title","description","assignedTo","client","order","priority","status","dueDate",];
     allowedFields.forEach((field) => {
-      if (body[field] !== undefined) {
+      if (body[field] !== undefined) 
+      {
         task[field] = body[field];
       }
     });
 
     await task.save();
-
-    const updatedTask = await Task.findById(task._id)
-      .populate("assignedTo", "name email role")
-      .populate("client", "companyName contactPerson email")
-      .populate("order", "packageName packageType amount status")
-      .populate("createdBy", "name email role");
-
+    const updatedTask = await Task.findById(task._id).populate("assignedTo", "name email role").populate("client", "companyName contactPerson email").populate("order", "packageName packageType amount status").populate("createdBy", "name email role");
     res.status(200).json({
       success: true,
       message: "Task updated successfully",
       task: updatedTask,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Update Task Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -230,12 +180,12 @@ const updateTask = async (req, res) => {
   }
 };
 
-// Delete Task
+
 const deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
-
-    if (!task) {
+    if (!task) 
+    {
       return res.status(404).json({
         success: false,
         message: "Task not found",
@@ -243,14 +193,13 @@ const deleteTask = async (req, res) => {
     }
 
     await task.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Task deleted successfully",
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Delete Task Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,

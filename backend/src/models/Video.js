@@ -37,17 +37,7 @@ const videoSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: [
-        "script_approved",
-        "shoot_pending",
-        "raw_footage_received",
-        "video_editing",
-        "internal_qa",
-        "client_review",
-        "revision",
-        "final_approved",
-        "delivered",
-      ],
+      enum: ["script_approved","shoot_pending","raw_footage_received","video_editing","internal_qa","client_review","revision","final_approved","delivered",],
       default: "script_approved",
     },
 

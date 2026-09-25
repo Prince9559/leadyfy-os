@@ -1,19 +1,8 @@
 const Client = require("../models/Client");
 
-// Add Client
  const createClient = async (req, res) => {
   try {
-    const {
-      user,
-      companyName,
-      contactPerson,
-      email,
-      phone,
-      website,
-      industry,
-      address,
-      status,
-    } = req.body || {};
+    const {user,companyName,contactPerson,email,phone,website,industry,address,status,} = req.body || {};
 
     if (!companyName || !contactPerson || !email) {
       return res.status(400).json({
@@ -31,24 +20,14 @@ const Client = require("../models/Client");
       });
     }
 
-    const client = await Client.create({
-      user: user || null,
-      companyName,
-      contactPerson,
-      email,
-      phone,
-      website,
-      industry,
-      address,
-      status: status || "active",
-      createdBy: req.user._id,
-    });
+    const client = await Client.create({user: user || null,companyName,contactPerson,email,phone,website,industry,address,status: status || "active",createdBy: req.user._id,});
 
     res.status(201).json({
       success: true,
       message: "Client created successfully",
       client,
     });
+
   } catch (error) {
     console.error("Create Client Error:", error);
 
@@ -59,20 +38,16 @@ const Client = require("../models/Client");
   }
 };
 
-// Get All Clients
 const getClients = async (req, res) => {
   try {
     let query = {};
 
-    // Client can only see their own client record
-    if (req.user.role === "client") {
+    if (req.user.role === "client") 
+    {
       query.email = req.user.email;
     }
 
-    const clients = await Client.find(query)
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const clients = await Client.find(query).populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: clients.length,
@@ -88,14 +63,9 @@ const getClients = async (req, res) => {
   }
 };
 
-// Get Single Client
 const getClientById = async (req, res) => {
   try {
-    const client = await Client.findById(req.params.id).populate(
-      "createdBy",
-      "name email role"
-    );
-
+    const client = await Client.findById(req.params.id).populate("createdBy","name email role");
     if (!client) {
       return res.status(404).json({
         success: false,
@@ -103,11 +73,9 @@ const getClientById = async (req, res) => {
       });
     }
 
-    // Client can only access their own record
-    if (
-      req.user.role === "client" &&
-      client.email !== req.user.email
-    ) {
+     
+    if (req.user.role === "client" &&client.email !== req.user.email) 
+      {
       return res.status(403).json({
         success: false,
         message: "Access denied",
@@ -118,9 +86,9 @@ const getClientById = async (req, res) => {
       success: true,
       client,
     });
+
   } catch (error) {
     console.error("Get Client Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -128,60 +96,46 @@ const getClientById = async (req, res) => {
   }
 };
 
-// Update Client
-// Update Client
 const updateClient = async (req, res) => {
   try {
     const client = await Client.findById(req.params.id);
-
-    if (!client) {
+    if (!client) 
+    {
       return res.status(404).json({
         success: false,
         message: "Client not found",
       });
     }
 
-    // Client can only update their own record
-    if (
-      req.user.role === "client" &&
-      client.email !== req.user.email
-    ) {
+    
+    if (req.user.role === "client" &&client.email !== req.user.email) 
+      {
       return res.status(403).json({
         success: false,
         message: "Access denied",
       });
     }
 
-    const allowedFields = [
-      "user",
-      "companyName",
-      "contactPerson",
-      "email",
-      "phone",
-      "website",
-      "industry",
-      "address",
-      "status",
-    ];
-
+    const allowedFields = ["user","companyName","contactPerson","email","phone","website","industry","address","status",];
     const body = req.body || {};
 
     allowedFields.forEach((field) => {
-      if (body[field] !== undefined) {
+      if (body[field] !== undefined) 
+      {
         client[field] = body[field];
       }
     });
 
     await client.save();
-
     res.status(200).json({
       success: true,
       message: "Client updated successfully",
       client,
     });
-  } catch (error) {
-    console.error("Update Client Error:", error);
 
+  } catch (error) 
+  {
+    console.error("Update Client Error:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -189,12 +143,12 @@ const updateClient = async (req, res) => {
   }
 };
 
-// Delete Client
+
 const deleteClient = async (req, res) => {
   try {
     const client = await Client.findById(req.params.id);
-
-    if (!client) {
+    if (!client) 
+    {
       return res.status(404).json({
         success: false,
         message: "Client not found",
@@ -202,14 +156,14 @@ const deleteClient = async (req, res) => {
     }
 
     await client.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Client deleted successfully",
     });
-  } catch (error) {
-    console.error("Delete Client Error:", error);
 
+  } catch (error) 
+  {
+    console.error("Delete Client Error:", error);
     res.status(500).json({
       success: false,
       message: error.message,

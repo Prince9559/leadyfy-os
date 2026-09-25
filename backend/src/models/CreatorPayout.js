@@ -50,9 +50,6 @@ const creatorPayoutSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const CreatorPayout = mongoose.model(
-  "CreatorPayout",
-  creatorPayoutSchema
-);
+const CreatorPayout = mongoose.model("CreatorPayout",creatorPayoutSchema);
 
 module.exports = CreatorPayout;

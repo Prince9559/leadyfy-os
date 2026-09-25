@@ -1,19 +1,11 @@
 const express = require("express");
 
-const {
-  createPayment,
-  getPayments,
-  getPaymentById,
-  updatePayment,
-  deletePayment,
-} = require("../controllers/paymentController");
-
+const {createPayment,getPayments,getPaymentById,updatePayment,deletePayment,} = require("../controllers/paymentController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Payment
 router.post(
   "/",
   protect,
@@ -21,7 +13,6 @@ router.post(
   createPayment
 );
 
-// Get All Payments
 router.get(
   "/",
   protect,
@@ -29,7 +20,6 @@ router.get(
   getPayments
 );
 
-// Get Single Payment
 router.get(
   "/:id",
   protect,
@@ -37,7 +27,6 @@ router.get(
   getPaymentById
 );
 
-// Update Payment
 router.put(
   "/:id",
   protect,
@@ -45,7 +34,6 @@ router.put(
   updatePayment
 );
 
-// Delete Payment
 router.delete(
   "/:id",
   protect,

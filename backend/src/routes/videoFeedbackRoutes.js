@@ -1,19 +1,10 @@
 const express = require("express");
-
-const {
-  createFeedback,
-  getFeedbacks,
-  getFeedbackById,
-  updateFeedback,
-  deleteFeedback,
-} = require("../controllers/videoFeedbackController");
-
+const {createFeedback,getFeedbacks,getFeedbackById,updateFeedback,deleteFeedback,} = require("../controllers/videoFeedbackController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Feedback
 router.post(
   "/",
   protect,
@@ -21,7 +12,6 @@ router.post(
   createFeedback
 );
 
-// Get All Feedback
 router.get(
   "/",
   protect,
@@ -29,7 +19,6 @@ router.get(
   getFeedbacks
 );
 
-// Get Single Feedback
 router.get(
   "/:id",
   protect,
@@ -37,7 +26,6 @@ router.get(
   getFeedbackById
 );
 
-// Update Feedback
 router.put(
   "/:id",
   protect,
@@ -45,7 +33,6 @@ router.put(
   updateFeedback
 );
 
-// Delete Feedback
 router.delete(
   "/:id",
   protect,

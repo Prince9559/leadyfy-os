@@ -1,19 +1,10 @@
 const express = require("express");
-
-const {
-  createOrder,
-  getOrders,
-  getOrderById,
-  updateOrder,
-  deleteOrder,
-} = require("../controllers/orderController");
+const {createOrder,getOrders,getOrderById,updateOrder,deleteOrder,} = require("../controllers/orderController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
-
 const router = express.Router();
 
-// Create Order
 router.post(
   "/",
   protect,
@@ -21,7 +12,6 @@ router.post(
   createOrder
 );
 
-// Get All Orders
 router.get(
   "/",
   protect,
@@ -29,7 +19,6 @@ router.get(
   getOrders
 );
 
-// Get Single Order
 router.get(
   "/:id",
   protect,
@@ -37,7 +26,6 @@ router.get(
   getOrderById
 );
 
-// Update Order
 router.put(
   "/:id",
   protect,
@@ -45,7 +33,6 @@ router.put(
   updateOrder
 );
 
-// Delete Order
 router.delete(
   "/:id",
   protect,

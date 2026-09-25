@@ -1,50 +1,26 @@
 const Expense = require("../models/Expense");
 
-// Create Expense
 const createExpense = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      category,
-      amount,
-      expenseDate,
-      paymentMethod,
-      status,
-      notes,
-    } = req.body || {};
-
-    if (!title || amount === undefined) {
+    const {title,description,category,amount,expenseDate,paymentMethod,status,notes,} = req.body || {};
+    if (!title || amount === undefined) 
+    {
       return res.status(400).json({
         success: false,
         message: "Title and amount are required",
       });
     }
 
-    if (amount < 0) {
+    if (amount < 0) 
+    {
       return res.status(400).json({
         success: false,
         message: "Amount cannot be negative",
       });
     }
 
-    const expense = await Expense.create({
-      title,
-      description,
-      category: category || "other",
-      amount,
-      expenseDate,
-      paymentMethod: paymentMethod || "bank_transfer",
-      status: status || "paid",
-      notes,
-      createdBy: req.user._id,
-    });
-
-    const populatedExpense = await Expense.findById(expense._id).populate(
-      "createdBy",
-      "name email role"
-    );
-
+    const expense = await Expense.create({title,description,category: category || "other",amount,expenseDate,paymentMethod: paymentMethod || "bank_transfer",status: status || "paid",notes,createdBy: req.user._id,});
+    const populatedExpense = await Expense.findById(expense._id).populate("createdBy","name email role");
     res.status(201).json({
       success: true,
       message: "Expense created successfully",
@@ -60,13 +36,9 @@ const createExpense = async (req, res) => {
   }
 };
 
-// Get All Expenses
 const getExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.find()
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const expenses = await Expense.find().populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: expenses.length,
@@ -82,15 +54,11 @@ const getExpenses = async (req, res) => {
   }
 };
 
-// Get Single Expense
 const getExpenseById = async (req, res) => {
   try {
-    const expense = await Expense.findById(req.params.id).populate(
-      "createdBy",
-      "name email role"
-    );
-
-    if (!expense) {
+    const expense = await Expense.findById(req.params.id).populate("createdBy","name email role");
+    if (!expense) 
+    {
       return res.status(404).json({
         success: false,
         message: "Expense not found",
@@ -111,12 +79,11 @@ const getExpenseById = async (req, res) => {
   }
 };
 
-// Update Expense
 const updateExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
-
-    if (!expense) {
+    if (!expense) 
+    {
       return res.status(404).json({
         success: false,
         message: "Expense not found",
@@ -124,24 +91,15 @@ const updateExpense = async (req, res) => {
     }
 
     const body = req.body || {};
-
-    if (body.amount !== undefined && body.amount < 0) {
+    if (body.amount !== undefined && body.amount < 0) 
+    {
       return res.status(400).json({
         success: false,
         message: "Amount cannot be negative",
       });
     }
 
-    const allowedFields = [
-      "title",
-      "description",
-      "category",
-      "amount",
-      "expenseDate",
-      "paymentMethod",
-      "status",
-      "notes",
-    ];
+    const allowedFields = ["title","description","category","amount","expenseDate","paymentMethod","status","notes",];
 
     allowedFields.forEach((field) => {
       if (body[field] !== undefined) {
@@ -151,11 +109,7 @@ const updateExpense = async (req, res) => {
 
     await expense.save();
 
-    const updatedExpense = await Expense.findById(expense._id).populate(
-      "createdBy",
-      "name email role"
-    );
-
+    const updatedExpense = await Expense.findById(expense._id).populate("createdBy","name email role");
     res.status(200).json({
       success: true,
       message: "Expense updated successfully",
@@ -171,12 +125,11 @@ const updateExpense = async (req, res) => {
   }
 };
 
-// Delete Expense
 const deleteExpense = async (req, res) => {
   try {
     const expense = await Expense.findById(req.params.id);
-
-    if (!expense) {
+    if (!expense) 
+    {
       return res.status(404).json({
         success: false,
         message: "Expense not found",
@@ -184,14 +137,13 @@ const deleteExpense = async (req, res) => {
     }
 
     await expense.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Expense deleted successfully",
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Delete Expense Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,

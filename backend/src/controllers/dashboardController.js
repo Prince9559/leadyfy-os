@@ -8,19 +8,7 @@ const Expense = require("../models/Expense");
 
 const getDashboardStats = async (req, res) => {
   try {
-    const [
-      totalClients,
-      activeClients,
-      totalOrders,
-      pendingOrders,
-      totalScripts,
-      totalShoots,
-      totalVideos,
-      videosInEditing,
-      completedVideos,
-      totalPayments,
-      totalExpenses,
-    ] = await Promise.all([
+    const [totalClients,activeClients,totalOrders,pendingOrders,totalScripts,totalShoots,totalVideos,videosInEditing,completedVideos,totalPayments,totalExpenses,] = await Promise.all([
       Client.countDocuments(),
       Client.countDocuments({ status: "active" }),
       Order.countDocuments(),
@@ -44,47 +32,20 @@ const getDashboardStats = async (req, res) => {
       { $group: { _id: null, total: { $sum: "$amount" } } },
     ]);
 
-    const totalRevenue =
-      paymentResult.length > 0 ? paymentResult[0].total : 0;
-
-    const totalExpense =
-      expenseResult.length > 0 ? expenseResult[0].total : 0;
+    const totalRevenue =paymentResult.length > 0 ? paymentResult[0].total : 0;
+    const totalExpense =expenseResult.length > 0 ? expenseResult[0].total : 0;
 
     const netProfit = totalRevenue - totalExpense;
 
     res.status(200).json({
       success: true,
       dashboard: {
-        clients: {
-          total: totalClients,
-          active: activeClients,
-        },
-
-        orders: {
-          total: totalOrders,
-          pending: pendingOrders,
-        },
-
-        scripts: {
-          total: totalScripts,
-        },
-
-        shoots: {
-          total: totalShoots,
-        },
-
-        videos: {
-          total: totalVideos,
-          inEditing: videosInEditing,
-          delivered: completedVideos,
-        },
-
-        financial: {
-          totalPayments,
-          totalRevenue,
-          totalExpenses: totalExpense,
-          netProfit,
-        },
+        clients: {total: totalClients,active: activeClients,},
+        orders: {total: totalOrders,pending: pendingOrders,},
+        scripts: {total: totalScripts,},
+        shoots: {total: totalShoots,},
+        videos: {total: totalVideos,inEditing: videosInEditing,delivered: completedVideos,},
+        financial: {totalPayments,totalRevenue,totalExpenses: totalExpense,netProfit,},
       },
     });
   } catch (error) {

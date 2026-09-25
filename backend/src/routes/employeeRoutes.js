@@ -1,18 +1,9 @@
 const express = require("express");
-
-const {
-  createEmployee,
-  getEmployees,
-  getEmployeeById,
-  updateEmployee,
-  deleteEmployee,
-} = require("../controllers/employeeController");
-
+const {createEmployee,getEmployees,getEmployeeById,updateEmployee,deleteEmployee,} = require("../controllers/employeeController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
-
 router.post(
   "/",
   protect,

@@ -1,15 +1,10 @@
 const express = require("express");
-
-const {
-  registerUser,
-  loginUser,
-} = require("../controllers/authController");
+const {registerUser,loginUser,} = require("../controllers/authController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
-
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
@@ -20,8 +15,7 @@ router.get("/me", protect, (req, res) => {
   });
 });
 
-router.get(
-  "/owner-test",
+router.get("/owner-test",
   protect,
   authorizeRoles("owner"),
   (req, res) => {

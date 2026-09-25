@@ -10,13 +10,7 @@ const assetSchema = new mongoose.Schema(
 
     type: {
       type: String,
-      enum: [
-        "image",
-        "video",
-        "document",
-        "audio",
-        "other",
-      ],
+      enum: ["image","video", "document","audio","other",],
       default: "other",
     },
 

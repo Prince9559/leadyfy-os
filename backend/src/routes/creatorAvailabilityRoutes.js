@@ -1,19 +1,10 @@
 const express = require("express");
 
-const {
-  createAvailability,
-  getAvailabilities,
-  getAvailabilityById,
-  updateAvailability,
-  deleteAvailability,
-} = require("../controllers/creatorAvailabilityController");
-
+const {createAvailability,getAvailabilities,getAvailabilityById,updateAvailability,deleteAvailability,} = require("../controllers/creatorAvailabilityController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
-
-// Create Availability
 router.post(
   "/",
   protect,
@@ -21,7 +12,6 @@ router.post(
   createAvailability
 );
 
-// Get All Availability
 router.get(
   "/",
   protect,
@@ -29,7 +19,6 @@ router.get(
   getAvailabilities
 );
 
-// Get Single Availability
 router.get(
   "/:id",
   protect,
@@ -37,7 +26,6 @@ router.get(
   getAvailabilityById
 );
 
-// Update Availability
 router.put(
   "/:id",
   protect,
@@ -45,7 +33,6 @@ router.put(
   updateAvailability
 );
 
-// Delete Availability
 router.delete(
   "/:id",
   protect,

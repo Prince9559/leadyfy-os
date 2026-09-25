@@ -1,22 +1,11 @@
 const Order = require("../models/Order");
 const Client = require("../models/Client");
-
-// Create Order
 const createOrder = async (req, res) => {
   try {
-    const {
-      client,
-      packageName,
-      packageType,
-      description,
-      amount,
-      status,
-      startDate,
-      endDate,
-      assignedTo,
-    } = req.body || {};
+    const {client,packageName,packageType,description,amount,status,startDate,endDate,assignedTo,} = req.body || {};
 
-    if (!client || !packageName || amount === undefined) {
+    if (!client || !packageName || amount === undefined) 
+    {
       return res.status(400).json({
         success: false,
         message: "Client, package name and amount are required",
@@ -24,40 +13,26 @@ const createOrder = async (req, res) => {
     }
 
     const clientExists = await Client.findById(client);
-
-    if (!clientExists) {
+    if (!clientExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Client not found",
       });
     }
 
-    const order = await Order.create({
-      client,
-      packageName,
-      packageType,
-      description,
-      amount,
-      status: status || "pending",
-      startDate,
-      endDate,
-      assignedTo,
-      createdBy: req.user._id,
-    });
+    const order = await Order.create({client,packageName,packageType,description,amount,status: status || "pending",startDate,endDate,assignedTo,createdBy: req.user._id,});
 
-    const populatedOrder = await Order.findById(order._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("assignedTo", "name email role")
-      .populate("createdBy", "name email role");
+    const populatedOrder = await Order.findById(order._id).populate("client", "companyName contactPerson email").populate("assignedTo", "name email role").populate("createdBy", "name email role");
 
     res.status(201).json({
       success: true,
       message: "Order created successfully",
       order: populatedOrder,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     console.error("Create Order Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -65,15 +40,9 @@ const createOrder = async (req, res) => {
   }
 };
 
-// Get All Orders
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
-      .populate("client", "companyName contactPerson email")
-      .populate("assignedTo", "name email role")
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const orders = await Order.find().populate("client", "companyName contactPerson email").populate("assignedTo", "name email role").populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: orders.length,
@@ -89,15 +58,11 @@ const getOrders = async (req, res) => {
   }
 };
 
-// Get Single Order
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id)
-      .populate("client", "companyName contactPerson email")
-      .populate("assignedTo", "name email role")
-      .populate("createdBy", "name email role");
-
-    if (!order) {
+    const order = await Order.findById(req.params.id).populate("client", "companyName contactPerson email").populate("assignedTo", "name email role").populate("createdBy", "name email role");
+    if (!order) 
+    {
       return res.status(404).json({
         success: false,
         message: "Order not found",
@@ -118,36 +83,25 @@ const getOrderById = async (req, res) => {
   }
 };
 
-// Update Order
 const updateOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-
-    if (!order) {
+    if (!order) 
+    {
       return res.status(404).json({
         success: false,
         message: "Order not found",
       });
     }
 
-    const allowedFields = [
-      "client",
-      "packageName",
-      "packageType",
-      "description",
-      "amount",
-      "status",
-      "startDate",
-      "endDate",
-      "assignedTo",
-    ];
+    const allowedFields = ["client","packageName","packageType","description","amount","status","startDate","endDate","assignedTo",];
 
     const body = req.body || {};
-
-    if (body.client !== undefined) {
+    if (body.client !== undefined) 
+    {
       const clientExists = await Client.findById(body.client);
-
-      if (!clientExists) {
+      if (!clientExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Client not found",
@@ -156,17 +110,15 @@ const updateOrder = async (req, res) => {
     }
 
     allowedFields.forEach((field) => {
-      if (body[field] !== undefined) {
+      if (body[field] !== undefined) 
+      {
         order[field] = body[field];
       }
     });
 
     await order.save();
 
-    const updatedOrder = await Order.findById(order._id)
-      .populate("client", "companyName contactPerson email")
-      .populate("assignedTo", "name email role")
-      .populate("createdBy", "name email role");
+    const updatedOrder = await Order.findById(order._id).populate("client", "companyName contactPerson email").populate("assignedTo", "name email role").populate("createdBy", "name email role");
 
     res.status(200).json({
       success: true,
@@ -183,12 +135,11 @@ const updateOrder = async (req, res) => {
   }
 };
 
-// Delete Order
 const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-
-    if (!order) {
+    if (!order) 
+    {
       return res.status(404).json({
         success: false,
         message: "Order not found",
@@ -196,7 +147,6 @@ const deleteOrder = async (req, res) => {
     }
 
     await order.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Order deleted successfully",

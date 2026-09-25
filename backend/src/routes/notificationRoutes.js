@@ -1,13 +1,5 @@
 const express = require("express");
-
-const {
-  createNotification,
-  getNotifications,
-  getNotificationById,
-  updateNotification,
-  deleteNotification,
-  markNotificationAsRead,
-} = require("../controllers/notificationController");
+const {createNotification,getNotifications, getNotificationById,updateNotification,deleteNotification,markNotificationAsRead,} = require("../controllers/notificationController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 

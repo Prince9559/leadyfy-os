@@ -1,19 +1,10 @@
 const express = require("express");
-
-const {
-  createCreatorPayout,
-  getCreatorPayouts,
-  getCreatorPayoutById,
-  updateCreatorPayout,
-  deleteCreatorPayout,
-} = require("../controllers/creatorPayoutController");
+const {createCreatorPayout,getCreatorPayouts,getCreatorPayoutById,updateCreatorPayout,deleteCreatorPayout,} = require("../controllers/creatorPayoutController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
-
 const router = express.Router();
 
-// Create payout
 router.post(
   "/",
   protect,
@@ -21,7 +12,6 @@ router.post(
   createCreatorPayout
 );
 
-// Get all payouts
 router.get(
   "/",
   protect,
@@ -29,7 +19,6 @@ router.get(
   getCreatorPayouts
 );
 
-// Get single payout
 router.get(
   "/:id",
   protect,
@@ -37,7 +26,6 @@ router.get(
   getCreatorPayoutById
 );
 
-// Update payout
 router.put(
   "/:id",
   protect,
@@ -45,7 +33,6 @@ router.put(
   updateCreatorPayout
 );
 
-// Delete payout
 router.delete(
   "/:id",
   protect,

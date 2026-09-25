@@ -1,23 +1,11 @@
 const express = require("express");
-
-const {
-  createActivityLog,
-  getActivityLogs,
-  getActivityLogById,
-  deleteActivityLog,
-} = require("../controllers/activityLogController");
-
+const {createActivityLog,getActivityLogs,getActivityLogById,deleteActivityLog,} = require("../controllers/activityLogController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-router.post(
-  "/",
-  protect,
-  authorizeRoles("owner", "admin"),
-  createActivityLog
-);
+router.post("/",protect,authorizeRoles("owner", "admin"),createActivityLog);
 
 router.get(
   "/",

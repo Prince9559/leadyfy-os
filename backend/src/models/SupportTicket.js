@@ -44,13 +44,7 @@ const supportTicketSchema = new mongoose.Schema(
 
     category: {
       type: String,
-      enum: [
-        "technical",
-        "billing",
-        "content",
-        "account",
-        "general",
-      ],
+      enum: ["technical","billing","content","account","general",],
       default: "general",
     },
 
@@ -62,9 +56,6 @@ const supportTicketSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const SupportTicket = mongoose.model(
-  "SupportTicket",
-  supportTicketSchema
-);
+const SupportTicket = mongoose.model("SupportTicket",supportTicketSchema);
 
 module.exports = SupportTicket;

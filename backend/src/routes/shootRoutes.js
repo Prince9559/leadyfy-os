@@ -1,32 +1,19 @@
 const express = require("express");
-
-const {
-  createShoot,
-  getShoots,
-  getShootById,
-  updateShoot,
-  deleteShoot,
-} = require("../controllers/shootController");
+const {createShoot,getShoots,getShootById,updateShoot,deleteShoot,} = require("../controllers/shootController");
 
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
-
 const router = express.Router();
 
-// Parse JSON request body
 router.use(express.json());
-
-// TEST BODY
 router.post("/test-body", (req, res) => {
   console.log("TEST BODY:", req.body);
-
   res.json({
     success: true,
     body: req.body,
   });
 });
 
-// Create Shoot
 router.post(
   "/",
   protect,
@@ -34,7 +21,6 @@ router.post(
   createShoot
 );
 
-// Get All Shoots
 router.get(
   "/",
   protect,
@@ -42,7 +28,6 @@ router.get(
   getShoots
 );
 
-// Get Single Shoot
 router.get(
   "/:id",
   protect,
@@ -50,7 +35,6 @@ router.get(
   getShootById
 );
 
-// Update Shoot
 router.put(
   "/:id",
   protect,
@@ -58,7 +42,6 @@ router.put(
   updateShoot
 );
 
-// Delete Shoot
 router.delete(
   "/:id",
   protect,

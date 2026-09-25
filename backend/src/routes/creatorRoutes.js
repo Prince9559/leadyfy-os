@@ -1,19 +1,9 @@
 const express = require("express");
-
-const {
-  createCreator,
-  getCreators,
-  getCreatorById,
-  updateCreator,
-  deleteCreator,
-} = require("../controllers/creatorController");
-
+const {createCreator,getCreators,getCreatorById,updateCreator,deleteCreator,} = require("../controllers/creatorController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
-
-// Create Creator
 router.post(
   "/",
   protect,
@@ -21,7 +11,6 @@ router.post(
   createCreator
 );
 
-// Get All Creators
 router.get(
   "/",
   protect,
@@ -29,7 +18,6 @@ router.get(
   getCreators
 );
 
-// Get Single Creator
 router.get(
   "/:id",
   protect,
@@ -37,7 +25,6 @@ router.get(
   getCreatorById
 );
 
-// Update Creator
 router.put(
   "/:id",
   protect,
@@ -45,7 +32,6 @@ router.put(
   updateCreator
 );
 
-// Delete Creator
 router.delete(
   "/:id",
   protect,

@@ -3,24 +3,18 @@ const Creator = require("../models/Creator");
 
 const createCreatorPayout = async (req, res) => {
   try {
-    const {
-      creator,
-      amount,
-      payoutDate,
-      paymentMethod,
-      transactionId,
-      status,
-      notes,
-    } = req.body;
+    const {creator,amount,payoutDate,paymentMethod,transactionId,status,notes,} = req.body;
 
-    if (!creator || amount === undefined) {
+    if (!creator || amount === undefined) 
+    {
       return res.status(400).json({
         success: false,
         message: "Creator and amount are required",
       });
     }
 
-    if (amount < 0) {
+    if (amount < 0) 
+    {
       return res.status(400).json({
         success: false,
         message: "Amount cannot be negative",
@@ -29,27 +23,16 @@ const createCreatorPayout = async (req, res) => {
 
     const creatorExists = await Creator.findById(creator);
 
-    if (!creatorExists) {
+    if (!creatorExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Creator not found",
       });
     }
 
-    const payout = await CreatorPayout.create({
-      creator,
-      amount,
-      payoutDate,
-      paymentMethod,
-      transactionId,
-      status,
-      notes,
-      createdBy: req.user._id,
-    });
-
-    const populatedPayout = await CreatorPayout.findById(payout._id)
-      .populate("creator", "name email phone platform")
-      .populate("createdBy", "name email role");
+    const payout = await CreatorPayout.create({creator,amount,payoutDate,paymentMethod,transactionId,status,notes,createdBy: req.user._id,});
+    const populatedPayout = await CreatorPayout.findById(payout._id).populate("creator", "name email phone platform").populate("createdBy", "name email role");
 
     res.status(201).json({
       success: true,
@@ -66,11 +49,7 @@ const createCreatorPayout = async (req, res) => {
 
 const getCreatorPayouts = async (req, res) => {
   try {
-    const payouts = await CreatorPayout.find()
-      .populate("creator", "name email phone platform")
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const payouts = await CreatorPayout.find().populate("creator", "name email phone platform").populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: payouts.length,
@@ -86,9 +65,7 @@ const getCreatorPayouts = async (req, res) => {
 
 const getCreatorPayoutById = async (req, res) => {
   try {
-    const payout = await CreatorPayout.findById(req.params.id)
-      .populate("creator", "name email phone platform")
-      .populate("createdBy", "name email role");
+    const payout = await CreatorPayout.findById(req.params.id).populate("creator", "name email phone platform").populate("createdBy", "name email role");
 
     if (!payout) {
       return res.status(404).json({
@@ -101,7 +78,8 @@ const getCreatorPayoutById = async (req, res) => {
       success: true,
       payout,
     });
-  } catch (error) {
+  } catch (error) 
+  {
     res.status(500).json({
       success: false,
       message: error.message,
@@ -120,33 +98,29 @@ const updateCreatorPayout = async (req, res) => {
       });
     }
 
-    const allowedFields = [
-      "creator",
-      "amount",
-      "payoutDate",
-      "paymentMethod",
-      "transactionId",
-      "status",
-      "notes",
-    ];
+    const allowedFields = ["creator","amount","payoutDate","paymentMethod","transactionId","status","notes",];
 
-    for (const field of allowedFields) {
-      if (req.body[field] !== undefined) {
+    for (const field of allowedFields) 
+    {
+      if (req.body[field] !== undefined) 
+      {
         payout[field] = req.body[field];
       }
     }
 
-    if (payout.amount < 0) {
+    if (payout.amount < 0) 
+    {
       return res.status(400).json({
         success: false,
         message: "Amount cannot be negative",
       });
     }
 
-    if (req.body.creator) {
+    if (req.body.creator) 
+    {
       const creatorExists = await Creator.findById(req.body.creator);
-
-      if (!creatorExists) {
+      if (!creatorExists) 
+      {
         return res.status(404).json({
           success: false,
           message: "Creator not found",
@@ -156,10 +130,7 @@ const updateCreatorPayout = async (req, res) => {
 
     await payout.save();
 
-    const updatedPayout = await CreatorPayout.findById(payout._id)
-      .populate("creator", "name email phone platform")
-      .populate("createdBy", "name email role");
-
+    const updatedPayout = await CreatorPayout.findById(payout._id).populate("creator", "name email phone platform").populate("createdBy", "name email role");
     res.status(200).json({
       success: true,
       message: "Creator payout updated successfully",
@@ -176,8 +147,8 @@ const updateCreatorPayout = async (req, res) => {
 const deleteCreatorPayout = async (req, res) => {
   try {
     const payout = await CreatorPayout.findById(req.params.id);
-
-    if (!payout) {
+    if (!payout) 
+    {
       return res.status(404).json({
         success: false,
         message: "Creator payout not found",
@@ -185,7 +156,6 @@ const deleteCreatorPayout = async (req, res) => {
     }
 
     await payout.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Creator payout deleted successfully",

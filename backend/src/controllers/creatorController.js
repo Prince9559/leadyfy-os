@@ -3,20 +3,10 @@ const Creator = require("../models/Creator");
 // Create Creator
 const createCreator = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      phone,
-      category,
-      platform,
-      followers,
-      location,
-      profileUrl,
-      status,
-      notes,
-    } = req.body || {};
+    const {name,email,phone,category,platform,followers,location,profileUrl,status,notes,} = req.body || {};
 
-    if (!name || !email) {
+    if (!name || !email) 
+    {
       return res.status(400).json({
         success: false,
         message: "Name and email are required",
@@ -25,31 +15,16 @@ const createCreator = async (req, res) => {
 
     const existingCreator = await Creator.findOne({ email });
 
-    if (existingCreator) {
+    if (existingCreator) 
+    {
       return res.status(400).json({
         success: false,
         message: "Creator with this email already exists",
       });
     }
 
-    const creator = await Creator.create({
-      name,
-      email,
-      phone,
-      category,
-      platform,
-      followers,
-      location,
-      profileUrl,
-      status: status || "active",
-      notes,
-      createdBy: req.user._id,
-    });
-
-    const populatedCreator = await Creator.findById(creator._id).populate(
-      "createdBy",
-      "name email role"
-    );
+    const creator = await Creator.create({name,email,phone,category,platform,followers,location,profileUrl,status: status || "active",notes,createdBy: req.user._id,});
+    const populatedCreator = await Creator.findById(creator._id).populate("createdBy","name email role");
 
     res.status(201).json({
       success: true,
@@ -66,13 +41,9 @@ const createCreator = async (req, res) => {
   }
 };
 
-// Get All Creators
 const getCreators = async (req, res) => {
   try {
-    const creators = await Creator.find()
-      .populate("createdBy", "name email role")
-      .sort({ createdAt: -1 });
-
+    const creators = await Creator.find().populate("createdBy", "name email role").sort({ createdAt: -1 });
     res.status(200).json({
       success: true,
       count: creators.length,
@@ -88,7 +59,6 @@ const getCreators = async (req, res) => {
   }
 };
 
-// Get Single Creator
 const getCreatorById = async (req, res) => {
   try {
     const creator = await Creator.findById(req.params.id).populate(
@@ -117,7 +87,7 @@ const getCreatorById = async (req, res) => {
   }
 };
 
-// Update Creator
+
 const updateCreator = async (req, res) => {
   try {
     const creator = await Creator.findById(req.params.id);
@@ -129,18 +99,7 @@ const updateCreator = async (req, res) => {
       });
     }
 
-    const allowedFields = [
-      "name",
-      "email",
-      "phone",
-      "category",
-      "platform",
-      "followers",
-      "location",
-      "profileUrl",
-      "status",
-      "notes",
-    ];
+    const allowedFields = ["name","email","phone","category","platform","followers","location","profileUrl","status","notes",];
 
     const body = req.body || {};
 
@@ -165,7 +124,6 @@ const updateCreator = async (req, res) => {
     });
 
     await creator.save();
-
     const updatedCreator = await Creator.findById(creator._id).populate(
       "createdBy",
       "name email role"
@@ -186,11 +144,10 @@ const updateCreator = async (req, res) => {
   }
 };
 
-// Delete Creator
+
 const deleteCreator = async (req, res) => {
   try {
     const creator = await Creator.findById(req.params.id);
-
     if (!creator) {
       return res.status(404).json({
         success: false,
@@ -199,7 +156,6 @@ const deleteCreator = async (req, res) => {
     }
 
     await creator.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Creator deleted successfully",

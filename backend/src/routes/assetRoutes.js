@@ -1,18 +1,9 @@
 const express = require("express");
-
-const {
-  createAsset,
-  getAssets,
-  getAssetById,
-  updateAsset,
-  deleteAsset,
-} = require("../controllers/assetController");
-
+const {createAsset,getAssets,getAssetById,updateAsset,deleteAsset,} = require("../controllers/assetController");
 const protect = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
-
 router.post(
   "/",
   protect,

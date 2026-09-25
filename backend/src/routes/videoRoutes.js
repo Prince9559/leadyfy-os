@@ -1,21 +1,10 @@
 const express = require("express");
-
-const {
-  createVideo,
-  getVideos,
-  getVideoById,
-  updateVideo,
-  deleteVideo,
-  clientReviewVideo,
-} = require("../controllers/videoController");
-
+const {createVideo,getVideos,getVideoById,updateVideo,deleteVideo,clientReviewVideo,} = require("../controllers/videoController");
 const protect = require("../middleware/authMiddleware");
-
 const authorizeRoles = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
-// Create Video
 router.post(
   "/",
   protect,
@@ -23,7 +12,6 @@ router.post(
   createVideo
 );
 
-// Get All Videos
 router.get(
   "/",
   protect,
@@ -31,7 +19,6 @@ router.get(
   getVideos
 );
 
-// Client Approve / Revision
 router.patch(
   "/:id/client-review",
   protect,
@@ -39,7 +26,6 @@ router.patch(
   clientReviewVideo
 );
 
-// Get Single Video
 router.get(
   "/:id",
   protect,
@@ -47,7 +33,6 @@ router.get(
   getVideoById
 );
 
-// Update Video
 router.put(
   "/:id",
   protect,
@@ -55,7 +40,6 @@ router.put(
   updateVideo
 );
 
-// Delete Video
 router.delete(
   "/:id",
   protect,

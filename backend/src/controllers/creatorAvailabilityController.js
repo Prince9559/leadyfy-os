@@ -4,16 +4,10 @@ const Creator = require("../models/Creator");
 // Create Availability
 const createAvailability = async (req, res) => {
   try {
-    const {
-      creator,
-      date,
-      startTime,
-      endTime,
-      status,
-      notes,
-    } = req.body || {};
+    const {creator,date,startTime,endTime,status,notes,} = req.body || {};
 
-    if (!creator || !date || !startTime || !endTime) {
+    if (!creator || !date || !startTime || !endTime) 
+    {
       return res.status(400).json({
         success: false,
         message: "Creator, date, start time and end time are required",
@@ -22,36 +16,27 @@ const createAvailability = async (req, res) => {
 
     const creatorExists = await Creator.findById(creator);
 
-    if (!creatorExists) {
+    if (!creatorExists) 
+    {
       return res.status(404).json({
         success: false,
         message: "Creator not found",
       });
     }
 
-    const availability = await CreatorAvailability.create({
-      creator,
-      date,
-      startTime,
-      endTime,
-      status: status || "available",
-      notes,
-      createdBy: req.user._id,
-    });
+    const availability = await CreatorAvailability.create({creator,date,startTime,endTime,status: status || "available",notes,createdBy: req.user._id,});
 
-    const populatedAvailability =
-      await CreatorAvailability.findById(availability._id)
-        .populate("creator", "name email phone category platform")
-        .populate("createdBy", "name email role");
+    const populatedAvailability =await CreatorAvailability.findById(availability._id).populate("creator", "name email phone category platform").populate("createdBy", "name email role");
 
     res.status(201).json({
       success: true,
       message: "Creator availability created successfully",
       availability: populatedAvailability,
+
     });
+
   } catch (error) {
     console.error("Create Availability Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -59,22 +44,17 @@ const createAvailability = async (req, res) => {
   }
 };
 
-// Get All Availability
 const getAvailabilities = async (req, res) => {
   try {
-    const availabilities = await CreatorAvailability.find()
-      .populate("creator", "name email phone category platform")
-      .populate("createdBy", "name email role")
-      .sort({ date: 1, startTime: 1 });
-
+    const availabilities = await CreatorAvailability.find().populate("creator", "name email phone category platform").populate("createdBy", "name email role").sort({ date: 1, startTime: 1 });
     res.status(200).json({
       success: true,
       count: availabilities.length,
       availabilities,
     });
+
   } catch (error) {
     console.error("Get Availability Error:", error);
-
     res.status(500).json({
       success: false,
       message: error.message,
@@ -82,12 +62,9 @@ const getAvailabilities = async (req, res) => {
   }
 };
 
-// Get Single Availability
 const getAvailabilityById = async (req, res) => {
   try {
-    const availability = await CreatorAvailability.findById(req.params.id)
-      .populate("creator", "name email phone category platform")
-      .populate("createdBy", "name email role");
+    const availability = await CreatorAvailability.findById(req.params.id).populate("creator", "name email phone category platform").populate("createdBy", "name email role");
 
     if (!availability) {
       return res.status(404).json({
@@ -110,7 +87,6 @@ const getAvailabilityById = async (req, res) => {
   }
 };
 
-// Update Availability
 const updateAvailability = async (req, res) => {
   try {
     const availability = await CreatorAvailability.findById(req.params.id);
@@ -122,18 +98,11 @@ const updateAvailability = async (req, res) => {
       });
     }
 
-    const allowedFields = [
-      "creator",
-      "date",
-      "startTime",
-      "endTime",
-      "status",
-      "notes",
-    ];
-
+    const allowedFields = ["creator","date","startTime","endTime","status","notes",];
     const body = req.body || {};
 
-    if (body.creator !== undefined) {
+    if (body.creator !== undefined) 
+    {
       const creatorExists = await Creator.findById(body.creator);
 
       if (!creatorExists) {
@@ -145,17 +114,15 @@ const updateAvailability = async (req, res) => {
     }
 
     allowedFields.forEach((field) => {
-      if (body[field] !== undefined) {
+      if (body[field] !== undefined) 
+      {
         availability[field] = body[field];
       }
     });
 
     await availability.save();
 
-    const updatedAvailability =
-      await CreatorAvailability.findById(availability._id)
-        .populate("creator", "name email phone category platform")
-        .populate("createdBy", "name email role");
+    const updatedAvailability =await CreatorAvailability.findById(availability._id).populate("creator", "name email phone category platform").populate("createdBy", "name email role");
 
     res.status(200).json({
       success: true,
@@ -172,12 +139,11 @@ const updateAvailability = async (req, res) => {
   }
 };
 
-// Delete Availability
 const deleteAvailability = async (req, res) => {
   try {
     const availability = await CreatorAvailability.findById(req.params.id);
-
-    if (!availability) {
+    if (!availability) 
+    {
       return res.status(404).json({
         success: false,
         message: "Creator availability not found",
@@ -185,7 +151,6 @@ const deleteAvailability = async (req, res) => {
     }
 
     await availability.deleteOne();
-
     res.status(200).json({
       success: true,
       message: "Creator availability deleted successfully",
