@@ -1,6 +1,6 @@
-# Leadyfy OS Backend
+# StudioFlow Backend
 
-Leadyfy OS is a full-stack agency management platform designed to manage clients, orders, scripts, creators, shoots, videos, payments, expenses, tasks, notifications, and users from a centralized system.
+StudioFlow is a full-stack agency management platform designed to manage clients, orders, scripts, creators, shoots, videos, payments, expenses, tasks, notifications, and users from a centralized system.
 
 This repository contains the backend REST API built with Node.js, Express.js, MongoDB and JWT authentication.
 
@@ -37,15 +37,16 @@ https://leadyfy-os-exdt.onrender.com/api
 
 ```text
 backend/
+
 │
 ├── src/
-    ├── config/
+│   ├── config/
 │   ├── controllers/
 │   ├── models/
 │   ├── routes/
 │   ├── middleware/
-    ├── utils/
-    ├── app.js
+│   ├── utils/
+│   ├── app.js
 │   └── server.js
 │
 ├── .env

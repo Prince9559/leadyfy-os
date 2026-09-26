@@ -23,9 +23,7 @@ function EditUser() {
     const loadUser = async () => {
       try {
         const response = await api.get(`/users/${id}`);
-
         const user = response.data?.user;
-
         if (!user) {
           toast.error("User not found");
           navigate("/users");
@@ -40,11 +38,7 @@ function EditUser() {
         });
       } catch (error) {
         console.error("Failed to load user:", error);
-
-        toast.error(
-          error.response?.data?.message || "Failed to load user"
-        );
-
+        toast.error(error.response?.data?.message || "Failed to load user");
         navigate("/users");
       } finally {
         setLoading(false);
@@ -56,58 +50,50 @@ function EditUser() {
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-
-    setFormData((previous) => ({
-      ...previous,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((previous) => ({ ...previous, [name]: type === "checkbox" ? checked : value,}));
   };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  if (!formData.name.trim()) {
-    toast.error("Please enter name");
-    return;
-  }
+    if (!formData.name.trim()) {
+      toast.error("Please enter name");
+      return;
+    }
 
-  if (!formData.email.trim()) {
-    toast.error("Please enter email");
-    return;
-  }
+    if (!formData.email.trim()) {
+      toast.error("Please enter email");
+      return;
+    }
 
-  try {
-    setSaving(true);
+    try {
+      setSaving(true);
 
-    await api.put(`/users/${id}`, {
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      role: formData.role,
-      isActive: formData.isActive,
-    });
+      await api.put(`/users/${id}`, {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        role: formData.role,
+        isActive: formData.isActive,
+      });
 
-    toast.success("User updated successfully");
+      toast.success("User updated successfully");
 
-    setTimeout(() => {
-      navigate("/users");
-    }, 2000);
-  } catch (error) {
-    console.error("Failed to update user:", error);
+      setTimeout(() => {
+        navigate("/users");
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to update user:", error);
 
-    toast.error(
-      error.response?.data?.message || "Failed to update user"
-    );
-  } finally {
-    setSaving(false);
-  }
-};
+      toast.error(error.response?.data?.message || "Failed to update user");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return (
       <div className="edit-user-page">
-        <div className="edit-user-loading">
-          Loading user...
-        </div>
+        <div className="edit-user-loading">Loading user...</div>
       </div>
     );
   }
@@ -120,11 +106,7 @@ const handleSubmit = async (event) => {
           <p>Update user account details</p>
         </div>
 
-        <button
-          type="button"
-          className="edit-user-back-button"
-          onClick={() => navigate("/users")}
-        >
+        <button type="button" className="edit-user-back-button" onClick={() => navigate("/users")}>
           <ArrowLeft size={18} />
           <span>Back</span>
         </button>
@@ -134,37 +116,20 @@ const handleSubmit = async (event) => {
         <div className="edit-user-form-grid">
           <div className="edit-user-field">
             <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter name"
-            />
+
+            <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Enter name" />
           </div>
 
           <div className="edit-user-field">
             <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter email"
-            />
+
+            <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter email" />
           </div>
 
           <div className="edit-user-field">
             <label htmlFor="role">Role</label>
 
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
+            <select id="role" name="role" value={formData.role} onChange={handleChange}>
               <option value="employee">Employee</option>
               <option value="admin">Admin</option>
               <option value="client">Client</option>
@@ -175,24 +140,14 @@ const handleSubmit = async (event) => {
             <label htmlFor="isActive">Status</label>
 
             <label className="edit-user-checkbox-label">
-              <input
-                id="isActive"
-                name="isActive"
-                type="checkbox"
-                checked={formData.isActive}
-                onChange={handleChange}
-              />
+              <input id="isActive" name="isActive" type="checkbox" checked={formData.isActive} onChange={handleChange} />
               <span>Active</span>
             </label>
           </div>
         </div>
 
         <div className="edit-user-actions">
-          <button
-            type="submit"
-            className="edit-user-submit-button"
-            disabled={saving}
-          >
+          <button type="submit" className="edit-user-submit-button" disabled={saving}>
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </div>

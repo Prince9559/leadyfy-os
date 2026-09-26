@@ -16,16 +16,11 @@ export const getShootById = async (id) => {
 };
 
 export const updateShoot = async (id, shootData) => {
-  const response = await api.put(
-    `/shoots/${id}`,
-    shootData
-  );
+  const response = await api.put(`/shoots/${id}`,shootData);
   return response.data;
 };
 
 export const deleteShoot = async (id) => {
-  const response = await api.delete(
-    `/shoots/${id}`
-  );
+  const response = await api.delete(`/shoots/${id}`);
   return response.data;
 };

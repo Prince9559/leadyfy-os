@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { Edit3, FileText } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { getScriptById } from "../../services/scriptService";
 
 import "./Scripts.css";
-
 function ScriptDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,15 +17,10 @@ function ScriptDetails() {
     const loadScript = async () => {
       try {
         const data = await getScriptById(id);
-
         setScript(data.script || data.data);
       } catch (error) {
         console.error("Get script error:", error);
-
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load script"
-        );
+        toast.error(error.response?.data?.message || "Failed to load script");
       } finally {
         setLoading(false);
       }
@@ -38,13 +30,7 @@ function ScriptDetails() {
   }, [id]);
 
   const formatStatus = (status) => {
-    return (
-      status
-        ?.replace(/_/g, " ")
-        .replace(/\b\w/g, (char) =>
-          char.toUpperCase()
-        ) || "-"
-    );
+    return (status ?.replace(/_/g, " ") .replace(/\b\w/g, (char) => char.toUpperCase()) || "-");
   };
 
   const formatDate = (date) => {
@@ -79,23 +65,13 @@ function ScriptDetails() {
 
           <h2>Script Not Found</h2>
 
-          <p>
-            The requested script could not be found.
-          </p>
-
-          <button
-            type="button"
-            className="back-script-button"
-            onClick={() => navigate("/scripts")}
-          >
+          <p>The requested script could not be found.</p>
+          <button type="button" className="back-script-button" onClick={() => navigate("/scripts")}>
             Back to Scripts
           </button>
         </div>
 
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-        />
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );
   }
@@ -106,33 +82,23 @@ function ScriptDetails() {
         <div>
           <h1>Script Details</h1>
 
-          <p>
-            View complete script information
-          </p>
+          <p>View complete script information</p>
         </div>
 
-        <button
-  type="button"
-  className="back-script-button"
-  onClick={() => navigate("/scripts")}
->
-  Back
-</button>
+        <button type="button" className="back-script-button" onClick={() => navigate("/scripts")}>
+          Back
+        </button>
       </div>
 
       <div className="script-details-card">
         <div className="script-details-top">
           <div>
-            <span className="script-details-label">
-              Script Title
-            </span>
+            <span className="script-details-label">Script Title</span>
 
             <h2>{script.title}</h2>
           </div>
 
-          <span
-            className={`script-status-badge status-${script.status}`}
-          >
+          <span className={`script-status-badge status-${script.status}`}>
             {formatStatus(script.status)}
           </span>
         </div>
@@ -141,51 +107,37 @@ function ScriptDetails() {
           <div className="script-detail-item">
             <span>Client</span>
 
-            <strong>
-              {script.client?.companyName ||
-                "-"}
-            </strong>
+            <strong>{script.client?.companyName || "-"}</strong>
           </div>
 
           <div className="script-detail-item">
             <span>Order</span>
 
-            <strong>
-              {script.order?.packageName ||
-                "-"}
-            </strong>
+            <strong>{script.order?.packageName || "-"}</strong>
           </div>
 
           <div className="script-detail-item">
             <span>Assigned To</span>
 
-            <strong>
-              {script.assignedTo?.name || "-"}
-            </strong>
+            <strong>{script.assignedTo?.name || "-"}</strong>
           </div>
 
           <div className="script-detail-item">
             <span>Created By</span>
 
-            <strong>
-              {script.createdBy?.name || "-"}
-            </strong>
+            <strong>{script.createdBy?.name || "-"}</strong>
           </div>
 
           <div className="script-detail-item">
             <span>Created At</span>
 
-            <strong>
-              {formatDate(script.createdAt)}
-            </strong>
+            <strong>{formatDate(script.createdAt)}</strong>
           </div>
 
           <div className="script-detail-item">
             <span>Updated At</span>
 
-            <strong>
-              {formatDate(script.updatedAt)}
-            </strong>
+            <strong>{formatDate(script.updatedAt)}</strong>
           </div>
         </div>
 
@@ -218,29 +170,14 @@ function ScriptDetails() {
         )}
 
         <div className="script-details-actions">
-           
-
-          <button
-            type="button"
-            className="edit-script-details-button"
-            onClick={() =>
-              navigate(`/scripts/${script._id}`)
-            }
-          >
+          <button type="button" className="edit-script-details-button" onClick={() => navigate(`/scripts/${script._id}`)}>
             <Edit3 size={16} />
             Edit Script
           </button>
         </div>
       </div>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 }

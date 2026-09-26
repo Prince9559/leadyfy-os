@@ -16,27 +16,16 @@ export const getVideoById = async (id) => {
 };
 
 export const updateVideo = async (id, videoData) => {
-  const response = await api.put(
-    `/videos/${id}`,
-    videoData
-  );
+  const response = await api.put(`/videos/${id}`, videoData);
   return response.data;
 };
 
 export const deleteVideo = async (id) => {
-  const response = await api.delete(
-    `/videos/${id}`
-  );
+  const response = await api.delete(`/videos/${id}`);
   return response.data;
 };
 
-export const clientReviewVideo = async (
-  id,
-  action
-) => {
-  const response = await api.patch(
-    `/videos/${id}/client-review`,
-    { action }
-  );
+export const clientReviewVideo = async ( id, action) => {
+  const response = await api.patch(`/videos/${id}/client-review`,{ action });
   return response.data;
 };

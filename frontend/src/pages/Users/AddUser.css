@@ -125,7 +125,6 @@
   cursor: not-allowed;
 }
 
-/* Tablet */
 @media (max-width: 768px) {
   .add-user-header h1 {
     font-size: 24px;
@@ -140,7 +139,6 @@
   }
 }
 
-/* Mobile */
 @media (max-width: 600px) {
   .add-user-header {
     flex-direction: column;

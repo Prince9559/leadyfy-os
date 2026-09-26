@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import {
-  getScriptById,
-  updateScript,
-} from "../../services/scriptService";
-
+import { getScriptById, updateScript } from "../../services/scriptService";
 import { getClients } from "../../services/clientService";
 import { getOrders } from "../../services/orderService";
 
@@ -20,10 +14,8 @@ function ScriptProfile() {
 
   const [clients, setClients] = useState([]);
   const [orders, setOrders] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   const [formData, setFormData] = useState({
     client: "",
     order: "",
@@ -37,69 +29,36 @@ function ScriptProfile() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [scriptData, clientData, orderData] =
-          await Promise.all([
-            getScriptById(id),
-            getClients(),
-            getOrders(),
-          ]);
+        const [scriptData, clientData, orderData] = await Promise.all([
+          getScriptById(id),
+          getClients(),
+          getOrders(),
+        ]);
 
-        const script =
-          scriptData.script || scriptData.data;
-
-        const clientList =
-          clientData.clients ||
-          clientData.data ||
-          [];
-
-        const orderList =
-          orderData.orders ||
-          orderData.data ||
-          [];
+        const script = scriptData.script || scriptData.data;
+        const clientList = clientData.clients || clientData.data || [];
+        const orderList = orderData.orders || orderData.data || [];
 
         setClients(clientList);
         setOrders(orderList);
-
         if (!script) {
           toast.error("Script not found");
           return;
         }
 
         setFormData({
-          client:
-            script.client?._id ||
-            script.client ||
-            "",
-
-          order:
-            script.order?._id ||
-            script.order ||
-            "",
-
+          client: script.client?._id || script.client || "",
+          order: script.order?._id || script.order || "",
           title: script.title || "",
-
           content: script.content || "",
-
           status: script.status || "draft",
-
-          assignedTo:
-            script.assignedTo?._id ||
-            script.assignedTo ||
-            "",
-
-          revisionNote:
-            script.revisionNote || "",
+          assignedTo: script.assignedTo?._id || script.assignedTo || "",
+          revisionNote: script.revisionNote || "",
         });
       } catch (error) {
-        console.error(
-          "Load script error:",
-          error
-        );
+        console.error("Load script error:", error);
 
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load script"
-        );
+        toast.error(error.response?.data?.message || "Failed to load script");
       } finally {
         setLoading(false);
       }
@@ -149,30 +108,19 @@ function ScriptProfile() {
         title: formData.title.trim(),
         content: formData.content.trim(),
         status: formData.status,
-        assignedTo:
-          formData.assignedTo || undefined,
-        revisionNote:
-          formData.revisionNote.trim() ||
-          undefined,
+        assignedTo: formData.assignedTo || undefined,
+        revisionNote: formData.revisionNote.trim() || undefined,
       });
 
-      toast.success(
-        "Script updated successfully"
-      );
+      toast.success("Script updated successfully");
 
       setTimeout(() => {
         navigate("/scripts");
       }, 800);
     } catch (error) {
-      console.error(
-        "Update script error:",
-        error
-      );
+      console.error("Update script error:", error);
 
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to update script"
-      );
+      toast.error(error.response?.data?.message || "Failed to update script");
     } finally {
       setSaving(false);
     }
@@ -194,18 +142,10 @@ function ScriptProfile() {
         <div>
           <h1>Edit Script</h1>
 
-          <p>
-            Update script information and content
-          </p>
+          <p>Update script information and content</p>
         </div>
 
-        <button
-          type="button"
-          className="back-script-button"
-          onClick={() =>
-            navigate(`/scripts/view/${id}`)
-          }
-        >
+        <button type="button" className="back-script-button" onClick={() => navigate(`/scripts/view/${id}`)}>
           Back
         </button>
       </div>
@@ -214,25 +154,13 @@ function ScriptProfile() {
         <form onSubmit={handleSubmit}>
           <div className="script-form-grid">
             <div className="script-form-group">
-              <label htmlFor="client">
-                Client
-              </label>
+              <label htmlFor="client">Client</label>
 
-              <select
-                id="client"
-                name="client"
-                value={formData.client}
-                onChange={handleChange}
-              >
-                <option value="">
-                  Select client
-                </option>
+              <select id="client" name="client" value={formData.client} onChange={handleChange}>
+                <option value="">Select client</option>
 
                 {clients.map((client) => (
-                  <option
-                    key={client._id}
-                    value={client._id}
-                  >
+                  <option key={client._id} value={client._id}>
                     {client.companyName}
                   </option>
                 ))}
@@ -240,151 +168,61 @@ function ScriptProfile() {
             </div>
 
             <div className="script-form-group">
-              <label htmlFor="order">
-                Order
-              </label>
+              <label htmlFor="order">Order</label>
 
-              <select
-                id="order"
-                name="order"
-                value={formData.order}
-                onChange={handleChange}
-              >
-                <option value="">
-                  Select order
-                </option>
+              <select id="order" name="order" value={formData.order} onChange={handleChange}>
+                <option value="">Select order</option>
 
                 {orders.map((order) => (
-                  <option
-                    key={order._id}
-                    value={order._id}
-                  >
-                    {order.packageName} -{" "}
-                    {order.client?.companyName ||
-                      "Unknown Client"}
+                  <option key={order._id} value={order._id}>
+                    {order.packageName} - {order.client?.companyName || "Unknown Client"}
                   </option>
                 ))}
               </select>
             </div>
 
             <div className="script-form-group">
-              <label htmlFor="title">
-                Script Title
-              </label>
+              <label htmlFor="title">Script Title</label>
 
-              <input
-                id="title"
-                name="title"
-                type="text"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Enter script title"
-              />
+              <input id="title" name="title" type="text" value={formData.title} onChange={handleChange} placeholder="Enter script title" />
             </div>
 
             <div className="script-form-group">
-              <label htmlFor="status">
-                Status
-              </label>
+              <label htmlFor="status">Status</label>
 
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="draft">
-                  Draft
-                </option>
-
-                <option value="internal_review">
-                  Internal Review
-                </option>
-
-                <option value="client_review">
-                  Client Review
-                </option>
-
-                <option value="revision">
-                  Revision
-                </option>
-
-                <option value="approved">
-                  Approved
-                </option>
-
-                <option value="rejected">
-                  Rejected
-                </option>
+              <select id="status" name="status" value={formData.status} onChange={handleChange}>
+                <option value="draft">Draft</option>
+                <option value="internal_review">Internal Review</option>
+                <option value="client_review">Client Review</option>
+                <option value="revision">Revision</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
               </select>
             </div>
 
             <div className="script-form-group">
-              <label htmlFor="assignedTo">
-                Assigned To
-              </label>
-
-              <input
-                id="assignedTo"
-                name="assignedTo"
-                type="text"
-                value={formData.assignedTo}
-                onChange={handleChange}
-                placeholder="Enter user ID (optional)"
-              />
+              <label htmlFor="assignedTo">Assigned To</label>
+              <input id="assignedTo" name="assignedTo" type="text" value={formData.assignedTo} onChange={handleChange} placeholder="Enter user ID (optional)" />
             </div>
 
             <div className="script-form-group">
-              <label htmlFor="revisionNote">
-                Revision Note
-              </label>
-
-              <input
-                id="revisionNote"
-                name="revisionNote"
-                type="text"
-                value={formData.revisionNote}
-                onChange={handleChange}
-                placeholder="Enter revision note (optional)"
-              />
+              <label htmlFor="revisionNote">Revision Note</label>
+              <input id="revisionNote" name="revisionNote" type="text" value={formData.revisionNote} onChange={handleChange} placeholder="Enter revision note (optional)" />
             </div>
 
             <div className="script-form-group script-form-full">
-              <label htmlFor="content">
-                Script Content
-              </label>
-
-              <textarea
-                id="content"
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                placeholder="Write your script content here..."
-                rows="12"
-              />
+              <label htmlFor="content">Script Content</label>
+              <textarea id="content" name="content" value={formData.content} onChange={handleChange} placeholder="Write your script content here..." rows="12" />
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="add-script-button"
-            disabled={saving}
-          >
-            {saving
-              ? "Updating..."
-              : "Update Script"}
+          <button type="submit" className="add-script-button" disabled={saving}>
+            {saving ? "Updating..." : "Update Script"}
           </button>
         </form>
       </div>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 }

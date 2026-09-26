@@ -172,7 +172,6 @@
   }
 }
 
-/* Mobile */
 @media (max-width: 600px) {
   .user-list-header {
     flex-direction: column;
@@ -191,8 +190,6 @@
     border-radius: 10px;
   }
 }
-
-/* User Action Buttons */
 
 .user-action-buttons {
   display: flex;
@@ -221,8 +218,6 @@
   background: #fef2f2;
   border-color: #fca5a5;
 }
-
-/* Delete Confirmation Toast */
 
 .delete-confirm-toast {
   width: 100%;
@@ -279,8 +274,6 @@
 .delete-confirm-button:hover {
   background: #b91c1c;
 }
-
-/* Mobile Action Buttons */
 
 @media (max-width: 600px) {
   .user-action-buttons {

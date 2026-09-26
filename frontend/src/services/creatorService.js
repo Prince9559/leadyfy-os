@@ -16,10 +16,7 @@ export const getCreatorById = async (id) => {
 };
 
 export const updateCreator = async (id, creatorData) => {
-  const response = await api.put(
-    `/creators/${id}`,
-    creatorData
-  );
+  const response = await api.put(`/creators/${id}`, creatorData);
   return response.data;
 };
 

@@ -86,7 +86,6 @@
   background: #1d4ed8;
 }
 
-/* Table */
 
 .notifications-table-card {
   width: 100%;
@@ -151,8 +150,6 @@
   text-overflow: ellipsis;
 }
 
-/* Type */
-
 .notification-type {
   display: inline-flex;
   align-items: center;
@@ -210,8 +207,6 @@
   color: #4b5563;
 }
 
-/* Read / unread */
-
 .notification-read,
 .notification-unread {
   display: inline-flex;
@@ -233,8 +228,6 @@
   background: #fff7ed;
   color: #ea580c;
 }
-
-/* Actions */
 
 .notification-actions {
   display: flex;
@@ -277,8 +270,6 @@
 .notification-action-delete:hover {
   background: #fef2f2;
 }
-
-/* Delete confirmation */
 
 .notification-delete-confirm {
   padding: 2px;
@@ -323,8 +314,6 @@
 .notification-confirm-cancel:hover {
   background: #e5e7eb;
 }
-
-/* Mobile */
 
 .notifications-mobile-list {
   display: none;
@@ -477,8 +466,6 @@
   }
 }
 
-/* Back button */
-
 .notification-back-button {
   display: inline-flex;
   align-items: center;
@@ -498,8 +485,6 @@
 .notification-back-button:hover {
   background: #f9fafb;
 }
-
-/* Form */
 
 .notification-form-card {
   width: 100%;
@@ -609,8 +594,6 @@
   cursor: not-allowed;
 }
 
-/* Checkbox */
-
 .notification-checkbox {
   min-height: 42px;
   display: flex !important;
@@ -638,8 +621,6 @@
   font-size: 14px !important;
   font-weight: 500 !important;
 }
-
-/* View */
 
 .notification-view-card {
   width: 100%;
@@ -735,8 +716,6 @@
 .notification-edit-button:hover {
   background: #1d4ed8;
 }
-
-/* Responsive */
 
 @media (max-width: 800px) {
   .notification-form-grid,

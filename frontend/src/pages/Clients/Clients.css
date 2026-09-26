@@ -219,7 +219,6 @@
   background: #f3f4f6;
 }
 
-/* Client View Details */
 
 .client-details {
   display: grid;
@@ -287,13 +286,10 @@
   text-transform: capitalize;
 }
 
-/* Edit button spacing */
 
 .client-details + .add-client-button {
   min-width: 120px;
 }
-
-/* Mobile */
 
 @media (max-width: 700px) {
   .client-details {
@@ -313,7 +309,6 @@
   }
 }
 
-/* Professional Client Cards */
 
 .clients-list {
   display: grid;
@@ -362,7 +357,6 @@
   font-weight: 500;
 }
 
-/* Client Contact Section */
 
 .client-card-info {
   margin-top: 16px;
@@ -376,7 +370,6 @@
   gap: 6px;
 }
 
-/* Buttons */
 
 .client-card-actions {
   display: flex;
@@ -402,7 +395,6 @@
   transition: 0.2s ease;
 }
 
-/* View */
 
 .view-client-button {
   border: 1px solid #d1d5db;
@@ -414,7 +406,6 @@
   background: #f3f4f6;
 }
 
-/* Edit */
 
 .edit-client-button {
   border: none;
@@ -426,7 +417,6 @@
   background: #1d4ed8;
 }
 
-/* Delete */
 
 .delete-client-button {
   border: none;
@@ -438,7 +428,6 @@
   background: #fecaca;
 }
 
-/* Responsive */
 
 @media (max-width: 1000px) {
   .clients-list {
@@ -508,8 +497,6 @@
   color: #991b1b;
 }
 
-/* Professional Add Client Form */
-
 .client-form-card {
   max-width: 100%;
   box-sizing: border-box;
@@ -560,7 +547,6 @@
   }
 }
 
-/* Status Select */
 
 .client-form-group select {
   width: 100%;
@@ -587,7 +573,6 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* Mobile Clients */
 
 @media (max-width: 700px) {
   .clients-header {
@@ -656,8 +641,6 @@
   }
 }
 
-/* Small Mobile */
-
 @media (max-width: 400px) {
   .clients-header {
     flex-direction: column;
@@ -680,8 +663,6 @@
     padding: 15px;
   }
 }
-
-/* Mobile Client View */
 
 @media (max-width: 700px) {
   .client-details {
@@ -714,7 +695,6 @@
   }
 }
 
-/* Mobile Client Details */
 
 @media (max-width: 700px) {
   .client-details {

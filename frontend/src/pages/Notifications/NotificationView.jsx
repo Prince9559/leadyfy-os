@@ -1,72 +1,31 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Edit } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
+import { Plus, Eye, Edit, Trash2, Bell } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import {
-  getNotificationById,
-  markNotificationAsRead,
-} from "../../services/notificationService";
+import { getNotifications, deleteNotification } from "../../services/notificationService";
 
 import "./Notifications.css";
-
-function NotificationView() {
-  const { id } = useParams();
+function NotificationList() {
   const navigate = useNavigate();
-
-  const [notification, setNotification] = useState(null);
+  const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const loadNotifications = async () => {
+    try {
+      setLoading(true);
+      const data = await getNotifications();
+      setNotifications(data.notifications || []);
+    } catch (error) {
+      console.error("Get notifications error:", error);
+      toast.error(error.response?.data?.message || "Failed to load notifications");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadNotification = async () => {
-      try {
-        const data = await getNotificationById(id);
-
-        let currentNotification = data.notification;
-
-        // Mark unread notification as read
-        if (
-          currentNotification &&
-          currentNotification.isRead === false
-        ) {
-          try {
-            const readData =
-              await markNotificationAsRead(id);
-
-            currentNotification =
-              readData.notification ||
-              {
-                ...currentNotification,
-                isRead: true,
-              };
-          } catch (readError) {
-            console.error(
-              "Mark notification as read error:",
-              readError
-            );
-          }
-        }
-
-        setNotification(currentNotification);
-      } catch (error) {
-        console.error(
-          "Get notification error:",
-          error
-        );
-
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load notification"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadNotification();
-  }, [id]);
+    loadNotifications();
+  }, []);
 
   const formatType = (type) => {
     const types = {
@@ -86,242 +45,198 @@ function NotificationView() {
 
   const formatDate = (date) => {
     if (!date) return "-";
-
-    return new Date(date).toLocaleDateString(
-      "en-IN",
-      {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }
-    );
+    return new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   };
 
-  const formatDateTime = (date) => {
-    if (!date) return "-";
+  const handleDelete = (notification) => {
+    toast(
+      ({ closeToast }) => (
+        <div className="notification-delete-confirm">
+          <p>
+            Delete <strong>Are you sure you want to delete this notification?</strong>?
+          </p>
+          <div className="notification-confirm-actions">
+            <button type="button" className="notification-confirm-delete" onClick={async () => {
+              try {
+                await deleteNotification(notification._id);
+                setNotifications((prev) => prev.filter((item) => item._id !== notification._id));
 
-    return new Date(date).toLocaleString(
-      "en-IN",
-      {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }
-    );
-  };
+                toast.success("Notification deleted successfully");
+              } catch (error) {
+                console.error("Delete notification error:", error);
 
-  if (loading) {
-    return (
-      <div className="notifications-page">
-        <div className="notifications-empty">
-          <p>Loading notification...</p>
-        </div>
+                toast.error(error.response?.data?.message || "Failed to delete notification");
+              }
 
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-        />
-      </div>
-    );
-  }
+              closeToast();
+            }}>
+              Delete
+            </button>
 
-  if (!notification) {
-    return (
-      <div className="notifications-page">
-        <div className="notifications-header">
-          <div>
-            <h1>Notification Details</h1>
-
-            <p>
-              Notification information could not
-              be found.
-            </p>
+            <button type="button" className="notification-confirm-cancel" onClick={closeToast}>
+              Cancel
+            </button>
           </div>
-
-          <button
-            type="button"
-            className="notification-back-button"
-            onClick={() =>
-              navigate("/notifications")
-            }
-          >
-            Back
-          </button>
         </div>
-
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-        />
-      </div>
+      ),
+      {
+        autoClose: false,
+        closeButton: false,
+        position: "top-right",
+      }
     );
-  }
+  };
 
   return (
     <div className="notifications-page">
       <div className="notifications-header">
         <div>
-          <h1>Notification Details</h1>
-
-          <p>
-            View complete information about this
-            notification.
-          </p>
+          <h1>Notifications</h1>
+          <p>Manage and track notifications for your team.</p>
         </div>
 
-        <button
-          type="button"
-          className="notification-back-button"
-          onClick={() =>
-            navigate("/notifications")
-          }
-        >
-          Back
+        <button type="button" className="add-notification-button" onClick={() => navigate("/notifications/add")}>
+          <Plus size={18} />
+          Add Notification
         </button>
       </div>
 
-      <div className="notification-view-card">
-        <div className="notification-view-grid">
-          <div className="notification-view-item">
-            <span className="notification-view-label">
-              Title
-            </span>
-
-            <strong>
-              {notification.title || "-"}
-            </strong>
-          </div>
-
-          <div className="notification-view-item">
-            <span className="notification-view-label">
-              User
-            </span>
-
-            <strong>
-              {notification.user?.name || "-"}
-            </strong>
-
-            {notification.user?.email && (
-              <small>
-                {notification.user.email}
-              </small>
-            )}
-          </div>
-
-          <div className="notification-view-item">
-            <span className="notification-view-label">
-              Type
-            </span>
-
-            <span
-              className={`notification-type notification-type-${notification.type}`}
-            >
-              {formatType(notification.type)}
-            </span>
-          </div>
-
-          <div className="notification-view-item">
-            <span className="notification-view-label">
-              Status
-            </span>
-
-            <span
-              className={
-                notification.isRead
-                  ? "notification-read"
-                  : "notification-unread"
-              }
-            >
-              {notification.isRead
-                ? "Read"
-                : "Unread"}
-            </span>
-          </div>
-
-          <div className="notification-view-item">
-            <span className="notification-view-label">
-              Created By
-            </span>
-
-            <strong>
-              {notification.createdBy?.name ||
-                "-"}
-            </strong>
-
-            {notification.createdBy?.email && (
-              <small>
-                {notification.createdBy.email}
-              </small>
-            )}
-          </div>
-
-          <div className="notification-view-item">
-            <span className="notification-view-label">
-              Created Date
-            </span>
-
-            <strong>
-              {formatDate(notification.createdAt)}
-            </strong>
-
-            <small>
-              {formatDateTime(
-                notification.createdAt
-              )}
-            </small>
-          </div>
-
-          <div className="notification-view-item notification-view-full">
-            <span className="notification-view-label">
-              Message
-            </span>
-
-            <div className="notification-view-text">
-              {notification.message ||
-                "No message added."}
-            </div>
-          </div>
-
-          <div className="notification-view-item notification-view-full">
-            <span className="notification-view-label">
-              Link
-            </span>
-
-            <div className="notification-view-text">
-              {notification.link ||
-                "No link added."}
-            </div>
-          </div>
+      {loading ? (
+        <div className="notifications-empty">
+          <p>Loading notifications...</p>
         </div>
+      ) : notifications.length === 0 ? (
+        <div className="notifications-empty">
+          <Bell size={36} />
 
-        <div className="notification-view-actions">
-          <button
-            type="button"
-            className="notification-edit-button"
-            onClick={() =>
-              navigate(
-                `/notifications/${notification._id}`
-              )
-            }
-          >
-            <Edit size={18} />
-            Edit Notification
+          <p>No notifications found.</p>
+
+          <button type="button" onClick={() => navigate("/notifications/add")}>
+            Create your first notification
           </button>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="notifications-table-card">
+            <div className="notifications-table-wrapper">
+              <table className="notifications-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+                <tbody>
+                  {notifications.map((notification) => (
+                    <tr key={notification._id}>
+                      <td className="notification-title-cell">{notification.title}</td>
+
+                      <td>{notification.user?.name || "-"}</td>
+
+                      <td>
+                        <span className={`notification-type notification-type-${notification.type}`}>
+                          {formatType(notification.type)}
+                        </span>
+                      </td>
+
+                      <td className="notification-message-cell">{notification.message}</td>
+
+                      <td>
+                        <span className={notification.isRead ? "notification-read" : "notification-unread"}>
+                          {notification.isRead ? "Read" : "Unread"}
+                        </span>
+                      </td>
+
+                      <td>{formatDate(notification.createdAt)}</td>
+
+                      <td>
+                        <div className="notification-actions">
+                          <button type="button" title="View" className="notification-action-view" onClick={() => navigate(`/notifications/view/${notification._id}`)}>
+                            <Eye size={17} />
+                          </button>
+
+                          <button type="button" title="Edit" className="notification-action-edit" onClick={() => navigate(`/notifications/${notification._id}`)}>
+                            <Edit size={17} />
+                          </button>
+
+                          <button type="button" title="Delete" className="notification-action-delete" onClick={() => handleDelete(notification)}>
+                            <Trash2 size={17} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="notifications-mobile-list">
+            {notifications.map((notification) => (
+              <div className="notification-mobile-card" key={notification._id}>
+                <div className="notification-mobile-top">
+                  <div>
+                    <h3>{notification.title}</h3>
+                    <p>{notification.user?.name || "Unknown User"}</p>
+                  </div>
+
+                  <span className={`notification-type notification-type-${notification.type}`}>
+                    {formatType(notification.type)}
+                  </span>
+                </div>
+
+                <div className="notification-mobile-message">{notification.message}</div>
+
+                <div className="notification-mobile-details">
+                  <div>
+                    <span>Status</span>
+                    <strong className={notification.isRead ? "notification-read" : "notification-unread"}>
+                      {notification.isRead ? "Read" : "Unread"}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>Date</span>
+
+                    <strong>{formatDate(notification.createdAt)}</strong>
+                  </div>
+                </div>
+
+                <div className="notification-mobile-actions">
+                  <button type="button" onClick={() => navigate(`/notifications/view/${notification._id}`)}>
+                    <Eye size={16} />
+                    View
+                  </button>
+
+                  <button type="button" onClick={() => navigate(`/notifications/${notification._id}`)}>
+                    <Edit size={16} />
+                    Edit
+                  </button>
+
+                  <button type="button" onClick={() => handleDelete(notification)}>
+                    <Trash2 size={16} />
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 }
 
-export default NotificationView;
+export default NotificationList;

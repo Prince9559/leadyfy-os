@@ -1,16 +1,8 @@
-/* ================================
-   VIDEOS PAGE
-================================ */
-
 .videos-page {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
 }
-
-/* ================================
-   HEADER
-================================ */
 
 .videos-header {
   display: flex;
@@ -58,10 +50,6 @@
   transform: translateY(-1px);
 }
 
-/* ================================
-   EMPTY / LOADING
-================================ */
-
 .videos-empty {
   display: flex;
   flex-direction: column;
@@ -89,10 +77,6 @@
   color: #6b7280;
   font-size: 14px;
 }
-
-/* ================================
-   TABLE CARD
-================================ */
 
 .videos-table-card {
   width: 100%;
@@ -149,10 +133,6 @@
   background: #fafafa;
 }
 
-/* ================================
-   VIDEO TITLE
-================================ */
-
 .video-title-cell {
   display: flex;
   align-items: center;
@@ -182,10 +162,6 @@
   font-size: 12px;
 }
 
-/* ================================
-   THUMBNAIL
-================================ */
-
 .video-thumbnail,
 .video-thumbnail-placeholder {
   width: 58px;
@@ -210,10 +186,6 @@
   font-weight: 700;
 }
 
-/* ================================
-   STATUS
-================================ */
-
 .video-status {
   display: inline-flex;
   align-items: center;
@@ -227,7 +199,6 @@
   text-align: center;
 }
 
-/* Default */
 .video-status-script_approved {
   background: #eef2ff;
   color: #4338ca;
@@ -273,10 +244,6 @@
   color: #166534;
 }
 
-/* ================================
-   ACTIONS
-================================ */
-
 .video-actions {
   display: flex;
   align-items: center;
@@ -312,10 +279,6 @@
   border-color: #fecaca;
   color: #dc2626;
 }
-
-/* ================================
-   MOBILE LIST
-================================ */
 
 .videos-mobile-list {
   display: none;
@@ -448,10 +411,6 @@
   background: #fffafa;
 }
 
-/* ================================
-   TABLET
-================================ */
-
 @media (max-width: 900px) {
   .videos-header {
     align-items: flex-start;
@@ -461,10 +420,6 @@
     min-width: 850px;
   }
 }
-
-/* ================================
-   MOBILE
-================================ */
 
 @media (max-width: 768px) {
   .videos-header {
@@ -500,10 +455,6 @@
   }
 }
 
-/* ================================
-   SMALL MOBILE
-================================ */
-
 @media (max-width: 480px) {
   .videos-header h1 {
     font-size: 22px;
@@ -529,11 +480,6 @@
     width: 100%;
   }
 }
-
-
-/* ================================
-   ADD / VIDEO FORM
-================================ */
 
 .video-back-button {
   display: inline-flex;
@@ -673,10 +619,6 @@
   cursor: not-allowed;
 }
 
-/* ================================
-   TABLET
-================================ */
-
 @media (max-width: 900px) {
   .video-form-card {
     padding: 20px;
@@ -690,10 +632,6 @@
     grid-column: auto;
   }
 }
-
-/* ================================
-   MOBILE
-================================ */
 
 @media (max-width: 768px) {
   .videos-header {
@@ -725,10 +663,6 @@
   }
 }
 
-/* ================================
-   SMALL MOBILE
-================================ */
-
 @media (max-width: 480px) {
   .video-form-card {
     padding: 12px;
@@ -745,16 +679,6 @@
     font-size: 13px;
   }
 }
-
-/* ================================
-   VIDEO DETAILS
-================================ */
-
-/* .video-details-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-} */
 
 .video-edit-button {
   display: inline-flex;
@@ -905,10 +829,6 @@
   word-break: break-word;
 }
 
-/* ================================
-   TABLET
-================================ */
-
 @media (max-width: 900px) {
   .video-details-media {
     min-height: 300px;
@@ -922,10 +842,6 @@
     padding: 20px;
   }
 }
-
-/* ================================
-   MOBILE
-================================ */
 
 @media (max-width: 768px) {
   .video-details-header-actions {
@@ -962,10 +878,6 @@
     padding: 13px;
   }
 }
-
-/* ================================
-   SMALL MOBILE
-================================ */
 
 @media (max-width: 480px) {
   .video-details-content {

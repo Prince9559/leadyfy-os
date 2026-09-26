@@ -7,14 +7,7 @@ function App() {
   return (
     <AuthProvider>
       <AppRoutes />
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={3000}newestOnTop closeOnClick pauseOnHover/>
     </AuthProvider>
   );
 }

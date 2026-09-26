@@ -1,6 +1,3 @@
-/* =========================
-   EXPENSES PAGE
-========================= */
 
 .expenses-page {
   width: 100%;
@@ -15,10 +12,6 @@
 .expenses-page *::after {
   box-sizing: border-box;
 }
-
-/* =========================
-   HEADER
-========================= */
 
 .expenses-header {
   width: 100%;
@@ -67,10 +60,6 @@
   background: #1d4ed8;
 }
 
-/* =========================
-   EMPTY / LOADING
-========================= */
-
 .expenses-empty {
   width: 100%;
   min-height: 220px;
@@ -103,10 +92,6 @@
   font-weight: 600;
   cursor: pointer;
 }
-
-/* =========================
-   TABLE
-========================= */
 
 .expenses-table-card {
   width: 100%;
@@ -158,10 +143,6 @@
   background: #fafafa;
 }
 
-/* =========================
-   TITLE
-========================= */
-
 .expense-title-cell {
   min-width: 0;
   display: flex;
@@ -183,10 +164,6 @@
   line-height: 1.4;
   word-break: break-word;
 }
-
-/* =========================
-   STATUS
-========================= */
 
 .expense-status {
   display: inline-flex;
@@ -214,10 +191,6 @@
   background: #fee2e2;
   color: #991b1b;
 }
-
-/* =========================
-   ACTIONS
-========================= */
 
 .expense-actions {
   display: flex;
@@ -254,10 +227,6 @@
   background: #fef2f2;
   border-color: #fecaca;
 }
-
-/* =========================
-   MOBILE LIST
-========================= */
 
 .expenses-mobile-list {
   display: none;
@@ -369,9 +338,6 @@
   background: #fef2f2;
 }
 
-/* =========================
-   DELETE CONFIRMATION
-========================= */
 
 .expense-delete-confirm {
   min-width: 240px;
@@ -410,10 +376,6 @@
   color: #374151;
 }
 
-/* =========================
-   TABLET
-========================= */
-
 @media (max-width: 900px) {
   .expenses-header h1 {
     font-size: 26px;
@@ -423,10 +385,6 @@
     min-width: 850px;
   }
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 700px) {
   .expenses-header {
@@ -476,10 +434,6 @@
     width: 100%;
   }
 }
-
-/* =========================
-   EXPENSE FORM
-========================= */
 
 .expense-back-button {
   display: inline-flex;
@@ -631,10 +585,6 @@
   cursor: not-allowed;
 }
 
-/* =========================
-   EXPENSE FORM TABLET
-========================= */
-
 @media (max-width: 800px) {
   .expense-form-grid {
     grid-template-columns: 1fr;
@@ -649,9 +599,6 @@
   }
 }
 
-/* =========================
-   EXPENSE FORM MOBILE
-========================= */
 
 @media (max-width: 600px) {
   .expense-form-card {
@@ -688,10 +635,6 @@
     font-size: 13px;
   }
 }
-
-/* =========================
-   EXPENSE VIEW
-========================= */
 
 .expense-view-card {
   width: 100%;
@@ -821,9 +764,6 @@
   background: #1d4ed8;
 }
 
-/* =========================
-   EXPENSE VIEW TABLET
-========================= */
 
 @media (max-width: 800px) {
   .expense-view-card {
@@ -839,9 +779,6 @@
   }
 }
 
-/* =========================
-   EXPENSE VIEW MOBILE
-========================= */
 
 @media (max-width: 600px) {
   .expense-view-card {

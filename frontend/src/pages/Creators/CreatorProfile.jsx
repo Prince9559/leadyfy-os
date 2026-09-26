@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import {
-  getCreatorById,
-  updateCreator,
-} from "../../services/creatorService";
-
+import { getCreatorById, updateCreator } from "../../services/creatorService";
 import "./Creators.css";
 
 function CreatorProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,11 +27,7 @@ function CreatorProfile() {
     const loadCreator = async () => {
       try {
         const data = await getCreatorById(id);
-
-        const creator =
-          data.creator ||
-          data.data;
-
+        const creator = data.creator || data.data;
         if (!creator) {
           toast.error("Creator not found");
           return;
@@ -58,15 +46,8 @@ function CreatorProfile() {
           notes: creator.notes || "",
         });
       } catch (error) {
-        console.error(
-          "Get creator error:",
-          error
-        );
-
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load creator"
-        );
+        console.error("Get creator error:", error);
+        toast.error(error.response?.data?.message || "Failed to load creator");
       } finally {
         setLoading(false);
       }
@@ -77,7 +58,6 @@ function CreatorProfile() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -86,7 +66,6 @@ function CreatorProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.name.trim()) {
       toast.error("Creator name is required");
       return;
@@ -104,33 +83,20 @@ function CreatorProfile() {
         name: formData.name.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim() || undefined,
-        category:
-          formData.category.trim() || undefined,
-        platform:
-          formData.platform.trim() || undefined,
+        category: formData.category.trim() || undefined,
+        platform: formData.platform.trim() || undefined,
         followers: Number(formData.followers || 0),
-        location:
-          formData.location.trim() || undefined,
-        profileUrl:
-          formData.profileUrl.trim() || undefined,
+        location: formData.location.trim() || undefined,
+        profileUrl: formData.profileUrl.trim() || undefined,
         status: formData.status,
-        notes:
-          formData.notes.trim() || undefined,
+        notes: formData.notes.trim() || undefined,
       });
 
-      toast.success(
-        "Creator updated successfully"
-      );
+      toast.success("Creator updated successfully");
     } catch (error) {
-      console.error(
-        "Update creator error:",
-        error
-      );
+      console.error("Update creator error:", error);
 
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to update creator"
-      );
+      toast.error(error.response?.data?.message || "Failed to update creator");
     } finally {
       setSaving(false);
     }
@@ -154,11 +120,7 @@ function CreatorProfile() {
           <p>Update creator information</p>
         </div>
 
-        <button
-          type="button"
-          className="back-creator-button"
-          onClick={() => navigate("/creators")}
-        >
+        <button type="button" className="back-creator-button" onClick={() => navigate("/creators")}>
           Back
         </button>
       </div>
@@ -167,183 +129,76 @@ function CreatorProfile() {
         <form onSubmit={handleSubmit}>
           <div className="creator-form-grid">
             <div className="creator-form-group">
-              <label htmlFor="name">
-                Creator Name
-              </label>
+              <label htmlFor="name">Creator Name</label>
 
-              <input
-                id="name"
-                name="name"
-                type="text"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter creator name"
-              />
+              <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Enter creator name" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="email">
-                Email
-              </label>
+              <label htmlFor="email">Email</label>
 
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter email address"
-              />
+              <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter email address" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="phone">
-                Phone
-              </label>
+              <label htmlFor="phone">Phone</label>
 
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Enter phone number"
-              />
+              <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="Enter phone number" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="category">
-                Category
-              </label>
+              <label htmlFor="category">Category</label>
 
-              <input
-                id="category"
-                name="category"
-                type="text"
-                value={formData.category}
-                onChange={handleChange}
-                placeholder="e.g. Fashion, Tech, Fitness"
-              />
+              <input id="category" name="category" type="text" value={formData.category} onChange={handleChange} placeholder="e.g. Fashion, Tech, Fitness" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="platform">
-                Platform
-              </label>
+              <label htmlFor="platform">Platform</label>
 
-              <input
-                id="platform"
-                name="platform"
-                type="text"
-                value={formData.platform}
-                onChange={handleChange}
-                placeholder="e.g. Instagram, YouTube"
-              />
+              <input id="platform" name="platform" type="text" value={formData.platform} onChange={handleChange} placeholder="e.g. Instagram, YouTube" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="followers">
-                Followers
-              </label>
+              <label htmlFor="followers">Followers</label>
 
-              <input
-                id="followers"
-                name="followers"
-                type="number"
-                min="0"
-                value={formData.followers}
-                onChange={handleChange}
-                placeholder="Enter follower count"
-              />
+              <input id="followers" name="followers" type="number" min="0" value={formData.followers} onChange={handleChange} placeholder="Enter follower count" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="location">
-                Location
-              </label>
+              <label htmlFor="location">Location</label>
 
-              <input
-                id="location"
-                name="location"
-                type="text"
-                value={formData.location}
-                onChange={handleChange}
-                placeholder="e.g. Varanasi, India"
-              />
+              <input id="location" name="location" type="text" value={formData.location} onChange={handleChange} placeholder="e.g. Varanasi, India" />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="profileUrl">
-                Profile URL
-              </label>
+              <label htmlFor="profileUrl">Profile URL</label>
 
-              <input
-                id="profileUrl"
-                name="profileUrl"
-                type="url"
-                value={formData.profileUrl}
-                onChange={handleChange}
-                placeholder="https://..."
-              />
+              <input id="profileUrl" name="profileUrl" type="url" value={formData.profileUrl} onChange={handleChange} placeholder="https://..." />
             </div>
 
             <div className="creator-form-group">
-              <label htmlFor="status">
-                Status
-              </label>
+              <label htmlFor="status">Status</label>
 
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="active">
-                  Active
-                </option>
-
-                <option value="inactive">
-                  Inactive
-                </option>
+              <select id="status" name="status" value={formData.status} onChange={handleChange}>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
               </select>
             </div>
 
             <div className="creator-form-group creator-form-full">
-              <label htmlFor="notes">
-                Notes
-              </label>
+              <label htmlFor="notes">Notes</label>
 
-              <textarea
-                id="notes"
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                placeholder="Add any additional notes..."
-                rows="6"
-              />
+              <textarea id="notes" name="notes" value={formData.notes} onChange={handleChange} placeholder="Add any additional notes..." rows="6" />
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="save-creator-button"
-            disabled={saving}
-          >
-            {saving
-              ? "Updating..."
-              : "Update Creator"}
+          <button type="submit" className="save-creator-button" disabled={saving}>
+            {saving ? "Updating..." : "Update Creator"}
           </button>
         </form>
       </div>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 }

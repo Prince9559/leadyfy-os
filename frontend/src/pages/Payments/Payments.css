@@ -2,9 +2,6 @@
   width: 100%;
 }
 
-/* =========================
-   HEADER
-========================= */
 
 .payments-header {
   display: flex;
@@ -48,10 +45,6 @@
   background: #1d4ed8;
 }
 
-/* =========================
-   EMPTY
-========================= */
-
 .payments-empty {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -71,10 +64,6 @@
   color: #6b7280;
   font-size: 14px;
 }
-
-/* =========================
-   TABLE
-========================= */
 
 .payments-table-card {
   width: 100%;
@@ -122,10 +111,6 @@
   border-bottom: none;
 }
 
-/* =========================
-   CLIENT
-========================= */
-
 .payment-client-cell {
   display: flex;
   flex-direction: column;
@@ -141,10 +126,6 @@
   color: #6b7280;
   font-size: 12px;
 }
-
-/* =========================
-   STATUS
-========================= */
 
 .payment-status {
   display: inline-flex;
@@ -176,10 +157,6 @@
   background: #e0e7ff;
   color: #3730a3;
 }
-
-/* =========================
-   ACTIONS
-========================= */
 
 .payment-actions {
   display: flex;
@@ -217,10 +194,6 @@
   background: #fef2f2;
   border-color: #fecaca;
 }
-
-/* =========================
-   MOBILE LIST
-========================= */
 
 .payments-mobile-list {
   display: none;
@@ -317,10 +290,6 @@
   background: #fef2f2;
 }
 
-/* =========================
-   TABLET
-========================= */
-
 @media (max-width: 900px) {
   .payments-header h1 {
     font-size: 24px;
@@ -330,10 +299,6 @@
     min-width: 950px;
   }
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 700px) {
   .payments-header {
@@ -375,9 +340,6 @@
   }
 }
 
-/* =========================
-   SMALL MOBILE
-========================= */
 
 @media (max-width: 420px) {
   .payment-mobile-card {
@@ -408,10 +370,6 @@
     width: 100%;
   }
 }
-
-/* =========================
-   PAYMENT FORM
-========================= */
 
 .payment-back-button {
   display: inline-flex;
@@ -573,9 +531,6 @@
   }
 }
 
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 600px) {
   .payment-form-card {
@@ -605,9 +560,6 @@
   }
 }
 
-/* =========================
-   PAYMENT PAGE RESPONSIVE FIX
-========================= */
 
 .payments-page {
   width: 100%;
@@ -661,9 +613,6 @@
   min-width: 0;
 }
 
-/* =========================
-   TABLET
-========================= */
 
 @media (max-width: 900px) {
   .payments-page {
@@ -683,9 +632,6 @@
   }
 }
 
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 600px) {
   .payments-page {
@@ -759,10 +705,6 @@
   }
 }
 
-/* =========================
-   VERY SMALL MOBILE
-========================= */
-
 @media (max-width: 400px) {
   .payment-form-card {
     padding: 14px;
@@ -779,9 +721,6 @@
   }
 }
 
-/* =========================
-   PAYMENT VIEW
-========================= */
 
 .payment-view-card {
   width: 100%;
@@ -934,9 +873,6 @@
   }
 }
 
-/* =========================
-   PAYMENT VIEW MOBILE
-========================= */
 
 @media (max-width: 600px) {
   .payment-view-card {

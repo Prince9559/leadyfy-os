@@ -7,14 +7,12 @@ import "./UserList.css";
 
 function UserList() {
   const navigate = useNavigate();
-
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadUsers = async () => {
     try {
       setLoading(true);
-
       const response = await api.get("/users");
 
       setUsers(response.data?.users || []);
@@ -48,38 +46,25 @@ function UserList() {
           </div>
 
           <div className="delete-confirm-actions">
-            <button
-              type="button"
-              className="delete-cancel-button"
-              onClick={() => {
-                closeToast();
-              }}
-            >
+            <button type="button" className="delete-cancel-button"onClick={() => { closeToast();}}>
               Cancel
             </button>
 
-            <button
-              type="button"
-              className="delete-confirm-button"
+            <button type="button" className="delete-confirm-button"
               onClick={async () => {
                 try {
                   closeToast();
-
                   await api.delete(`/users/${user._id}`);
-
                   toast.success("User deleted successfully");
-
                   loadUsers();
                 } catch (error) {
                   console.error("Failed to delete user:", error);
-
                   toast.error(
                     error.response?.data?.message ||
                       "Failed to delete user"
                   );
                 }
-              }}
-            >
+              }}>
               Delete
             </button>
           </div>
@@ -102,11 +87,7 @@ function UserList() {
           <p>Manage users and their roles</p>
         </div>
 
-        <button
-          type="button"
-          className="user-add-button"
-          onClick={() => navigate("/users/add")}
-        >
+        <button type="button" className="user-add-button" onClick={() => navigate("/users/add")}>
           <UserPlus size={18} />
           <span>Add User</span>
         </button>
@@ -142,48 +123,26 @@ function UserList() {
                     <td>{user.email}</td>
 
                     <td>
-                      <span
-                        className={`user-role user-role-${user.role}`}
-                      >
+                      <span className={`user-role user-role-${user.role}`}>
                         {user.role}
                       </span>
                     </td>
 
                     <td>
-                      <span
-                        className={`user-status ${
-                          user.isActive
-                            ? "user-status-active"
-                            : "user-status-inactive"
-                        }`}
-                      >
-                        {user.isActive
-                          ? "Active"
-                          : "Inactive"}
+                      <span className={`user-status ${ user.isActive ? "user-status-active" : "user-status-inactive"}`}>
+                        {user.isActive ? "Active" : "Inactive"}
                       </span>
                     </td>
 
                     <td>
                       <div className="user-action-buttons">
-                        <button
-                          type="button"
-                          className="user-edit-button"
-                          onClick={() =>
-                            navigate(`/users/${user._id}`)
-                          }
-                        >
+                        <button type="button" className="user-edit-button" onClick={() => navigate(`/users/${user._id}`) }>
                           <Pencil size={16} />
                           Edit
                         </button>
 
                         {user.role !== "owner" && (
-                          <button
-                            type="button"
-                            className="user-delete-button"
-                            onClick={() =>
-                              handleDelete(user)
-                            }
-                          >
+                          <button type="button" className="user-delete-button" onClick={() => handleDelete(user) }>
                             <Trash2 size={16} />
                             Delete
                           </button>

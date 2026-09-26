@@ -1,16 +1,9 @@
-/* ================================
-   SHOOTS PAGE
-================================ */
 
 .shoots-page {
   width: 100%;
   padding: 24px;
   box-sizing: border-box;
 }
-
-/* ================================
-   HEADER
-================================ */
 
 .shoots-header {
   display: flex;
@@ -52,10 +45,6 @@
   transform: translateY(-1px);
 }
 
-/* ================================
-   SEARCH
-================================ */
-
 .shoot-search-box {
   position: relative;
   width: 100%;
@@ -96,10 +85,6 @@
   pointer-events: none;
 }
 
-/* ================================
-   EMPTY STATE
-================================ */
-
 .shoots-empty {
   min-height: 280px;
   padding: 40px 20px;
@@ -132,10 +117,6 @@
   line-height: 1.6;
 }
 
-/* ================================
-   SHOOT LIST
-================================ */
-
 .shoots-list {
   display: grid;
   grid-template-columns: repeat(
@@ -144,10 +125,6 @@
   );
   gap: 20px;
 }
-
-/* ================================
-   SHOOT CARD
-================================ */
 
 .shoot-card {
   min-width: 0;
@@ -166,10 +143,6 @@
   box-shadow: 0 7px 20px
     rgba(15, 23, 42, 0.08);
 }
-
-/* ================================
-   CARD HEADER
-================================ */
 
 .shoot-card-header {
   display: flex;
@@ -196,10 +169,6 @@
   font-size: 15px;
   font-weight: 700;
 }
-
-/* ================================
-   STATUS
-================================ */
 
 .shoot-status-badge {
   display: inline-flex;
@@ -238,10 +207,6 @@
   color: #dc2626;
 }
 
-/* ================================
-   CARD INFO
-================================ */
-
 .shoot-card-info {
   display: grid;
   grid-template-columns: repeat(
@@ -275,10 +240,6 @@
   word-break: break-word;
 }
 
-/* ================================
-   NOTES
-================================ */
-
 .shoot-notes {
   margin-top: 14px;
   padding: 13px;
@@ -303,10 +264,6 @@
   word-break: break-word;
   white-space: pre-wrap;
 }
-
-/* ================================
-   CARD ACTIONS
-================================ */
 
 .shoot-card-actions {
   display: flex;
@@ -357,19 +314,11 @@
   background: #fef2f2;
 }
 
-/* ================================
-   TABLET
-================================ */
-
 @media (max-width: 900px) {
   .shoots-list {
     grid-template-columns: 1fr;
   }
 }
-
-/* ================================
-   MOBILE
-================================ */
 
 @media (max-width: 768px) {
   .shoots-page {
@@ -420,10 +369,6 @@
     width: 100%;
   }
 }
-
-/* ================================
-   ADD / EDIT SHOOT FORM
-================================ */
 
 .back-shoot-button {
   min-width: 90px;
@@ -557,10 +502,6 @@
   transform: none;
 }
 
-/* ================================
-   SHOOT FORM RESPONSIVE
-================================ */
-
 @media (max-width: 768px) {
   .shoot-form-card {
     padding: 20px;
@@ -599,10 +540,6 @@
     width: 100%;
   }
 }
-
-/* ================================
-   SHOOT VIEW PAGE
-================================ */
 
 .shoot-view-card {
   width: 100%;
@@ -721,10 +658,6 @@
   transform: translateY(-1px);
 }
 
-/* ================================
-   SHOOT VIEW RESPONSIVE
-================================ */
-
 @media (max-width: 768px) {
   .shoot-view-card {
     padding: 20px;
@@ -769,10 +702,6 @@
   }
 }
 
-/* ========================================
-   PROFESSIONAL SHOOT CALENDAR
-======================================== */
-
 .shoot-calendar-card {
   width: 100%;
   box-sizing: border-box;
@@ -784,15 +713,11 @@
   overflow: hidden;
 }
 
-/* Calendar wrapper */
-
 .shoot-calendar-card .rbc-calendar {
   min-width: 0;
   font-family: inherit;
   color: #111827;
 }
-
-/* Toolbar */
 
 .shoot-calendar-card .rbc-toolbar {
   display: flex;
@@ -809,8 +734,6 @@
   font-weight: 700;
   text-align: center;
 }
-
-/* Toolbar buttons */
 
 .shoot-calendar-card .rbc-btn-group {
   display: flex;
@@ -844,8 +767,6 @@
   color: #ffffff;
 }
 
-/* Calendar header */
-
 .shoot-calendar-card .rbc-header {
   min-height: 42px;
   display: flex;
@@ -860,8 +781,6 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-
-/* Calendar cells */
 
 .shoot-calendar-card .rbc-month-view {
   border: 1px solid #e5e7eb;
@@ -886,8 +805,6 @@
   background: #eef2ff;
 }
 
-/* Date numbers */
-
 .shoot-calendar-card .rbc-date-cell {
   padding: 8px 9px 4px;
   color: #4b5563;
@@ -904,13 +821,9 @@
   color: #9ca3af;
 }
 
-/* Month rows */
-
 .shoot-calendar-card .rbc-month-row {
   min-height: 105px;
 }
-
-/* Events */
 
 .shoot-calendar-card .rbc-event {
   min-height: 24px;
@@ -937,16 +850,12 @@
   white-space: nowrap;
 }
 
-/* More events */
-
 .shoot-calendar-card .rbc-show-more {
   margin-left: 5px;
   color: #4f46e5;
   font-size: 11px;
   font-weight: 700;
 }
-
-/* Week / Day view */
 
 .shoot-calendar-card .rbc-time-view {
   border: 1px solid #e5e7eb;
@@ -981,8 +890,6 @@
   background: #ef4444;
 }
 
-/* Agenda */
-
 .shoot-calendar-card .rbc-agenda-view {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
@@ -1009,10 +916,6 @@
   color: #374151;
   font-size: 13px;
 }
-
-/* ========================================
-   MOBILE SHOOT LIST
-======================================== */
 
 .shoot-calendar-mobile-list {
   display: none;
@@ -1071,10 +974,6 @@
   background: #f9fafb;
 }
 
-/* ========================================
-   TABLET
-======================================== */
-
 @media (max-width: 900px) {
   .shoot-calendar-card {
     padding: 16px;
@@ -1094,10 +993,6 @@
     min-height: 90px;
   }
 }
-
-/* ========================================
-   MOBILE
-======================================== */
 
 @media (max-width: 768px) {
   .shoot-calendar-card {
@@ -1137,10 +1032,6 @@
     min-width: 0;
   }
 }
-
-/* ========================================
-   SHOOT EVENT MODAL
-======================================== */
 
 .shoot-modal-overlay {
   position: fixed;
@@ -1313,9 +1204,6 @@
   border-color: #b91c1c;
 }
 
-/* ========================================
-   MODAL RESPONSIVE
-======================================== */
 
 @media (max-width: 600px) {
   .shoot-modal-overlay {

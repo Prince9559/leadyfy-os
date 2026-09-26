@@ -1,16 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { createCreator } from "../../services/creatorService";
-
 import "./Creators.css";
 
 function AddCreator() {
   const navigate = useNavigate();
-
   const [saving, setSaving] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -28,7 +24,6 @@ function AddCreator() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -37,7 +32,6 @@ function AddCreator() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.name.trim()) {
       toast.error("Creator name is required");
       return;
@@ -50,7 +44,6 @@ function AddCreator() {
 
     try {
       setSaving(true);
-
       await createCreator({
         name: formData.name.trim(),
         email: formData.email.trim(),
@@ -65,7 +58,6 @@ function AddCreator() {
       });
 
       toast.success("Creator created successfully");
-
       setTimeout(() => {
         navigate("/creators");
       }, 800);
@@ -73,8 +65,7 @@ function AddCreator() {
       console.error("Create creator error:", error);
 
       toast.error(
-        error.response?.data?.message ||
-          "Failed to create creator"
+        error.response?.data?.message || "Failed to create creator"
       );
     } finally {
       setSaving(false);
@@ -83,216 +74,90 @@ function AddCreator() {
 
   return (
     <div className="creators-page">
-      {/* Header */}
       <div className="creators-header">
         <div>
           <h1>Add Creator</h1>
           <p>Add a new creator to your network</p>
         </div>
 
-        <button
-          type="button"
-          className="back-creator-button"
-          onClick={() => navigate("/creators")}
-        >
+        <button type="button" className="back-creator-button" onClick={() => navigate("/creators")}>
           Back
         </button>
       </div>
 
-      {/* Form Card */}
       <div className="creator-form-card">
         <form onSubmit={handleSubmit}>
           <div className="creator-form-grid">
-            {/* Creator Name */}
             <div className="creator-form-group">
-              <label htmlFor="name">
-                Creator Name
-              </label>
-
-              <input
-                id="name"
-                name="name"
-                type="text"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter creator name"
-              />
+              <label htmlFor="name">Creator Name</label>
+              <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Enter creator name" />
             </div>
 
-            {/* Email */}
+            
             <div className="creator-form-group">
-              <label htmlFor="email">
-                Email
-              </label>
-
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter email address"
-              />
+            <label htmlFor="email">Email</label>
+              <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter email address" />
             </div>
 
-            {/* Phone */}
+             
             <div className="creator-form-group">
-              <label htmlFor="phone">
-                Phone
-              </label>
-
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Enter phone number"
-              />
+              <label htmlFor="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="Enter phone number" />
             </div>
 
-            {/* Category */}
+            
             <div className="creator-form-group">
-              <label htmlFor="category">
-                Category
-              </label>
-
-              <input
-                id="category"
-                name="category"
-                type="text"
-                value={formData.category}
-                onChange={handleChange}
-                placeholder="e.g. Fashion, Tech, Fitness"
-              />
+              <label htmlFor="category">Category</label>
+              <input id="category" name="category" type="text" value={formData.category} onChange={handleChange} placeholder="e.g. Fashion, Tech, Fitness" />
             </div>
 
-            {/* Platform */}
+             
             <div className="creator-form-group">
-              <label htmlFor="platform">
-                Platform
-              </label>
-
-              <input
-                id="platform"
-                name="platform"
-                type="text"
-                value={formData.platform}
-                onChange={handleChange}
-                placeholder="e.g. Instagram, YouTube"
-              />
+              <label htmlFor="platform">Platform</label>
+              <input id="platform" name="platform" type="text" value={formData.platform} onChange={handleChange} placeholder="e.g. Instagram, YouTube" />
             </div>
 
-            {/* Followers */}
+             
             <div className="creator-form-group">
-              <label htmlFor="followers">
-                Followers
-              </label>
-
-              <input
-                id="followers"
-                name="followers"
-                type="number"
-                min="0"
-                value={formData.followers}
-                onChange={handleChange}
-                placeholder="Enter follower count"
-              />
+              <label htmlFor="followers">Followers</label>
+              <input id="followers" name="followers" type="number" min="0" value={formData.followers} onChange={handleChange} placeholder="Enter follower count" />
             </div>
 
-            {/* Location */}
+             
             <div className="creator-form-group">
-              <label htmlFor="location">
-                Location
-              </label>
-
-              <input
-                id="location"
-                name="location"
-                type="text"
-                value={formData.location}
-                onChange={handleChange}
-                placeholder="e.g. Varanasi, India"
-              />
+              <label htmlFor="location">Location</label>
+              <input id="location" name="location" type="text" value={formData.location} onChange={handleChange} placeholder="e.g. Varanasi, India" />
             </div>
 
-            {/* Profile URL */}
+             
             <div className="creator-form-group">
-              <label htmlFor="profileUrl">
-                Profile URL
-              </label>
-
-              <input
-                id="profileUrl"
-                name="profileUrl"
-                type="url"
-                value={formData.profileUrl}
-                onChange={handleChange}
-                placeholder="https://..."
-              />
+              <label htmlFor="profileUrl">Profile URL</label>
+              <input id="profileUrl" name="profileUrl" type="url" value={formData.profileUrl} onChange={handleChange} placeholder="https://..." />
             </div>
 
-            {/* Status */}
+             
             <div className="creator-form-group">
-              <label htmlFor="status">
-                Status
-              </label>
-
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
-                <option value="active">
-                  Active
-                </option>
-
-                <option value="inactive">
-                  Inactive
-                </option>
+              <label htmlFor="status">Status</label>
+              <select id="status" name="status" value={formData.status} onChange={handleChange}>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
               </select>
             </div>
 
-            {/* Notes */}
+             
             <div className="creator-form-group creator-form-full">
-              <label htmlFor="notes">
-                Notes
-              </label>
-
-              <textarea
-                id="notes"
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                placeholder="Add any additional notes..."
-                rows="6"
-              />
+              <label htmlFor="notes">Notes</label>
+              <textarea id="notes" name="notes" value={formData.notes} onChange={handleChange} placeholder="Add any additional notes..." rows="6" />
             </div>
           </div>
 
-          {/* Save Button */}
-          <button
-            type="submit"
-            className="save-creator-button"
-            disabled={saving}
-          >
-            {saving
-              ? "Saving..."
-              : "Save Creator"}
+           
+          <button type="submit" className="save-creator-button" disabled={saving}>
+            {saving ? "Saving..." : "Save Creator"}
           </button>
         </form>
       </div>
-
-      {/* Toast */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 }

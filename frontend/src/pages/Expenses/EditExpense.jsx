@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Save } from "lucide-react";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import {
-  getExpenseById,
-  updateExpense,
-} from "../../services/expenseService";
-
+import { getExpenseById, updateExpense } from "../../services/expenseService";
 import "./Expenses.css";
 
 function EditExpense() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -46,27 +39,16 @@ function EditExpense() {
           title: expense.title || "",
           description: expense.description || "",
           category: expense.category || "other",
-          amount:
-            expense.amount !== undefined
-              ? expense.amount
-              : "",
-          expenseDate: expense.expenseDate
-            ? new Date(expense.expenseDate)
-                .toISOString()
-                .split("T")[0]
-            : "",
-          paymentMethod:
-            expense.paymentMethod || "bank_transfer",
+          amount: expense.amount !== undefined ? expense.amount : "",
+          expenseDate: expense.expenseDate ? new Date(expense.expenseDate).toISOString().split("T")[0] : "",
+          paymentMethod: expense.paymentMethod || "bank_transfer",
           status: expense.status || "paid",
           notes: expense.notes || "",
         });
       } catch (error) {
         console.error("Get expense error:", error);
 
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load expense"
-        );
+        toast.error(error.response?.data?.message || "Failed to load expense");
       } finally {
         setLoading(false);
       }
@@ -77,7 +59,6 @@ function EditExpense() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -92,17 +73,13 @@ function EditExpense() {
       return;
     }
 
-    if (
-      formData.amount === "" ||
-      Number(formData.amount) < 0
-    ) {
+    if (formData.amount === "" || Number(formData.amount) < 0) {
       toast.error("Please enter a valid amount");
       return;
     }
 
     try {
       setSaving(true);
-
       const payload = {
         title: formData.title.trim(),
         category: formData.category,
@@ -112,8 +89,7 @@ function EditExpense() {
       };
 
       if (formData.description.trim()) {
-        payload.description =
-          formData.description.trim();
+        payload.description = formData.description.trim();
       } else {
         payload.description = "";
       }
@@ -139,8 +115,7 @@ function EditExpense() {
       console.error("Update expense error:", error);
 
       toast.error(
-        error.response?.data?.message ||
-          "Failed to update expense"
+        error.response?.data?.message || "Failed to update expense"
       );
     } finally {
       setSaving(false);
@@ -154,10 +129,7 @@ function EditExpense() {
           <p>Loading expense...</p>
         </div>
 
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-        />
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
     );
   }
@@ -167,20 +139,10 @@ function EditExpense() {
       <div className="expenses-header">
         <div>
           <h1>Edit Expense</h1>
-
-          <p>
-            Update the information of this expense.
-          </p>
+          <p>Update the information of this expense.</p>
         </div>
 
-        <button
-          type="button"
-          className="expense-back-button"
-          onClick={() =>
-            navigate(`/expenses/view/${id}`)
-          }
-          disabled={saving}
-        >
+        <button type="button" className="expense-back-button" onClick={() => navigate(`/expenses/view/${id}`)} disabled={saving}>
           Back
         </button>
       </div>
@@ -189,93 +151,39 @@ function EditExpense() {
         <form onSubmit={handleSubmit}>
           <div className="expense-form-grid">
             <div className="expense-form-group">
-              <label>
-                Title <span>*</span>
-              </label>
+              <label>Title <span>*</span></label>
 
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="Enter expense title"
-                required
-              />
+              <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Enter expense title" required />
             </div>
 
             <div className="expense-form-group">
-              <label>
-                Amount <span>*</span>
-              </label>
+              <label>Amount <span>*</span></label>
 
-              <input
-                type="number"
-                name="amount"
-                value={formData.amount}
-                onChange={handleChange}
-                min="0"
-                step="0.01"
-                placeholder="Enter amount"
-                required
-              />
+              <input type="number" name="amount" value={formData.amount} onChange={handleChange} min="0" step="0.01" placeholder="Enter amount" required />
             </div>
 
             <div className="expense-form-group">
               <label>Category</label>
 
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-              >
-                <option value="creator">
-                  Creator
-                </option>
-
-                <option value="production">
-                  Production
-                </option>
-
-                <option value="software">
-                  Software
-                </option>
-
-                <option value="marketing">
-                  Marketing
-                </option>
-
-                <option value="office">
-                  Office
-                </option>
-
-                <option value="travel">
-                  Travel
-                </option>
-
-                <option value="other">
-                  Other
-                </option>
+              <select name="category" value={formData.category} onChange={handleChange}>
+                <option value="creator">Creator</option>
+                <option value="production">Production</option>
+                <option value="software">Software</option>
+                <option value="marketing">Marketing</option>
+                <option value="office">Office</option>
+                <option value="travel">Travel</option>
+                <option value="other">Other</option>
               </select>
             </div>
 
             <div className="expense-form-group">
               <label>Payment Method</label>
 
-              <select
-                name="paymentMethod"
-                value={formData.paymentMethod}
-                onChange={handleChange}
-              >
-                <option value="bank_transfer">
-                  Bank Transfer
-                </option>
-
+              <select name="paymentMethod" value={formData.paymentMethod} onChange={handleChange}>
+                <option value="bank_transfer">Bank Transfer</option>
                 <option value="upi">UPI</option>
-
                 <option value="cash">Cash</option>
-
                 <option value="card">Card</option>
-
                 <option value="other">Other</option>
               </select>
             </div>
@@ -283,83 +191,42 @@ function EditExpense() {
             <div className="expense-form-group">
               <label>Expense Date</label>
 
-              <input
-                type="date"
-                name="expenseDate"
-                value={formData.expenseDate}
-                onChange={handleChange}
-              />
+              <input type="date" name="expenseDate" value={formData.expenseDate} onChange={handleChange} />
             </div>
 
             <div className="expense-form-group">
               <label>Status</label>
 
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-              >
+              <select name="status" value={formData.status} onChange={handleChange}>
                 <option value="paid">Paid</option>
-
-                <option value="pending">
-                  Pending
-                </option>
-
-                <option value="cancelled">
-                  Cancelled
-                </option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
               </select>
             </div>
 
             <div className="expense-form-group expense-form-full">
               <label>Description</label>
 
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows="4"
-                placeholder="Enter expense description..."
-              />
+              <textarea name="description" value={formData.description} onChange={handleChange} rows="4" placeholder="Enter expense description..." />
             </div>
 
             <div className="expense-form-group expense-form-full">
               <label>Notes</label>
 
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                rows="4"
-                placeholder="Enter expense notes..."
-              />
+              <textarea name="notes" value={formData.notes} onChange={handleChange} rows="4" placeholder="Enter expense notes..." />
             </div>
           </div>
 
           <div className="expense-form-actions">
-            <button
-              type="submit"
-              className="expense-save-button"
-              disabled={saving}
-            >
+            <button type="submit" className="expense-save-button" disabled={saving}>
               <Save size={18} />
-
-              {saving
-                ? "Updating..."
-                : "Update Expense"}
+              {saving ? "Updating..." : "Update Expense"}
             </button>
           </div>
         </form>
       </div>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable />
     </div>
   );
 }

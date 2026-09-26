@@ -21,7 +21,6 @@ function AddUser() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     setFormData((previous) => ({
       ...previous,
       [name]: value,
@@ -30,7 +29,6 @@ function AddUser() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!formData.name.trim()) {
       toast.error("Please enter name");
       return;
@@ -61,20 +59,15 @@ function AddUser() {
         role: formData.role,
       });
 
-       
- 
-
       toast.success("User created successfully");
 
-setTimeout(() => {
-  navigate("/users");
-}, 1500);
+      setTimeout(() => {
+        navigate("/users");
+      }, 1500);
     } catch (error) {
       console.error("Failed to create user:", error);
 
-      toast.error(
-        error.response?.data?.message || "Failed to create user"
-      );
+      toast.error(error.response?.data?.message || "Failed to create user");
     } finally {
       setLoading(false);
     }
@@ -88,11 +81,7 @@ setTimeout(() => {
           <p>Create a new user account</p>
         </div>
 
-        <button
-          type="button"
-          className="add-user-back-button"
-          onClick={() => navigate("/users")}
-        >
+        <button type="button" className="add-user-back-button" onClick={() => navigate("/users")}>
           <ArrowLeft size={18} />
           <span>Back</span>
         </button>
@@ -102,66 +91,37 @@ setTimeout(() => {
         <div className="add-user-form-grid">
           <div className="add-user-field">
             <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter name"
-            />
+
+            <input id="name" name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Enter name" />
           </div>
 
           <div className="add-user-field">
             <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter email"
-            />
+
+            <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Enter email" />
           </div>
 
           <div className="add-user-field">
             <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter password"
-            />
+
+            <input id="password" name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Enter password" />
           </div>
 
           <div className="add-user-field">
             <label htmlFor="role">Role</label>
 
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
+            <select id="role" name="role" value={formData.role} onChange={handleChange}>
               <option value="employee">Employee</option>
               <option value="admin">Admin</option>
               <option value="client">Client</option>
 
-              {user?.role === "owner" && (
-                <option value="owner">Owner</option>
-              )}
+              {user?.role === "owner" && <option value="owner">Owner</option>}
             </select>
           </div>
         </div>
 
         <div className="add-user-actions">
-          <button
-            type="submit"
-            className="add-user-submit-button"
-            disabled={loading}
-          >
+          <button type="submit" className="add-user-submit-button" disabled={loading}>
             {loading ? "Creating..." : "Create User"}
           </button>
         </div>
