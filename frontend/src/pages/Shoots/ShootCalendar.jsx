@@ -5,13 +5,13 @@ import { ToastContainer, toast } from "react-toastify";
 import { enUS } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
-
 import "react-toastify/dist/ReactToastify.css";
 import { getShoots, deleteShoot } from "../../services/shootService";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Shoots.css";
 
-const locales = { "en-US": enUS,};
+const locales = { "en-US": enUS };
+
 const localizer = dateFnsLocalizer({
   format,
   parse,
@@ -88,9 +88,7 @@ function ShootCalendar() {
     toast(
       ({ closeToast }) => (
         <div>
-          <p style={{ margin: "0 0 12px" }}>
-            Are you sure you want to delete this shoot?
-          </p>
+          <p style={{ margin: "0 0 12px" }}>Are you sure you want to delete this shoot?</p>
 
           <div style={{ display: "flex", gap: "8px" }}>
             <button type="button" onClick={async () => {
@@ -99,13 +97,10 @@ function ShootCalendar() {
                 setShoots((prev) => prev.filter((shoot) => shoot._id !== selectedShoot._id));
                 setSelectedShoot(null);
                 closeToast();
-
                 toast.success("Shoot deleted successfully");
               } catch (error) {
                 console.error("Delete shoot error:", error);
-
                 closeToast();
-
                 toast.error(error.response?.data?.message || "Failed to delete shoot");
               }
             }} style={{ border: "none", borderRadius: "6px", padding: "7px 12px", background: "#dc2626", color: "#fff", cursor: "pointer", fontWeight: "600" }}>
@@ -118,16 +113,13 @@ function ShootCalendar() {
           </div>
         </div>
       ),
-      {
-        autoClose: false,
-        closeOnClick: false,
-        closeButton: false,
-      }
+      { autoClose: false, closeOnClick: false, closeButton: false }
     );
   };
 
   const formatStatus = (status) => {
-    return status  ?.replace(/_/g, " ")  .replace(/\b\w/g, (char) => char.toUpperCase()) || "-";};
+    return status?.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase()) || "-";
+  };
 
   const formatDate = (date) => {
     if (!date) {
@@ -140,6 +132,7 @@ function ShootCalendar() {
   const eventStyleGetter = (event) => {
     const status = event.resource?.status;
     let backgroundColor = "#4f46e5";
+
     if (status === "confirmed") {
       backgroundColor = "#2563eb";
     }
@@ -174,16 +167,10 @@ function ShootCalendar() {
       <div className="shoots-header">
         <div>
           <h1>Shoot Calendar</h1>
-
-          <p>
-            Manage and schedule all your shoots • {shoots.length}{" "}
-            {shoots.length === 1 ? "shoot" : "shoots"}
-          </p>
+          <p>Manage and schedule all your shoots • {shoots.length} {shoots.length === 1 ? "shoot" : "shoots"}</p>
         </div>
 
-        <button type="button" className="add-shoot-button" onClick={() => navigate("/shoots/add")}>
-          Add Shoot
-        </button>
+        <button type="button" className="add-shoot-button" onClick={() => navigate("/shoots/add")}>Add Shoot</button>
       </div>
 
       {loading ? (
@@ -193,14 +180,8 @@ function ShootCalendar() {
       ) : shoots.length === 0 ? (
         <div className="shoots-empty">
           <h2>No Shoots Found</h2>
-
-          <p>
-            Add your first shoot to start managing your shoot schedule.
-          </p>
-
-          <button type="button" className="add-shoot-button" onClick={() => navigate("/shoots/add")}>
-            Add First Shoot
-          </button>
+          <p>Add your first shoot to start managing your shoot schedule.</p>
+          <button type="button" className="add-shoot-button" onClick={() => navigate("/shoots/add")}>Add First Shoot</button>
         </div>
       ) : (
         <>
@@ -229,28 +210,15 @@ function ShootCalendar() {
               <div className="shoot-mobile-item" key={shoot._id}>
                 <div>
                   <strong>{shoot.client?.companyName || "Unknown Client"}</strong>
-
                   <span>{formatDate(shoot.shootDate)}</span>
-
-                  <span>
-                    {shoot.startTime || "-"} - {shoot.endTime || "-"}
-                  </span>
-
+                  <span>{shoot.startTime || "-"} - {shoot.endTime || "-"}</span>
                   <span>{shoot.creator?.name || "Unknown Creator"}</span>
                 </div>
 
                 <div className="shoot-mobile-actions">
-                  <button type="button" onClick={() => setSelectedShoot(shoot)}>
-                    View
-                  </button>
-
-                  <button type="button" onClick={() => navigate(`/shoots/${shoot._id}`)}>
-                    Edit
-                  </button>
-
-                  <button type="button" onClick={() => setSelectedShoot(shoot)}>
-                    Delete
-                  </button>
+                  <button type="button" onClick={() => setSelectedShoot(shoot)}>View</button>
+                  <button type="button" onClick={() => navigate(`/shoots/${shoot._id}`)}>Edit</button>
+                  <button type="button" onClick={() => setSelectedShoot(shoot)}>Delete</button>
                 </div>
               </div>
             ))}
@@ -264,7 +232,6 @@ function ShootCalendar() {
             <div className="shoot-modal-header">
               <div>
                 <h2>Shoot Details</h2>
-
                 <p>{selectedShoot.creator?.name || "Shoot"}</p>
               </div>
 
@@ -275,70 +242,25 @@ function ShootCalendar() {
 
             <div className="shoot-modal-content">
               <div className="shoot-modal-grid">
-                <div>
-                  <span>Client</span>
-
-                  <strong>{selectedShoot.client?.companyName || "-"}</strong>
-                </div>
-
-                <div>
-                  <span>Order</span>
-
-                  <strong>{selectedShoot.order?.packageName || "-"}</strong>
-                </div>
-
-                <div>
-                  <span>Creator</span>
-
-                  <strong>{selectedShoot.creator?.name || "-"}</strong>
-                </div>
-
-                <div>
-                  <span>Date</span>
-
-                  <strong>{formatDate(selectedShoot.shootDate)}</strong>
-                </div>
-
-                <div>
-                  <span>Time</span>
-
-                  <strong>
-                    {selectedShoot.startTime || "-"} - {selectedShoot.endTime || "-"}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Location</span>
-
-                  <strong>{selectedShoot.location || "-"}</strong>
-                </div>
-
-                <div>
-                  <span>Status</span>
-
-                  <strong>{formatStatus(selectedShoot.status)}</strong>
-                </div>
+                <div><span>Client</span><strong>{selectedShoot.client?.companyName || "-"}</strong></div>
+                <div><span>Order</span><strong>{selectedShoot.order?.packageName || "-"}</strong></div>
+                <div><span>Creator</span><strong>{selectedShoot.creator?.name || "-"}</strong></div>
+                <div><span>Date</span><strong>{formatDate(selectedShoot.shootDate)}</strong></div>
+                <div><span>Time</span><strong>{selectedShoot.startTime || "-"} - {selectedShoot.endTime || "-"}</strong></div>
+                <div><span>Location</span><strong>{selectedShoot.location || "-"}</strong></div>
+                <div><span>Status</span><strong>{formatStatus(selectedShoot.status)}</strong></div>
               </div>
 
               <div className="shoot-modal-notes">
                 <span>Notes</span>
-
                 <p>{selectedShoot.notes || "No notes available."}</p>
               </div>
             </div>
 
             <div className="shoot-modal-actions">
-              <button type="button" className="shoot-modal-view" onClick={() => navigate(`/shoots/view/${selectedShoot._id}`)}>
-                View
-              </button>
-
-              <button type="button" className="shoot-modal-edit" onClick={() => navigate(`/shoots/${selectedShoot._id}`)}>
-                Edit
-              </button>
-
-              <button type="button" className="shoot-modal-delete" onClick={handleDelete}>
-                Delete
-              </button>
+              <button type="button" className="shoot-modal-view" onClick={() => navigate(`/shoots/view/${selectedShoot._id}`)}>View</button>
+              <button type="button" className="shoot-modal-edit" onClick={() => navigate(`/shoots/${selectedShoot._id}`)}>Edit</button>
+              <button type="button" className="shoot-modal-delete" onClick={handleDelete}>Delete</button>
             </div>
           </div>
         </div>

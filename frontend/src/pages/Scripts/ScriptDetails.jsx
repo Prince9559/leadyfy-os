@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getScriptById } from "../../services/scriptService";
-
 import "./Scripts.css";
+
 function ScriptDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ function ScriptDetails() {
   }, [id]);
 
   const formatStatus = (status) => {
-    return (status ?.replace(/_/g, " ") .replace(/\b\w/g, (char) => char.toUpperCase()) || "-");
+    return (status?.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase()) || "-");
   };
 
   const formatDate = (date) => {
@@ -62,13 +62,9 @@ function ScriptDetails() {
       <div className="scripts-page">
         <div className="scripts-empty">
           <FileText size={40} />
-
           <h2>Script Not Found</h2>
-
           <p>The requested script could not be found.</p>
-          <button type="button" className="back-script-button" onClick={() => navigate("/scripts")}>
-            Back to Scripts
-          </button>
+          <button type="button" className="back-script-button" onClick={() => navigate("/scripts")}>Back to Scripts</button>
         </div>
 
         <ToastContainer position="top-right" autoClose={3000} />
@@ -81,91 +77,47 @@ function ScriptDetails() {
       <div className="scripts-header">
         <div>
           <h1>Script Details</h1>
-
           <p>View complete script information</p>
         </div>
 
-        <button type="button" className="back-script-button" onClick={() => navigate("/scripts")}>
-          Back
-        </button>
+        <button type="button" className="back-script-button" onClick={() => navigate("/scripts")}>Back</button>
       </div>
 
       <div className="script-details-card">
         <div className="script-details-top">
           <div>
             <span className="script-details-label">Script Title</span>
-
             <h2>{script.title}</h2>
           </div>
 
-          <span className={`script-status-badge status-${script.status}`}>
-            {formatStatus(script.status)}
-          </span>
+          <span className={`script-status-badge status-${script.status}`}>{formatStatus(script.status)}</span>
         </div>
 
         <div className="script-details-grid">
-          <div className="script-detail-item">
-            <span>Client</span>
-
-            <strong>{script.client?.companyName || "-"}</strong>
-          </div>
-
-          <div className="script-detail-item">
-            <span>Order</span>
-
-            <strong>{script.order?.packageName || "-"}</strong>
-          </div>
-
-          <div className="script-detail-item">
-            <span>Assigned To</span>
-
-            <strong>{script.assignedTo?.name || "-"}</strong>
-          </div>
-
-          <div className="script-detail-item">
-            <span>Created By</span>
-
-            <strong>{script.createdBy?.name || "-"}</strong>
-          </div>
-
-          <div className="script-detail-item">
-            <span>Created At</span>
-
-            <strong>{formatDate(script.createdAt)}</strong>
-          </div>
-
-          <div className="script-detail-item">
-            <span>Updated At</span>
-
-            <strong>{formatDate(script.updatedAt)}</strong>
-          </div>
+          <div className="script-detail-item"><span>Client</span><strong>{script.client?.companyName || "-"}</strong></div>
+          <div className="script-detail-item"><span>Order</span><strong>{script.order?.packageName || "-"}</strong></div>
+          <div className="script-detail-item"><span>Assigned To</span><strong>{script.assignedTo?.name || "-"}</strong></div>
+          <div className="script-detail-item"><span>Created By</span><strong>{script.createdBy?.name || "-"}</strong></div>
+          <div className="script-detail-item"><span>Created At</span><strong>{formatDate(script.createdAt)}</strong></div>
+          <div className="script-detail-item"><span>Updated At</span><strong>{formatDate(script.updatedAt)}</strong></div>
         </div>
 
         <div className="script-details-section">
           <h3>Script Content</h3>
-
-          <div className="script-content-box">
-            {script.content || "No content available."}
-          </div>
+          <div className="script-content-box">{script.content || "No content available."}</div>
         </div>
 
         {script.revisionNote && (
           <div className="script-details-section">
             <h3>Revision Note</h3>
-
-            <div className="script-revision-box">
-              {script.revisionNote}
-            </div>
+            <div className="script-revision-box">{script.revisionNote}</div>
           </div>
         )}
 
         {script.approvedAt && (
           <div className="script-details-section">
             <h3>Approved At</h3>
-
-            <p className="script-approved-date">
-              {formatDate(script.approvedAt)}
-            </p>
+            <p className="script-approved-date">{formatDate(script.approvedAt)}</p>
           </div>
         )}
 
